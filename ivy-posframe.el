@@ -76,11 +76,11 @@ Using current frame's font if it it nil."
   (setq ivy-display-function #'ivy-posframe-display)
   (push '(t . ivy-posframe-display)
         ivy-display-functions-alist)
-  (push '(ivy-posframe
-          :display ivy-posframe-display
+  (push '(ivy-posframe-display
           :cleanup ivy-posframe-cleanup)
-        ivy-display-schemes)
+        ivy-display-function-props)
   (message "Ivy-posframe is enabled, disable it need restart emacs."))
+
 
 
 (provide 'ivy-posframe)
