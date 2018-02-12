@@ -36,7 +36,7 @@
 (require 'ivy)
 
 (push '(ivy-posframe-display
-        :when ivy-posframe-workable-p
+        :check ivy-posframe-workable-p
         :cleanup ivy-posframe-cleanup)
       ivy-display-functions-props)
 
