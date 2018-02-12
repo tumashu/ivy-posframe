@@ -83,10 +83,15 @@ Using current frame's font if it it nil."
                 (not (display-graphic-p))))))
 
 ;;;###autoload
-(defun ivy-posframe-enable ()
-  (interactive)
-  (setq ivy-display-function #'ivy-posframe-display)
-  (message "Ivy-posframe is enabled, disable it need restart emacs."))
+(define-minor-mode ivy-posframe-mode
+  "ivy-posframe minor mode."
+  :global t
+  :require 'ivy-posframe
+  :group 'ivy-posframe
+  :lighter " ivy-posframe"
+  (if ivy-posframe-mode
+      (setq ivy-display-function #'ivy-posframe-display)
+    (setq ivy-display-function nil)))
 
 (provide 'ivy-posframe)
 
