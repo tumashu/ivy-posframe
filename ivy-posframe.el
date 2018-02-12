@@ -86,6 +86,7 @@ More details can be found in docstring of `posframe-show'."
      ivy-posframe-buffer
      :font ivy-posframe-font
      :string (concat ivy--prompt ivy-text str)
+     :position (point)
      :poshandler (or ivy-posframe-poshandler
                      #'posframe-poshandler-window-bottom-left-corner)
      :background-color (face-attribute 'ivy-posframe :background)
