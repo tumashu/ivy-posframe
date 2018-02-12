@@ -26,8 +26,21 @@
 
 
 ;;; Commentary:
-
 ;; * ivy-posframe README                                :README:
+;; ** What is ivy-posframe
+;; ivy-posframe is a ivy extension, which let ivy use posframe
+;; to show its candidate menu.
+
+;; [[./snapshots/ivy-posframe1.gif]]
+
+;; [[./snapshots/ivy-posframe2.gif]]
+
+;; ** How to use ivy-posframe
+
+;; #+BEGIN_EXAMPLE
+;; (require 'ivy-posframe)
+;; (ivy-posframe-mode 1)
+;; #+END_EXAMPLE
 
 ;;; Code:
 ;; * ivy-posframe's code
