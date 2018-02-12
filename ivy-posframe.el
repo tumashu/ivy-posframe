@@ -46,8 +46,16 @@
   :prefix "ivy-posframe")
 
 (defcustom ivy-posframe-font nil
-  "The font used by ivy-posframe's frame.
+  "The font used by ivy-posframe.
 Using current frame's font if it it nil."
+  :group 'ivy-posframe)
+
+(defcustom ivy-posframe-poshandler nil
+  "The posframe poshandler used by ivy-posframe.
+When nil, use `posframe-poshandler-window-bottom-left-corner'
+as fallback.
+
+More details can be found in docstring of `posframe-show'."
   :group 'ivy-posframe)
 
 (defface ivy-posframe
@@ -63,8 +71,10 @@ Using current frame's font if it it nil."
   (with-selected-window (ivy--get-window ivy-last)
     (posframe-show
      ivy-posframe-buffer
+     :font ivy-posframe-font
      :string (concat ivy--prompt ivy-text str)
-     :poshandler #'posframe-poshandler-window-bottom-left-corner
+     :poshandler (or ivy-posframe-poshandler
+                     #'posframe-poshandler-window-bottom-left-corner)
      :background-color (face-attribute 'ivy-posframe :background)
      :foreground-color (face-attribute 'ivy-posframe :foreground)
      :height ivy-height
