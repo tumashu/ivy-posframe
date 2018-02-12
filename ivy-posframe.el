@@ -34,6 +34,10 @@
 (require 'cl-lib)
 (require 'posframe)
 
+(push '(ivy-posframe-display
+        :cleanup ivy-posframe-cleanup)
+      ivy-display-function-props)
+
 (defgroup ivy-posframe nil
   "Using posframe to show ivy"
   :group 'ivy
@@ -72,16 +76,8 @@ Using current frame's font if it it nil."
 ;;;###autoload
 (defun ivy-posframe-enable ()
   (interactive)
-  (require 'ivy)
   (setq ivy-display-function #'ivy-posframe-display)
-  (push '(t . ivy-posframe-display)
-        ivy-display-functions-alist)
-  (push '(ivy-posframe-display
-          :cleanup ivy-posframe-cleanup)
-        ivy-display-function-props)
   (message "Ivy-posframe is enabled, disable it need restart emacs."))
-
-
 
 (provide 'ivy-posframe)
 
