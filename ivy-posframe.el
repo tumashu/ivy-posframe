@@ -131,17 +131,6 @@ Using current frame's font if it it nil."
                 emacs-basic-display
                 (not (display-graphic-p))))))
 
-;;;###autoload
-(define-minor-mode ivy-posframe-mode
-  "ivy-posframe minor mode."
-  :global t
-  :require 'ivy-posframe
-  :group 'ivy-posframe
-  :lighter " ivy-posframe"
-  (if ivy-posframe-mode
-      (setq ivy-display-function #'ivy-posframe-display)
-    (setq ivy-display-function nil)))
-
 (provide 'ivy-posframe)
 
 ;; Local Variables:
