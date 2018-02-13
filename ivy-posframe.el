@@ -109,7 +109,9 @@ Using current frame's font if it it nil."
       (posframe-show
        ivy-posframe-buffer
        :font ivy-posframe-font
-       :string (concat ivy--prompt ivy-text str)
+       :string
+       (with-current-buffer (get-buffer-create " *Minibuf-1*")
+         (concat (buffer-string) "  " str))
        :position (point)
        :poshandler (cdr (assq ivy-posframe-style
                               ivy-posframe-style-alist))
