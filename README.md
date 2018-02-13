@@ -1,20 +1,18 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org0fcd3f6)
-    1.  [What is ivy-posframe](#org5941743)
-    2.  [How to use ivy-posframe](#orgb557f45)
-        1.  [How to enable ivy-posframe](#org9056741)
-        2.  [Window-buttom-left style](#org3ce6114)
-        3.  [Window-center style](#orgadbea28)
+1.  [ivy-posframe README](#org56f4250)
+    1.  [What is ivy-posframe](#orge48b949)
+    2.  [How to enable ivy-posframe](#orgf9d7738)
+    3.  [How to set the style of ivy-posframe](#org3923198)
 
 
-<a id="org0fcd3f6"></a>
+<a id="org56f4250"></a>
 
 # ivy-posframe README
 
 
-<a id="org5941743"></a>
+<a id="orge48b949"></a>
 
 ## What is ivy-posframe
 
@@ -22,14 +20,9 @@ ivy-posframe is a ivy extension, which let ivy use posframe
 to show its candidate menu.
 
 
-<a id="orgb557f45"></a>
+<a id="orgf9d7738"></a>
 
-## How to use ivy-posframe
-
-
-<a id="org9056741"></a>
-
-### How to enable ivy-posframe
+## How to enable ivy-posframe
 
 1.  Global mode
 
@@ -45,22 +38,20 @@ to show its candidate menu.
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
 
-<a id="org3ce6114"></a>
+<a id="org3923198"></a>
 
-### Window-buttom-left style
+## How to set the style of ivy-posframe
 
-    (setq ivy-posframe-style 'window-buttom-left)
+1.  window-buttom-left style
 
-![img](./snapshots/ivy-posframe1.gif)
+        (setq ivy-posframe-style 'window-buttom-left)
 
+    ![img](./snapshots/ivy-posframe1.gif)
+2.  Window-center style
 
-<a id="orgadbea28"></a>
+        (setq ivy-posframe-style 'window-center)
 
-### Window-center style
-
-    (setq ivy-posframe-style 'window-center)
-
-![img](./snapshots/ivy-posframe2.gif)
+    ![img](./snapshots/ivy-posframe2.gif)
 
 
 
