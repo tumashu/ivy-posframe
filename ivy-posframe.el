@@ -84,7 +84,7 @@
 
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
-Using current frame's font if it it nil."
+When nil, Using current frame's font as fallback."
   :group 'ivy-posframe)
 
 (defcustom ivy-posframe-style 'window-buttom-left
@@ -93,11 +93,11 @@ Using current frame's font if it it nil."
 
 (defface ivy-posframe
   '((t (:inherit default :background "#333333" :foreground "#dcdccc")))
-  "Face used for the ivy-posframe."
+  "Face used by the ivy-posframe."
   :group 'ivy-posframe)
 
 (defvar ivy-posframe-buffer " *ivy-posframe-buffer*"
-  "The buffer which used by ivy-posframe.")
+  "The posframe-buffer used by ivy-posframe.")
 
 (defvar ivy-posframe-style-alist
   '((window-center . posframe-poshandler-window-center)
@@ -108,7 +108,7 @@ Using current frame's font if it it nil."
   "Alist of ivy posframe styles.")
 
 (defun ivy-posframe-display (str)
-  "Show ivy's posframe."
+  "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
     (with-selected-window (ivy--get-window ivy-last)
@@ -128,12 +128,12 @@ Using current frame's font if it it nil."
        :min-width 50))))
 
 (defun ivy-posframe-cleanup ()
-  "Clean ivy's posframe."
+  "Cleanup ivy's posframe."
   (when (ivy-posframe-workable-p)
     (posframe-hide ivy-posframe-buffer)))
 
 (defun ivy-posframe-workable-p ()
-  "Test ivy-posframe workable or not."
+  "Test ivy-posframe workable status."
   (and (>= emacs-major-version 26)
        (not (or noninteractive
                 emacs-basic-display
