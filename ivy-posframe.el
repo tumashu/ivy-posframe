@@ -49,7 +49,6 @@
 (require 'ivy)
 
 (push '(ivy-posframe-display
-        :check ivy-posframe-workable-p
         :cleanup ivy-posframe-cleanup)
       ivy-display-functions-props)
 
@@ -81,23 +80,26 @@ More details can be found in docstring of `posframe-show'."
 
 (defun ivy-posframe-display (str)
   "Show ivy's posframe."
-  (with-selected-window (ivy--get-window ivy-last)
-    (posframe-show
-     ivy-posframe-buffer
-     :font ivy-posframe-font
-     :string (concat ivy--prompt ivy-text str)
-     :position (point)
-     :poshandler (or ivy-posframe-poshandler
-                     #'posframe-poshandler-window-bottom-left-corner)
-     :background-color (face-attribute 'ivy-posframe :background)
-     :foreground-color (face-attribute 'ivy-posframe :foreground)
-     :height ivy-height
-     :min-height 10
-     :min-width 50)))
+  (if (not (ivy-posframe-workable-p))
+      (ivy-display-function-fallback str)
+    (with-selected-window (ivy--get-window ivy-last)
+      (posframe-show
+       ivy-posframe-buffer
+       :font ivy-posframe-font
+       :string (concat ivy--prompt ivy-text str)
+       :position (point)
+       :poshandler (or ivy-posframe-poshandler
+                       #'posframe-poshandler-window-bottom-left-corner)
+       :background-color (face-attribute 'ivy-posframe :background)
+       :foreground-color (face-attribute 'ivy-posframe :foreground)
+       :height ivy-height
+       :min-height 10
+       :min-width 50))))
 
 (defun ivy-posframe-cleanup ()
   "Clean ivy's posframe."
-  (posframe-hide ivy-posframe-buffer))
+  (when (ivy-posframe-workable-p)
+    (posframe-hide ivy-posframe-buffer)))
 
 (defun ivy-posframe-workable-p ()
   "Test ivy-posframe workable or not."
