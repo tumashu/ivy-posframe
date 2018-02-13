@@ -1,18 +1,18 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org56f4250)
-    1.  [What is ivy-posframe](#orge48b949)
-    2.  [How to enable ivy-posframe](#orgf9d7738)
-    3.  [How to set the style of ivy-posframe](#org3923198)
+1.  [ivy-posframe README](#orgeae4edc)
+    1.  [What is ivy-posframe](#org16b85a0)
+    2.  [How to enable ivy-posframe](#org6f59c0a)
+    3.  [How to set the style of ivy-posframe](#orge1fc1e0)
 
 
-<a id="org56f4250"></a>
+<a id="orgeae4edc"></a>
 
 # ivy-posframe README
 
 
-<a id="orge48b949"></a>
+<a id="org16b85a0"></a>
 
 ## What is ivy-posframe
 
@@ -20,7 +20,7 @@ ivy-posframe is a ivy extension, which let ivy use posframe
 to show its candidate menu.
 
 
-<a id="orgf9d7738"></a>
+<a id="org6f59c0a"></a>
 
 ## How to enable ivy-posframe
 
@@ -38,7 +38,7 @@ to show its candidate menu.
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
 
-<a id="org3923198"></a>
+<a id="orge1fc1e0"></a>
 
 ## How to set the style of ivy-posframe
 
@@ -52,6 +52,11 @@ to show its candidate menu.
         (setq ivy-posframe-style 'window-center)
 
     ![img](./snapshots/ivy-posframe2.gif)
+3.  Point style
+
+        (setq ivy-posframe-style 'point)
+
+    ![img](./snapshots/ivy-posframe3.gif)
 
 
 

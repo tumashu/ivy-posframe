@@ -60,6 +60,12 @@
 ;;    (setq ivy-posframe-style 'window-center)
 ;;    #+END_EXAMPLE
 ;;    [[./snapshots/ivy-posframe2.gif]]
+;; 3. Point style
+;;    #+BEGIN_EXAMPLE
+;;    (setq ivy-posframe-style 'point)
+;;    #+END_EXAMPLE
+;;    [[./snapshots/ivy-posframe3.gif]]
+
 
 ;;; Code:
 ;; * ivy-posframe's code
