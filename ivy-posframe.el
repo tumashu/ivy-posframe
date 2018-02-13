@@ -85,11 +85,13 @@
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
 When nil, Using current frame's font as fallback."
-  :group 'ivy-posframe)
+  :group 'ivy-posframe
+  :type 'string)
 
 (defcustom ivy-posframe-style 'window-buttom-left
   "The style of ivy-posframe."
-  :group 'ivy-posframe)
+  :group 'ivy-posframe
+  :type 'string)
 
 (defface ivy-posframe
   '((t (:inherit default :background "#333333" :foreground "#dcdccc")))
@@ -106,6 +108,9 @@ When nil, Using current frame's font as fallback."
     (frame-buttom-left . posframe-poshandler-frame-bottom-left-corner)
     (point . posframe-poshandler-point-bottom-left-corner))
   "Alist of ivy posframe styles.")
+
+;; Fix warn
+(defvar emacs-basic-display)
 
 (defun ivy-posframe-display (str)
   "Show STR in ivy's posframe."
