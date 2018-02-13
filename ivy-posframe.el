@@ -31,16 +31,41 @@
 ;; ivy-posframe is a ivy extension, which let ivy use posframe
 ;; to show its candidate menu.
 
+;; ** How to use ivy-posframe
+
+;; *** How to enable ivy-posframe
+
+;; 1. Global mode
+;;    #+BEGIN_EXAMPLE
+;;    (require 'ivy-posframe)
+;;    (setq ivy-display-function #'ivy-posframe-display)
+;;    #+END_EXAMPLE
+;; 2. Per-command mode.
+;;    #+BEGIN_EXAMPLE
+;;    (require 'ivy-posframe)
+;;    (push '(counsel-M-x . ivy-posframe-display) ivy-display-functions-alist)
+;;    #+END_EXAMPLE
+;; 3. Fallback mode
+;;    #+BEGIN_EXAMPLE
+;;    (require 'ivy-posframe)
+;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
+;;    #+END_EXAMPLE
+
+;; *** Window-buttom-left style
+;; #+BEGIN_EXAMPLE
+;; (setq ivy-posframe-style 'window-buttom-left)
+;; #+END_EXAMPLE
+
 ;; [[./snapshots/ivy-posframe1.gif]]
+
+;; *** Window-center style
+;; #+BEGIN_EXAMPLE
+;; (setq ivy-posframe-style 'window-center)
+;; #+END_EXAMPLE
 
 ;; [[./snapshots/ivy-posframe2.gif]]
 
-;; ** How to use ivy-posframe
 
-;; #+BEGIN_EXAMPLE
-;; (require 'ivy-posframe)
-;; (ivy-posframe-mode 1)
-;; #+END_EXAMPLE
 
 ;;; Code:
 ;; * ivy-posframe's code
@@ -62,12 +87,8 @@
 Using current frame's font if it it nil."
   :group 'ivy-posframe)
 
-(defcustom ivy-posframe-poshandler nil
-  "The posframe poshandler used by ivy-posframe.
-When nil, use `posframe-poshandler-window-bottom-left-corner'
-as fallback.
-
-More details can be found in docstring of `posframe-show'."
+(defcustom ivy-posframe-style 'window-buttom-left
+  "The style of ivy-posframe."
   :group 'ivy-posframe)
 
 (defface ivy-posframe
@@ -77,6 +98,14 @@ More details can be found in docstring of `posframe-show'."
 
 (defvar ivy-posframe-buffer " *ivy-posframe-buffer*"
   "The buffer which used by ivy-posframe.")
+
+(defvar ivy-posframe-style-alist
+  '((window-center . posframe-poshandler-window-center)
+    (frame-center  . posframe-poshandler-frame-center)
+    (window-buttom-left . posframe-poshandler-window-bottom-left-corner)
+    (frame-buttom-left . posframe-poshandler-frame-bottom-left-corner)
+    (point . posframe-poshandler-point-bottom-left-corner))
+  "Alist of ivy posframe styles.")
 
 (defun ivy-posframe-display (str)
   "Show ivy's posframe."
@@ -88,8 +117,8 @@ More details can be found in docstring of `posframe-show'."
        :font ivy-posframe-font
        :string (concat ivy--prompt ivy-text str)
        :position (point)
-       :poshandler (or ivy-posframe-poshandler
-                       #'posframe-poshandler-window-bottom-left-corner)
+       :poshandler (cdr (assq ivy-posframe-style
+                              ivy-posframe-style-alist))
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height ivy-height
