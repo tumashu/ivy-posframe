@@ -32,6 +32,8 @@
 ;; ivy-posframe is a ivy extension, which let ivy use posframe
 ;; to show its candidate menu.
 
+;; NOTE: ivy-posframe requires Emacs 26
+
 ;; ** How to enable ivy-posframe
 ;; 1. Global mode
 ;;    #+BEGIN_EXAMPLE

@@ -1,26 +1,28 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#orgeae4edc)
-    1.  [What is ivy-posframe](#org16b85a0)
-    2.  [How to enable ivy-posframe](#org6f59c0a)
-    3.  [How to set the style of ivy-posframe](#orge1fc1e0)
+1.  [ivy-posframe README](#org517c951)
+    1.  [What is ivy-posframe](#org153958a)
+    2.  [How to enable ivy-posframe](#orgfb35379)
+    3.  [How to set the style of ivy-posframe](#orgdd1e7a6)
 
 
-<a id="orgeae4edc"></a>
+<a id="org517c951"></a>
 
 # ivy-posframe README
 
 
-<a id="org16b85a0"></a>
+<a id="org153958a"></a>
 
 ## What is ivy-posframe
 
 ivy-posframe is a ivy extension, which let ivy use posframe
 to show its candidate menu.
 
+NOTE: ivy-posframe requires Emacs 26
 
-<a id="org6f59c0a"></a>
+
+<a id="orgfb35379"></a>
 
 ## How to enable ivy-posframe
 
@@ -38,7 +40,7 @@ to show its candidate menu.
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
 
-<a id="orge1fc1e0"></a>
+<a id="orgdd1e7a6"></a>
 
 ## How to set the style of ivy-posframe
 
