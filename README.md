@@ -19,6 +19,8 @@
 ivy-posframe is a ivy extension, which let ivy use posframe
 to show its candidate menu.
 
+Package Requires: Emacs 26.0
+
 
 <a id="org6f59c0a"></a>
 
