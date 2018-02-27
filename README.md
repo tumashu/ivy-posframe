@@ -1,18 +1,18 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#orgb15c99c)
-    1.  [What is ivy-posframe](#org921bc1e)
-    2.  [Display functions](#org0339f42)
-    3.  [How to enable ivy-posframe](#org8ca033e)
+1.  [ivy-posframe README](#org31b7799)
+    1.  [What is ivy-posframe](#orge59727b)
+    2.  [Display functions](#orgf8e0e78)
+    3.  [How to enable ivy-posframe](#orgd1a99ab)
 
 
-<a id="orgb15c99c"></a>
+<a id="org31b7799"></a>
 
 # ivy-posframe README
 
 
-<a id="org921bc1e"></a>
+<a id="orge59727b"></a>
 
 ## What is ivy-posframe
 
@@ -22,19 +22,22 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="org0339f42"></a>
+<a id="orgf8e0e78"></a>
 
 ## Display functions
 
 1.  ivy-posframe-display
 2.  ivy-posframe-display-at-frame-center
 3.  ivy-posframe-display-at-window-center
+    ![img](./snapshots/ivy-posframe-display-at-window-center.gif)
 4.  ivy-posframe-display-at-frame-bottom-left
 5.  ivy-posframe-display-at-window-bottom-left
+    ![img](./snapshots/ivy-posframe-display-at-window-bottom-left.gif)
 6.  ivy-posframe-display-at-point
+    ![img](./snapshots/ivy-posframe-display-at-point.gif)
 
 
-<a id="org8ca033e"></a>
+<a id="orgd1a99ab"></a>
 
 ## How to enable ivy-posframe
 
@@ -64,18 +67,12 @@ to set show style.
 1.  window-bottom-left style
 
         (setq ivy-posframe-style 'window-bottom-left)
-
-    ![img](./snapshots/ivy-posframe1.gif)
 2.  Window-center style
 
         (setq ivy-posframe-style 'window-center)
-
-    ![img](./snapshots/ivy-posframe2.gif)
 3.  Point style
 
         (setq ivy-posframe-style 'point)
-
-    ![img](./snapshots/ivy-posframe3.gif)
 
 
 

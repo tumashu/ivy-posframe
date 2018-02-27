@@ -39,9 +39,12 @@
 ;; 1. ivy-posframe-display
 ;; 2. ivy-posframe-display-at-frame-center
 ;; 3. ivy-posframe-display-at-window-center
+;;    [[./snapshots/ivy-posframe-display-at-window-center.gif]]
 ;; 4. ivy-posframe-display-at-frame-bottom-left
 ;; 5. ivy-posframe-display-at-window-bottom-left
+;;    [[./snapshots/ivy-posframe-display-at-window-bottom-left.gif]]
 ;; 6. ivy-posframe-display-at-point
+;;    [[./snapshots/ivy-posframe-display-at-point.gif]]
 
 ;; ** How to enable ivy-posframe
 ;; 1. Global mode
@@ -74,17 +77,14 @@
 ;;    #+BEGIN_EXAMPLE
 ;;    (setq ivy-posframe-style 'window-bottom-left)
 ;;    #+END_EXAMPLE
-;;    [[./snapshots/ivy-posframe1.gif]]
 ;; 2. Window-center style
 ;;    #+BEGIN_EXAMPLE
 ;;    (setq ivy-posframe-style 'window-center)
 ;;    #+END_EXAMPLE
-;;    [[./snapshots/ivy-posframe2.gif]]
 ;; 3. Point style
 ;;    #+BEGIN_EXAMPLE
 ;;    (setq ivy-posframe-style 'point)
 ;;    #+END_EXAMPLE
-;;    [[./snapshots/ivy-posframe3.gif]]
 
 
 ;;; Code:
