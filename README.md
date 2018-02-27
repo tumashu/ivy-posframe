@@ -1,18 +1,18 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org517c951)
-    1.  [What is ivy-posframe](#org153958a)
-    2.  [How to enable ivy-posframe](#orgfb35379)
-    3.  [How to set the style of ivy-posframe](#orgdd1e7a6)
+1.  [ivy-posframe README](#org7b266e1)
+    1.  [What is ivy-posframe](#org1c5b744)
+    2.  [Display functions](#org2ebfad6)
+    3.  [How to enable ivy-posframe](#orgf7e39d4)
 
 
-<a id="org517c951"></a>
+<a id="org7b266e1"></a>
 
 # ivy-posframe README
 
 
-<a id="org153958a"></a>
+<a id="org1c5b744"></a>
 
 ## What is ivy-posframe
 
@@ -22,7 +22,19 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="orgfb35379"></a>
+<a id="org2ebfad6"></a>
+
+## Display functions
+
+1.  ivy-posframe-display
+2.  ivy-posframe-display-at-frame-center
+3.  ivy-posframe-display-at-window-center
+4.  ivy-posframe-display-at-frame-buttom-left
+5.  ivy-posframe-display-at-window-buttom-left
+6.  ivy-posframe-display-at-point
+
+
+<a id="orgf7e39d4"></a>
 
 ## How to enable ivy-posframe
 
@@ -30,19 +42,24 @@ NOTE: ivy-posframe requires Emacs 26
 
         (require 'ivy-posframe)
         (setq ivy-display-function #'ivy-posframe-display)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-buttom-left)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-window-buttom-left)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
 2.  Per-command mode.
 
         (require 'ivy-posframe)
-        (push '(counsel-M-x . ivy-posframe-display) ivy-display-functions-alist)
+        ;; Different command can use different display function.
+        (push '(counsel-M-x . ivy-posframe-display-at-window-buttom-left) ivy-display-functions-alist)
+        (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
 3.  Fallback mode
 
         (require 'ivy-posframe)
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
-
-<a id="orgdd1e7a6"></a>
-
-## How to set the style of ivy-posframe
+If you use \`ivy-posframe-display', you can use \`ivy-posframe-style'
+to set show style.
 
 1.  window-buttom-left style
 

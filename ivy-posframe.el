@@ -34,16 +34,32 @@
 
 ;; NOTE: ivy-posframe requires Emacs 26
 
+;; ** Display functions
+
+;; 1. ivy-posframe-display
+;; 2. ivy-posframe-display-at-frame-center
+;; 3. ivy-posframe-display-at-window-center
+;; 4. ivy-posframe-display-at-frame-buttom-left
+;; 5. ivy-posframe-display-at-window-buttom-left
+;; 6. ivy-posframe-display-at-point
+
 ;; ** How to enable ivy-posframe
 ;; 1. Global mode
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
 ;;    (setq ivy-display-function #'ivy-posframe-display)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-buttom-left)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-buttom-left)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
 ;;    #+END_EXAMPLE
 ;; 2. Per-command mode.
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (push '(counsel-M-x . ivy-posframe-display) ivy-display-functions-alist)
+;;    ;; Different command can use different display function.
+;;    (push '(counsel-M-x . ivy-posframe-display-at-window-buttom-left) ivy-display-functions-alist)
+;;    (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 ;; 3. Fallback mode
 ;;    #+BEGIN_EXAMPLE
@@ -51,7 +67,9 @@
 ;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 
-;; ** How to set the style of ivy-posframe
+;; If you use `ivy-posframe-display', you can use `ivy-posframe-style'
+;; to set show style.
+
 ;; 1. window-buttom-left style
 ;;    #+BEGIN_EXAMPLE
 ;;    (setq ivy-posframe-style 'window-buttom-left)
@@ -75,9 +93,14 @@
 (require 'posframe)
 (require 'ivy)
 
-(push '(ivy-posframe-display
-        :cleanup ivy-posframe-cleanup)
-      ivy-display-functions-props)
+(dolist (f '(ivy-posframe-display
+             ivy-posframe-display-at-frame-center
+             ivy-posframe-display-at-window-center
+             ivy-posframe-display-at-frame-buttom-left
+             ivy-posframe-display-at-window-buttom-left
+             ivy-posframe-display-at-point))
+  (push `(,f :cleanup ivy-posframe-cleanup)
+        ivy-display-functions-props))
 
 (defgroup ivy-posframe nil
   "Using posframe to show ivy"
@@ -114,7 +137,7 @@ When nil, Using current frame's font as fallback."
 ;; Fix warn
 (defvar emacs-basic-display)
 
-(defun ivy-posframe-display (str)
+(defun ivy-posframe-display (str &optional style)
   "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
@@ -126,13 +149,28 @@ When nil, Using current frame's font as fallback."
        (with-current-buffer (get-buffer-create " *Minibuf-1*")
          (concat (buffer-string) "  " str))
        :position (point)
-       :poshandler (cdr (assq ivy-posframe-style
+       :poshandler (cdr (assq (or style ivy-posframe-style)
                               ivy-posframe-style-alist))
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height ivy-height
        :min-height 10
        :min-width 50))))
+
+(defun ivy-posframe-display-at-window-center (str)
+  (ivy-posframe-display str 'window-center))
+
+(defun ivy-posframe-display-at-frame-center (str)
+  (ivy-posframe-display str 'frame-center))
+
+(defun ivy-posframe-display-at-window-buttom-left (str)
+  (ivy-posframe-display str 'window-buttom-left))
+
+(defun ivy-posframe-display-at-frame-buttom-left (str)
+  (ivy-posframe-display str 'frame-buttom-left))
+
+(defun ivy-posframe-display-at-point (str)
+  (ivy-posframe-display str 'point))
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
