@@ -39,8 +39,8 @@
 ;; 1. ivy-posframe-display
 ;; 2. ivy-posframe-display-at-frame-center
 ;; 3. ivy-posframe-display-at-window-center
-;; 4. ivy-posframe-display-at-frame-buttom-left
-;; 5. ivy-posframe-display-at-window-buttom-left
+;; 4. ivy-posframe-display-at-frame-bottom-left
+;; 5. ivy-posframe-display-at-window-bottom-left
 ;; 6. ivy-posframe-display-at-point
 
 ;; ** How to enable ivy-posframe
@@ -50,15 +50,15 @@
 ;;    (setq ivy-display-function #'ivy-posframe-display)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
-;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-buttom-left)
-;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-buttom-left)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
+;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
 ;;    #+END_EXAMPLE
 ;; 2. Per-command mode.
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
 ;;    ;; Different command can use different display function.
-;;    (push '(counsel-M-x . ivy-posframe-display-at-window-buttom-left) ivy-display-functions-alist)
+;;    (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
 ;;    (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 ;; 3. Fallback mode
@@ -70,9 +70,9 @@
 ;; If you use `ivy-posframe-display', you can use `ivy-posframe-style'
 ;; to set show style.
 
-;; 1. window-buttom-left style
+;; 1. window-bottom-left style
 ;;    #+BEGIN_EXAMPLE
-;;    (setq ivy-posframe-style 'window-buttom-left)
+;;    (setq ivy-posframe-style 'window-bottom-left)
 ;;    #+END_EXAMPLE
 ;;    [[./snapshots/ivy-posframe1.gif]]
 ;; 2. Window-center style
@@ -96,8 +96,8 @@
 (dolist (f '(ivy-posframe-display
              ivy-posframe-display-at-frame-center
              ivy-posframe-display-at-window-center
-             ivy-posframe-display-at-frame-buttom-left
-             ivy-posframe-display-at-window-buttom-left
+             ivy-posframe-display-at-frame-bottom-left
+             ivy-posframe-display-at-window-bottom-left
              ivy-posframe-display-at-point))
   (push `(,f :cleanup ivy-posframe-cleanup)
         ivy-display-functions-props))
@@ -113,7 +113,7 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'string)
 
-(defcustom ivy-posframe-style 'window-buttom-left
+(defcustom ivy-posframe-style 'window-bottom-left
   "The style of ivy-posframe."
   :group 'ivy-posframe
   :type 'string)
@@ -129,8 +129,8 @@ When nil, Using current frame's font as fallback."
 (defvar ivy-posframe-style-alist
   '((window-center . posframe-poshandler-window-center)
     (frame-center  . posframe-poshandler-frame-center)
-    (window-buttom-left . posframe-poshandler-window-bottom-left-corner)
-    (frame-buttom-left . posframe-poshandler-frame-bottom-left-corner)
+    (window-bottom-left . posframe-poshandler-window-bottom-left-corner)
+    (frame-bottom-left . posframe-poshandler-frame-bottom-left-corner)
     (point . posframe-poshandler-point-bottom-left-corner))
   "Alist of ivy posframe styles.")
 
@@ -163,11 +163,11 @@ When nil, Using current frame's font as fallback."
 (defun ivy-posframe-display-at-frame-center (str)
   (ivy-posframe-display str 'frame-center))
 
-(defun ivy-posframe-display-at-window-buttom-left (str)
-  (ivy-posframe-display str 'window-buttom-left))
+(defun ivy-posframe-display-at-window-bottom-left (str)
+  (ivy-posframe-display str 'window-bottom-left))
 
-(defun ivy-posframe-display-at-frame-buttom-left (str)
-  (ivy-posframe-display str 'frame-buttom-left))
+(defun ivy-posframe-display-at-frame-bottom-left (str)
+  (ivy-posframe-display str 'frame-bottom-left))
 
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe-display str 'point))
