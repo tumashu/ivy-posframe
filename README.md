@@ -1,18 +1,18 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org7b266e1)
-    1.  [What is ivy-posframe](#org1c5b744)
-    2.  [Display functions](#org2ebfad6)
-    3.  [How to enable ivy-posframe](#orgf7e39d4)
+1.  [ivy-posframe README](#orgb15c99c)
+    1.  [What is ivy-posframe](#org921bc1e)
+    2.  [Display functions](#org0339f42)
+    3.  [How to enable ivy-posframe](#org8ca033e)
 
 
-<a id="org7b266e1"></a>
+<a id="orgb15c99c"></a>
 
 # ivy-posframe README
 
 
-<a id="org1c5b744"></a>
+<a id="org921bc1e"></a>
 
 ## What is ivy-posframe
 
@@ -22,19 +22,19 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="org2ebfad6"></a>
+<a id="org0339f42"></a>
 
 ## Display functions
 
 1.  ivy-posframe-display
 2.  ivy-posframe-display-at-frame-center
 3.  ivy-posframe-display-at-window-center
-4.  ivy-posframe-display-at-frame-buttom-left
-5.  ivy-posframe-display-at-window-buttom-left
+4.  ivy-posframe-display-at-frame-bottom-left
+5.  ivy-posframe-display-at-window-bottom-left
 6.  ivy-posframe-display-at-point
 
 
-<a id="orgf7e39d4"></a>
+<a id="org8ca033e"></a>
 
 ## How to enable ivy-posframe
 
@@ -44,14 +44,14 @@ NOTE: ivy-posframe requires Emacs 26
         (setq ivy-display-function #'ivy-posframe-display)
         ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
         ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
-        ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-buttom-left)
-        ;; (setq ivy-display-function #'ivy-posframe-display-at-window-buttom-left)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
+        ;; (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
         ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
 2.  Per-command mode.
 
         (require 'ivy-posframe)
         ;; Different command can use different display function.
-        (push '(counsel-M-x . ivy-posframe-display-at-window-buttom-left) ivy-display-functions-alist)
+        (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
         (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
 3.  Fallback mode
 
@@ -61,9 +61,9 @@ NOTE: ivy-posframe requires Emacs 26
 If you use \`ivy-posframe-display', you can use \`ivy-posframe-style'
 to set show style.
 
-1.  window-buttom-left style
+1.  window-bottom-left style
 
-        (setq ivy-posframe-style 'window-buttom-left)
+        (setq ivy-posframe-style 'window-bottom-left)
 
     ![img](./snapshots/ivy-posframe1.gif)
 2.  Window-center style
