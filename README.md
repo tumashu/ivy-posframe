@@ -1,19 +1,19 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org39783d3)
-    1.  [What is ivy-posframe](#orgd46557b)
-    2.  [Display functions](#orge009677)
-    3.  [How to enable ivy-posframe](#org5a3f479)
-    4.  [How to custom your ivy-posframe style](#org333b256)
+1.  [ivy-posframe README](#orgad72029)
+    1.  [What is ivy-posframe](#orgf3fce48)
+    2.  [Display functions](#org1420034)
+    3.  [How to enable ivy-posframe](#orgcd8666c)
+    4.  [How to custom your ivy-posframe style](#org7c1f241)
 
 
-<a id="org39783d3"></a>
+<a id="orgad72029"></a>
 
 # ivy-posframe README
 
 
-<a id="orgd46557b"></a>
+<a id="orgf3fce48"></a>
 
 ## What is ivy-posframe
 
@@ -23,7 +23,7 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="orge009677"></a>
+<a id="org1420034"></a>
 
 ## Display functions
 
@@ -39,7 +39,7 @@ NOTE: ivy-posframe requires Emacs 26
     ![img](./snapshots/ivy-posframe-display-at-point.gif)
 
 
-<a id="org5a3f479"></a>
+<a id="orgcd8666c"></a>
 
 ## How to enable ivy-posframe
 
@@ -63,21 +63,8 @@ NOTE: ivy-posframe requires Emacs 26
         (require 'ivy-posframe)
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
-If you use \`ivy-posframe-display', you can use \`ivy-posframe-style'
-to set show style.
 
-1.  window-bottom-left style
-
-        (setq ivy-posframe-style 'window-bottom-left)
-2.  Window-center style
-
-        (setq ivy-posframe-style 'window-center)
-3.  Point style
-
-        (setq ivy-posframe-style 'point)
-
-
-<a id="org333b256"></a>
+<a id="org7c1f241"></a>
 
 ## How to custom your ivy-posframe style
 

@@ -71,22 +71,6 @@
 ;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 
-;; If you use `ivy-posframe-display', you can use `ivy-posframe-style'
-;; to set show style.
-
-;; 1. window-bottom-left style
-;;    #+BEGIN_EXAMPLE
-;;    (setq ivy-posframe-style 'window-bottom-left)
-;;    #+END_EXAMPLE
-;; 2. Window-center style
-;;    #+BEGIN_EXAMPLE
-;;    (setq ivy-posframe-style 'window-center)
-;;    #+END_EXAMPLE
-;; 3. Point style
-;;    #+BEGIN_EXAMPLE
-;;    (setq ivy-posframe-style 'point)
-;;    #+END_EXAMPLE
-
 ;; ** How to custom your ivy-posframe style
 
 ;; The simplest way is:
@@ -113,11 +97,6 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'string)
 
-(defcustom ivy-posframe-style 'window-bottom-left
-  "The style of ivy-posframe."
-  :group 'ivy-posframe
-  :type 'string)
-
 (defface ivy-posframe
   '((t (:inherit default :background "#333333" :foreground "#dcdccc")))
   "Face used by the ivy-posframe."
@@ -126,21 +105,10 @@ When nil, Using current frame's font as fallback."
 (defvar ivy-posframe-buffer " *ivy-posframe-buffer*"
   "The posframe-buffer used by ivy-posframe.")
 
-(defvar ivy-posframe-style-alist
-  '((window-center . posframe-poshandler-window-center)
-    (frame-center  . posframe-poshandler-frame-center)
-    (window-bottom-left . posframe-poshandler-window-bottom-left-corner)
-    (frame-bottom-left . posframe-poshandler-frame-bottom-left-corner)
-    (frame-bottom-window-center . (lambda (info)
-                                    (cons (car (posframe-poshandler-window-center info))
-                                          (cdr (posframe-poshandler-frame-bottom-left-corner info)))))
-    (point . posframe-poshandler-point-bottom-left-corner))
-  "Alist of ivy posframe styles.")
-
 ;; Fix warn
 (defvar emacs-basic-display)
 
-(defun ivy-posframe-display (str &optional style-or-poshandler)
+(defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
@@ -152,34 +120,36 @@ When nil, Using current frame's font as fallback."
        (with-current-buffer (get-buffer-create " *Minibuf-1*")
          (concat (buffer-string) "  " str))
        :position (point)
-       :poshandler
-       (if (functionp style-or-poshandler)
-           style-or-poshandler
-         (cdr (assq (or style-or-poshandler ivy-posframe-style)
-                    ivy-posframe-style-alist)))
+       :poshandler poshandler
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height ivy-height
        :min-height 10
        :min-width 50))))
 
+(defun ivy-posframe-display (str)
+  (ivy-posframe--display str #'posframe-poshandler-frame-bottom-left-corner))
+
 (defun ivy-posframe-display-at-window-center (str)
-  (ivy-posframe-display str 'window-center))
+  (ivy-posframe--display str #'posframe-poshandler-window-center))
 
 (defun ivy-posframe-display-at-frame-center (str)
-  (ivy-posframe-display str 'frame-center))
+  (ivy-posframe--display str #'posframe-poshandler-frame-center))
 
 (defun ivy-posframe-display-at-window-bottom-left (str)
-  (ivy-posframe-display str 'window-bottom-left))
+  (ivy-posframe--display str #'posframe-poshandler-window-bottom-left-corner))
 
 (defun ivy-posframe-display-at-frame-bottom-left (str)
-  (ivy-posframe-display str 'frame-bottom-left))
+  (ivy-posframe--display str #'posframe-poshandler-frame-bottom-left-corner))
 
 (defun ivy-posframe-display-at-frame-bottom-window-center (str)
-  (ivy-posframe-display str 'frame-bottom-window-center))
+  (ivy-posframe--display
+   str #'(lambda (info)
+           (cons (car (posframe-poshandler-window-center info))
+                 (cdr (posframe-poshandler-frame-bottom-left-corner info))))))
 
 (defun ivy-posframe-display-at-point (str)
-  (ivy-posframe-display str 'point))
+  (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
