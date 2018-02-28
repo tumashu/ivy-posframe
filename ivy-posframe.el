@@ -94,16 +94,6 @@
 (require 'posframe)
 (require 'ivy)
 
-(dolist (f '(ivy-posframe-display
-             ivy-posframe-display-at-frame-center
-             ivy-posframe-display-at-window-center
-             ivy-posframe-display-at-frame-bottom-left
-             ivy-posframe-display-at-window-bottom-left
-             ivy-posframe-display-at-frame-bottom-window-center
-             ivy-posframe-display-at-point))
-  (push `(,f :cleanup ivy-posframe-cleanup)
-        ivy-display-functions-props))
-
 (defgroup ivy-posframe nil
   "Using posframe to show ivy"
   :group 'ivy
@@ -191,6 +181,19 @@ When nil, Using current frame's font as fallback."
        (not (or noninteractive
                 emacs-basic-display
                 (not (display-graphic-p))))))
+
+(defun ivy-posframe-setup ()
+  "Regedit all display functions of ivy-posframe to `ivy-display-functions-props'."
+  (interactive)
+  (mapatoms
+   #'(lambda (func)
+       (when (and (functionp func)
+                  (string-match-p "^ivy-posframe-display" (symbol-name func))
+                  (not (assq func ivy-display-functions-props)))
+         (push `(,func :cleanup ivy-posframe-cleanup)
+               ivy-display-functions-props)))))
+
+(ivy-posframe-setup)
 
 (provide 'ivy-posframe)
 
