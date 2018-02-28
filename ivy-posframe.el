@@ -43,7 +43,8 @@
 ;; 4. ivy-posframe-display-at-frame-bottom-left
 ;; 5. ivy-posframe-display-at-window-bottom-left
 ;;    [[./snapshots/ivy-posframe-display-at-window-bottom-left.gif]]
-;; 6. ivy-posframe-display-at-point
+;; 6. ivy-posframe-display-at-frame-bottom-window-center
+;; 7. ivy-posframe-display-at-point
 ;;    [[./snapshots/ivy-posframe-display-at-point.gif]]
 
 ;; ** How to enable ivy-posframe
@@ -98,6 +99,7 @@
              ivy-posframe-display-at-window-center
              ivy-posframe-display-at-frame-bottom-left
              ivy-posframe-display-at-window-bottom-left
+             ivy-posframe-display-at-frame-bottom-window-center
              ivy-posframe-display-at-point))
   (push `(,f :cleanup ivy-posframe-cleanup)
         ivy-display-functions-props))
@@ -131,6 +133,9 @@ When nil, Using current frame's font as fallback."
     (frame-center  . posframe-poshandler-frame-center)
     (window-bottom-left . posframe-poshandler-window-bottom-left-corner)
     (frame-bottom-left . posframe-poshandler-frame-bottom-left-corner)
+    (frame-bottom-window-center . (lambda (info)
+                                    (cons (car (posframe-poshandler-window-center info))
+                                          (cdr (posframe-poshandler-frame-bottom-left-corner info)))))
     (point . posframe-poshandler-point-bottom-left-corner))
   "Alist of ivy posframe styles.")
 
@@ -168,6 +173,9 @@ When nil, Using current frame's font as fallback."
 
 (defun ivy-posframe-display-at-frame-bottom-left (str)
   (ivy-posframe-display str 'frame-bottom-left))
+
+(defun ivy-posframe-display-at-frame-bottom-window-center (str)
+  (ivy-posframe-display str 'frame-bottom-window-center))
 
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe-display str 'point))
