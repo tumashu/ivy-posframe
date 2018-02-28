@@ -87,6 +87,14 @@
 ;;    (setq ivy-posframe-style 'point)
 ;;    #+END_EXAMPLE
 
+;; ** How to custom your ivy-posframe style
+
+;; The simplest way is:
+;; ;; #+BEGIN_EXAMPLE
+;; (defun ivy-posframe-display-at-XXX (str)
+;;   (ivy-posframe-display str 'your-own-poshandler-function))
+;; (ivy-posframe-setup) ; This line is need.
+;; ;; #+END_EXAMPLE
 
 ;;; Code:
 ;; * ivy-posframe's code

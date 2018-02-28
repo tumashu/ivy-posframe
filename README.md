@@ -1,18 +1,19 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org607d67c)
-    1.  [What is ivy-posframe](#org9e02c4f)
-    2.  [Display functions](#org050c36b)
-    3.  [How to enable ivy-posframe](#org0a6499b)
+1.  [ivy-posframe README](#org39783d3)
+    1.  [What is ivy-posframe](#orgd46557b)
+    2.  [Display functions](#orge009677)
+    3.  [How to enable ivy-posframe](#org5a3f479)
+    4.  [How to custom your ivy-posframe style](#org333b256)
 
 
-<a id="org607d67c"></a>
+<a id="org39783d3"></a>
 
 # ivy-posframe README
 
 
-<a id="org9e02c4f"></a>
+<a id="orgd46557b"></a>
 
 ## What is ivy-posframe
 
@@ -22,7 +23,7 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="org050c36b"></a>
+<a id="orge009677"></a>
 
 ## Display functions
 
@@ -38,7 +39,7 @@ NOTE: ivy-posframe requires Emacs 26
     ![img](./snapshots/ivy-posframe-display-at-point.gif)
 
 
-<a id="org0a6499b"></a>
+<a id="org5a3f479"></a>
 
 ## How to enable ivy-posframe
 
@@ -74,6 +75,17 @@ to set show style.
 3.  Point style
 
         (setq ivy-posframe-style 'point)
+
+
+<a id="org333b256"></a>
+
+## How to custom your ivy-posframe style
+
+The simplest way is:
+
+    (defun ivy-posframe-display-at-XXX (str)
+      (ivy-posframe-display str 'your-own-poshandler-function))
+    (ivy-posframe-setup) ; This line is need.
 
 
 
