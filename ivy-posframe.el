@@ -76,8 +76,8 @@
 ;; The simplest way is:
 ;; ;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
-;;   (ivy-posframe-display str 'your-own-poshandler-function))
-;; (ivy-posframe-setup) ; This line is need.
+;;   (ivy-posframe--display str #'your-own-poshandler-function))
+;; (ivy-posframe-setup) ; This line is needed.
 ;; ;; #+END_EXAMPLE
 
 ;;; Code:
@@ -90,6 +90,11 @@
   "Using posframe to show ivy"
   :group 'ivy
   :prefix "ivy-posframe")
+
+(defcustom ivy-posframe-style 'window-bottom-left
+  "The style of ivy-posframe."
+  :group 'ivy-posframe
+  :type 'string)
 
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
@@ -128,7 +133,11 @@ When nil, Using current frame's font as fallback."
        :min-width 50))))
 
 (defun ivy-posframe-display (str)
-  (ivy-posframe--display str #'posframe-poshandler-frame-bottom-left-corner))
+  (let ((func (intern (format "ivy-posframe-display-at-%s"
+                              ivy-posframe-style))))
+    (if (functionp func)
+        (funcall func str)
+      (ivy-posframe-display-at-frame-bottom-left str))))
 
 (defun ivy-posframe-display-at-window-center (str)
   (ivy-posframe--display str #'posframe-poshandler-window-center))
