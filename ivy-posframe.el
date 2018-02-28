@@ -132,7 +132,7 @@ When nil, Using current frame's font as fallback."
 ;; Fix warn
 (defvar emacs-basic-display)
 
-(defun ivy-posframe-display (str &optional style)
+(defun ivy-posframe-display (str &optional style-or-poshandler)
   "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
@@ -144,8 +144,11 @@ When nil, Using current frame's font as fallback."
        (with-current-buffer (get-buffer-create " *Minibuf-1*")
          (concat (buffer-string) "  " str))
        :position (point)
-       :poshandler (cdr (assq (or style ivy-posframe-style)
-                              ivy-posframe-style-alist))
+       :poshandler
+       (if (functionp style-or-poshandler)
+           style-or-poshandler
+         (cdr (assq (or style-or-poshandler ivy-posframe-style)
+                    ivy-posframe-style-alist)))
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height ivy-height
