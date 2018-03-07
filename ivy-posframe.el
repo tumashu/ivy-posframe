@@ -75,7 +75,7 @@
 
 ;; *** How to show fringe to ivy-posframe
 ;; ;; #+BEGIN_EXAMPLE
-;; (setq ivy-posframe-extra-parameters
+;; (setq ivy-posframe-parameters
 ;;       '((left-fringe . 10)
 ;;         (right-fringe . 10)))
 ;; ;; #+END_EXAMPLE

@@ -1,21 +1,21 @@
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org097ddbf)
-    1.  [What is ivy-posframe](#org670ef83)
-    2.  [Display functions](#org67ff507)
-    3.  [How to enable ivy-posframe](#orgd00569f)
-    4.  [Tips](#org326cf4c)
-        1.  [How to show fringe to ivy-posframe](#org3d2991d)
-        2.  [How to custom your ivy-posframe style](#orgbeec1d0)
+1.  [ivy-posframe README](#orgf04a3ef)
+    1.  [What is ivy-posframe](#org9bf1330)
+    2.  [Display functions](#orga76454a)
+    3.  [How to enable ivy-posframe](#org422a15a)
+    4.  [Tips](#org80ae3b7)
+        1.  [How to show fringe to ivy-posframe](#org1592d0f)
+        2.  [How to custom your ivy-posframe style](#org0aa3f21)
 
 
-<a id="org097ddbf"></a>
+<a id="orgf04a3ef"></a>
 
 # ivy-posframe README
 
 
-<a id="org670ef83"></a>
+<a id="org9bf1330"></a>
 
 ## What is ivy-posframe
 
@@ -25,7 +25,7 @@ to show its candidate menu.
 NOTE: ivy-posframe requires Emacs 26
 
 
-<a id="org67ff507"></a>
+<a id="orga76454a"></a>
 
 ## Display functions
 
@@ -41,7 +41,7 @@ NOTE: ivy-posframe requires Emacs 26
     ![img](./snapshots/ivy-posframe-display-at-point.gif)
 
 
-<a id="orgd00569f"></a>
+<a id="org422a15a"></a>
 
 ## How to enable ivy-posframe
 
@@ -66,16 +66,16 @@ NOTE: ivy-posframe requires Emacs 26
         (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 
 
-<a id="org326cf4c"></a>
+<a id="org80ae3b7"></a>
 
 ## Tips
 
 
-<a id="org3d2991d"></a>
+<a id="org1592d0f"></a>
 
 ### How to show fringe to ivy-posframe
 
-    (setq ivy-posframe-extra-parameters
+    (setq ivy-posframe-parameters
           '((left-fringe . 10)
             (right-fringe . 10)))
 
@@ -83,7 +83,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="orgbeec1d0"></a>
+<a id="org0aa3f21"></a>
 
 ### How to custom your ivy-posframe style
 
