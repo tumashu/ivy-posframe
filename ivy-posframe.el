@@ -71,7 +71,19 @@
 ;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 
-;; ** How to custom your ivy-posframe style
+;; ** Tips
+
+;; *** How to show fringe to ivy-posframe
+;; ;; #+BEGIN_EXAMPLE
+;; (setq ivy-posframe-extra-parameters
+;;       '((left-fringe . 10)
+;;         (right-fringe . 10)))
+;; ;; #+END_EXAMPLE
+
+;; By the way, User can set *any* parameters of ivy-posframe with
+;; the help of `ivy-posframe-parameters'.
+
+;; *** How to custom your ivy-posframe style
 
 ;; The simplest way is:
 ;; ;; #+BEGIN_EXAMPLE
@@ -99,6 +111,11 @@
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
 When nil, Using current frame's font as fallback."
+  :group 'ivy-posframe
+  :type 'string)
+
+(defcustom ivy-posframe-parameters nil
+  "The frame parameters used by ivy-posframe."
   :group 'ivy-posframe
   :type 'string)
 
@@ -130,7 +147,8 @@ When nil, Using current frame's font as fallback."
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height ivy-height
        :min-height 10
-       :min-width 50))))
+       :min-width 50
+       :override-parameters ivy-posframe-parameters))))
 
 (defun ivy-posframe-display (str)
   (let ((func (intern (format "ivy-posframe-display-at-%s"
