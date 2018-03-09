@@ -51,7 +51,7 @@
 ;; 1. Global mode
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-setup)
+;;    (ivy-posframe-enable)
 ;;    (setq ivy-display-function #'ivy-posframe-display)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
@@ -62,7 +62,7 @@
 ;; 2. Per-command mode.
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-setup)
+;;    (ivy-posframe-enable)
 ;;    ;; Different command can use different display function.
 ;;    (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
 ;;    (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
@@ -70,7 +70,7 @@
 ;; 3. Fallback mode
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-setup)
+;;    (ivy-posframe-enable)
 ;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
 ;;    #+END_EXAMPLE
 
@@ -92,7 +92,7 @@
 ;; ;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
 ;;   (ivy-posframe--display str #'your-own-poshandler-function))
-;; (ivy-posframe-setup) ; This line is needed.
+;; (ivy-posframe-enable) ; This line is needed.
 ;; ;; #+END_EXAMPLE
 
 ;;; Code:
@@ -251,16 +251,16 @@ selection, non-nil otherwise."
   (message "ivy-posframe: ivy-avy is not supported at the moment."))
 
 ;;;###autoload
-(defun ivy-posframe-setup ()
-  "Setup ivy-posframe."
+(defun ivy-posframe-enable ()
+  "Enable ivy-posframe."
   (interactive)
   (require 'ivy)
-  (ivy-posframe-init)
+  (ivy-posframe-setup)
   (define-key ivy-minibuffer-map (kbd "C-M-a") 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done)
   (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy))
 
-(defun ivy-posframe-init ()
+(defun ivy-posframe-setup ()
   "Add all display functions of ivy-posframe to
 `ivy-display-functions-props'."
   (mapatoms
@@ -271,7 +271,7 @@ selection, non-nil otherwise."
          (push `(,func :cleanup ivy-posframe-cleanup)
                ivy-display-functions-props)))))
 
-(ivy-posframe-init)
+(ivy-posframe-setup)
 
 (provide 'ivy-posframe)
 
