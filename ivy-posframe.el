@@ -213,7 +213,8 @@ This variable is useful for `ivy-posframe-read-action' .")
                ivy-display-functions-props))))
   ;; Re-configure ivy keymap.
   (define-key ivy-minibuffer-map (kbd "C-M-a") 'ivy-posframe-read-action)
-  (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done))
+  (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done)
+  (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy))
 
 (defun ivy-posframe-dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
@@ -260,6 +261,11 @@ selection, non-nil otherwise."
                (message "")
                (setcar actions (1+ action-idx))
                (ivy-set-action actions)))))))
+
+(defun ivy-posframe-avy ()
+  "Jump to one of the current ivy candidates."
+  (interactive)
+  (message "ivy-posframe: ivy-avy is not supported at the moment."))
 
 
 (provide 'ivy-posframe)
