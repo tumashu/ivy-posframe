@@ -51,27 +51,27 @@
 ;; 1. Global mode
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-enable)
 ;;    (setq ivy-display-function #'ivy-posframe-display)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
 ;;    ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
+;;    (ivy-posframe-enable)
 ;;    #+END_EXAMPLE
 ;; 2. Per-command mode.
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-enable)
 ;;    ;; Different command can use different display function.
 ;;    (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
 ;;    (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
+;;    (ivy-posframe-enable)
 ;;    #+END_EXAMPLE
 ;; 3. Fallback mode
 ;;    #+BEGIN_EXAMPLE
 ;;    (require 'ivy-posframe)
-;;    (ivy-posframe-enable)
 ;;    (push '(t . ivy-posframe-display) ivy-display-functions-alist)
+;;    (ivy-posframe-enable)
 ;;    #+END_EXAMPLE
 
 ;; ** Tips
