@@ -258,7 +258,8 @@ selection, non-nil otherwise."
   (ivy-posframe-setup)
   (define-key ivy-minibuffer-map (kbd "C-M-a") 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done)
-  (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy))
+  (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy)
+  (message "ivy-posframe is enabled."))
 
 (defun ivy-posframe-setup ()
   "Add all display functions of ivy-posframe to
