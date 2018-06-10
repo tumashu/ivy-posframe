@@ -128,7 +128,7 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe)
 
 (defface ivy-posframe-cursor
-  `((t (:height 1 :background ,(face-attribute 'cursor :background))))
+  '((t (:inherit cursor)))
   "Face used by the ivy-posframe's fake cursor."
   :group 'ivy-posframe)
 
