@@ -1,5 +1,6 @@
 ;;; ivy-posframe.el --- Using posframe to show Ivy  -*- lexical-binding: t -*-
 
+
 ;; Copyright (C) 2017-2018 Free Software Foundation, Inc.
 
 ;; Author: Feng Shu
@@ -116,6 +117,25 @@
 When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'string)
+(defcustom ivy-posframe-width nil
+  "The width of ivy-posframe."
+  :group 'ivy-posframe
+  :type 'number)
+
+(defcustom ivy-posframe-height nil
+  "The height of ivy-posframe."
+  :group 'ivy-posframe
+  :type 'number)
+
+(defcustom ivy-posframe-min-width nil
+  "The width of ivy-min-posframe."
+  :group 'ivy-posframe
+  :type 'number)
+
+(defcustom ivy-posframe-min-height nil
+  "The height of ivy-min-posframe."
+  :group 'ivy-posframe
+  :type 'number)
 
 (defcustom ivy-posframe-border-width 0
   "The border width used by ivy-posframe.
@@ -168,9 +188,10 @@ This variable is useful for `ivy-posframe-read-action' .")
        :poshandler poshandler
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
-       :height ivy-height
-       :min-height 10
-       :min-width 50
+       :height (or ivy-posframe-height ivy-height)
+       :width (or ivy-posframe-width (/ (window-width) 2))
+       :min-height (or ivy-posframe-min-height 10)
+       :min-width (or ivy-posframe-min-width 50)
        :internal-border-width ivy-posframe-border-width
        :override-parameters ivy-posframe-parameters))))
 
