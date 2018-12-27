@@ -144,6 +144,11 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'number)
 
+(defcustom ivy-posframe-hide-minibuffer nil
+  "Hide input of minibuffer when using ivy-posframe."
+  :group 'ivy-posframe
+  :type 'boolean)
+
 (defcustom ivy-posframe-parameters nil
   "The frame parameters used by ivy-posframe."
   :group 'ivy-posframe
@@ -287,6 +292,17 @@ selection, non-nil otherwise."
   (interactive)
   (message "ivy-posframe: ivy-avy is not supported at the moment."))
 
+(defun ivy-posframe--minibuffer-setup (orig-func)
+  "Advice function of `ivy--minibuffer-setup'."
+  (funcall orig-func)
+  (when ivy-posframe-hide-minibuffer
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'face
+                   (let ((bg-color (face-background 'default nil)))
+                     `(:background ,bg-color :foreground ,bg-color)))
+      (setq-local cursor-type nil))))
+
 ;;;###autoload
 (defun ivy-posframe-enable ()
   "Enable ivy-posframe."
@@ -296,7 +312,8 @@ selection, non-nil otherwise."
   (define-key ivy-minibuffer-map (kbd "C-M-a") 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done)
   (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy)
-  (message "ivy-posframe is enabled."))
+  (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
+  (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
 (defun ivy-posframe-setup ()
   "Add all display functions of ivy-posframe to
