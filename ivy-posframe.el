@@ -287,10 +287,57 @@ selection, non-nil otherwise."
                (setcar actions (1+ action-idx))
                (ivy-set-action actions)))))))
 
+(defun ivy-posframe--avy-action (pt)
+  "Finish ivy session with the candidate at PT."
+  (with-current-buffer ivy-posframe-buffer
+    (ivy--done
+     (substring-no-properties
+      (nth (- (line-number-at-pos pt) 2) ivy--old-cands)))))
+
+(defvar avy-all-windows)
+(defvar avy-keys)
+(defvar avy-keys-alist)
+(defvar avy-style)
+(defvar avy-styles-alist)
+(defvar avy-action)
+(declare-function avy--process "avy")
+(declare-function avy--style-fn "avy")
 (defun ivy-posframe-avy ()
   "Jump to one of the current ivy candidates."
   (interactive)
-  (message "ivy-posframe: ivy-avy is not supported at the moment."))
+  (unless (require 'avy nil 'noerror)
+    (error "Package avy isn't installed"))
+  (unless (boundp 'avy-pre-action)
+    (error "A newer version of avy is required for this command"))
+  (let* ((avy-all-windows nil)
+         (avy-keys (or (cdr (assq 'ivy-avy avy-keys-alist))
+                       avy-keys))
+         (avy-style (or (cdr (assq 'ivy-avy
+                                   avy-styles-alist))
+                        avy-style))
+         (window (frame-selected-window
+                  (buffer-local-value 'posframe--frame
+                                      (get-buffer ivy-posframe-buffer))))
+         ;; prevent default pre action, which calls
+         ;; `select-frame-set-input-focus', deselecting the minibuffer and
+         ;; causing `ivy-posframe-cleanup' to run prematurely
+         (avy-pre-action #'ignore)
+         candidates)
+    (with-current-buffer ivy-posframe-buffer
+      (save-excursion
+        (save-restriction
+          (narrow-to-region
+           (window-start window)
+           (window-end window))
+          (goto-char (point-min))
+          (forward-line)
+          (while (< (point) (point-max))
+            (push (cons (point) window) candidates)
+            (forward-line)))))
+    (setq avy-action #'ivy-posframe--avy-action)
+    (avy--process
+     (nreverse candidates)
+     (avy--style-fn avy-style))))
 
 (defun ivy-posframe--minibuffer-setup (orig-func)
   "Advice function of `ivy--minibuffer-setup'."
