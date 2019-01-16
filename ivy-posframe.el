@@ -444,9 +444,11 @@ selection, non-nil otherwise."
   (interactive)
   (require 'ivy)
   (ivy-posframe-setup)
-  (define-key ivy-minibuffer-map (kbd "C-M-a") 'ivy-posframe-read-action)
-  (define-key ivy-minibuffer-map (kbd "M-o") 'ivy-posframe-dispatching-done)
-  (define-key ivy-minibuffer-map (kbd "C-'") 'ivy-posframe-avy)
+  (define-key ivy-minibuffer-map
+    [remap ivy-read-action] 'ivy-posframe-read-action)
+  (define-key ivy-minibuffer-map
+    [remap ivy-dispatching-done] 'ivy-posframe-dispatching-done)
+  (define-key ivy-minibuffer-map [remap ivy-avy] 'ivy-posframe-avy)
   (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
   (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
