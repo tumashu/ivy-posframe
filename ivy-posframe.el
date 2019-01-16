@@ -178,7 +178,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
-    (with-selected-window (ivy--get-window ivy-last)
+    (with-ivy-window
       (posframe-show
        ivy-posframe-buffer
        :font ivy-posframe-font
