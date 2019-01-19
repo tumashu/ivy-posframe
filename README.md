@@ -3,34 +3,35 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org05902f8)
-    1.  [What is ivy-posframe ivy-posframe is a ivy extension, which let](#orgb43a11b)
-    2.  [Display functions](#orgc79cbd1)
-    3.  [How to enable ivy-posframe](#org15b17c3)
-        1.  [Global mode](#orgcb1ad0f)
-        2.  [Per-command mode.](#org4aa4955)
-        3.  [Fallback mode](#org41b338c)
-    4.  [Tips](#orgba0f166)
-        1.  [How to show fringe to ivy-posframe](#orgc6476d8)
-        2.  [How to custom your ivy-posframe style](#org5b91664)
+1.  [ivy-posframe README](#org7824ac6)
+    1.  [What is ivy-posframe](#orgf8d18fa)
+    2.  [Display functions](#orgfd0c067)
+    3.  [How to enable ivy-posframe](#org4a5ecba)
+        1.  [Global mode](#orgeac1ac6)
+        2.  [Per-command mode.](#org98486b4)
+        3.  [Fallback mode](#org30bb098)
+    4.  [Tips](#orge1faadb)
+        1.  [How to show fringe to ivy-posframe](#orga6b6100)
+        2.  [How to custom your ivy-posframe style](#orgbdc62ff)
 
 
-<a id="org05902f8"></a>
+<a id="org7824ac6"></a>
 
 # ivy-posframe README
 
 
-<a id="orgb43a11b"></a>
+<a id="orgf8d18fa"></a>
 
-## What is ivy-posframe ivy-posframe is a ivy extension, which let
+## What is ivy-posframe
 
-ivy use posframe to show its candidate menu.
+ivy-posframe is a ivy extension, which let ivy use posframe to show
+its candidate menu.
 
 NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="orgc79cbd1"></a>
+<a id="orgfd0c067"></a>
 
 ## Display functions
 
@@ -46,12 +47,12 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.gif)
 
 
-<a id="org15b17c3"></a>
+<a id="org4a5ecba"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="orgcb1ad0f"></a>
+<a id="orgeac1ac6"></a>
 
 ### Global mode
 
@@ -65,7 +66,7 @@ click.
     (ivy-posframe-enable)
 
 
-<a id="org4aa4955"></a>
+<a id="org98486b4"></a>
 
 ### Per-command mode.
 
@@ -87,7 +88,7 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org41b338c"></a>
+<a id="org30bb098"></a>
 
 ### Fallback mode
 
@@ -96,12 +97,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
     (ivy-posframe-enable)
 
 
-<a id="orgba0f166"></a>
+<a id="orge1faadb"></a>
 
 ## Tips
 
 
-<a id="orgc6476d8"></a>
+<a id="orga6b6100"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -113,7 +114,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="org5b91664"></a>
+<a id="orgbdc62ff"></a>
 
 ### How to custom your ivy-posframe style
 
