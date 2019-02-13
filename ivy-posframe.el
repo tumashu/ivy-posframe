@@ -208,7 +208,7 @@ This variable is useful for `ivy-posframe-read-action' .")
        :background-color (face-attribute 'ivy-posframe :background)
        :foreground-color (face-attribute 'ivy-posframe :foreground)
        :height (or ivy-posframe-height ivy-height)
-       :width (or ivy-posframe-width (/ (window-width) 2))
+       :width (or ivy-posframe-width (/ (frame-width) 2))
        :min-height (or ivy-posframe-min-height 10)
        :min-width (or ivy-posframe-min-width 50)
        :internal-border-width ivy-posframe-border-width
