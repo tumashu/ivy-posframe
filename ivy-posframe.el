@@ -158,7 +158,7 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'number)
 
-(defcustom ivy-posframe-hide-minibuffer nil
+(defcustom ivy-posframe-hide-minibuffer t
   "Hide input of minibuffer when using ivy-posframe."
   :group 'ivy-posframe
   :type 'boolean)
