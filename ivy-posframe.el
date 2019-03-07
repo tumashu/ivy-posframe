@@ -131,6 +131,7 @@
 When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'string)
+
 (defcustom ivy-posframe-width nil
   "The width of ivy-posframe."
   :group 'ivy-posframe
