@@ -91,11 +91,15 @@
 
 ;; ** Tips
 
+;; *** How to show a border
+;; 1. M-x customize-face internal-border
+;; 2. (setq ivy-posframe-border-width 1)
+
 ;; *** How to show fringe to ivy-posframe
 ;; ;; #+BEGIN_EXAMPLE
 ;; (setq ivy-posframe-parameters
-;;       '((left-fringe . 10)
-;;         (right-fringe . 10)))
+;;       '((left-fringe . 8)
+;;         (right-fringe . 8)))
 ;; ;; #+END_EXAMPLE
 
 ;; By the way, User can set *any* parameters of ivy-posframe with
