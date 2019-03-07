@@ -169,7 +169,7 @@ When 0, no border is showed."
   :type 'string)
 
 (defface ivy-posframe
-  '((t (:inherit default :background "#333333" :foreground "#dcdccc")))
+  '((t (:inherit default)))
   "Face used by the ivy-posframe."
   :group 'ivy-posframe)
 
