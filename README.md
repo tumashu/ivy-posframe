@@ -3,25 +3,25 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org5c5431a)
-    1.  [What is ivy-posframe](#org3d9d060)
-    2.  [Display functions](#orgdc7402d)
-    3.  [How to enable ivy-posframe](#org6f45977)
-        1.  [Global mode](#orga37e9fc)
-        2.  [Per-command mode.](#org06630e3)
-        3.  [Fallback mode](#org57abbb6)
-    4.  [Tips](#orge5c47f2)
-        1.  [How to show a border](#org13ed17e)
-        2.  [How to show fringe to ivy-posframe](#org74a1823)
-        3.  [How to custom your ivy-posframe style](#org5cf37a7)
+1.  [ivy-posframe README](#org68c65a1)
+    1.  [What is ivy-posframe](#org03624ec)
+    2.  [Display functions](#org99df55a)
+    3.  [How to enable ivy-posframe](#org2040f8e)
+        1.  [Global mode](#org6cc7219)
+        2.  [Per-command mode.](#orgcd58b06)
+        3.  [Fallback mode](#org7941a0a)
+    4.  [Tips](#org5cfed99)
+        1.  [How to let ivy-posframe show border](#orgb370bbe)
+        2.  [How to show fringe to ivy-posframe](#orgb28f068)
+        3.  [How to custom your ivy-posframe style](#org96e6893)
 
 
-<a id="org5c5431a"></a>
+<a id="org68c65a1"></a>
 
 # ivy-posframe README
 
 
-<a id="org3d9d060"></a>
+<a id="org03624ec"></a>
 
 ## What is ivy-posframe
 
@@ -32,28 +32,28 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="orgdc7402d"></a>
+<a id="org99df55a"></a>
 
 ## Display functions
 
 1.  ivy-posframe-display
 2.  ivy-posframe-display-at-frame-center
 3.  ivy-posframe-display-at-window-center
-    ![img](./snapshots/ivy-posframe-display-at-window-center.gif)
+    ![img](./snapshots/ivy-posframe-display-at-window-center.png)
 4.  ivy-posframe-display-at-frame-bottom-left
 5.  ivy-posframe-display-at-window-bottom-left
-    ![img](./snapshots/ivy-posframe-display-at-window-bottom-left.gif)
+    ![img](./snapshots/ivy-posframe-display-at-window-bottom-left.png)
 6.  ivy-posframe-display-at-frame-bottom-window-center
 7.  ivy-posframe-display-at-point
-    ![img](./snapshots/ivy-posframe-display-at-point.gif)
+    ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="org6f45977"></a>
+<a id="org2040f8e"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="orga37e9fc"></a>
+<a id="org6cc7219"></a>
 
 ### Global mode
 
@@ -67,7 +67,7 @@ click.
     (ivy-posframe-enable)
 
 
-<a id="org06630e3"></a>
+<a id="orgcd58b06"></a>
 
 ### Per-command mode.
 
@@ -89,7 +89,7 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org57abbb6"></a>
+<a id="org7941a0a"></a>
 
 ### Fallback mode
 
@@ -98,20 +98,20 @@ by ivy to find display function in \`ivy-display-functions-alist',
     (ivy-posframe-enable)
 
 
-<a id="orge5c47f2"></a>
+<a id="org5cfed99"></a>
 
 ## Tips
 
 
-<a id="org13ed17e"></a>
+<a id="orgb370bbe"></a>
 
-### How to show a border
+### How to let ivy-posframe show border
 
-1.  M-x customize-face internal-border
-2.  (setq ivy-posframe-border-width 1)
+    (set-face-attribute 'internal-border nil :background "gray50")
+    (setq ivy-posframe-border-width 1)
 
 
-<a id="org74a1823"></a>
+<a id="orgb28f068"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -123,7 +123,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="org5cf37a7"></a>
+<a id="org96e6893"></a>
 
 ### How to custom your ivy-posframe style
 

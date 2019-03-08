@@ -91,16 +91,18 @@
 
 ;; ** Tips
 
-;; *** How to show a border
-;; 1. M-x customize-face internal-border
-;; 2. (setq ivy-posframe-border-width 1) 
+;; *** How to let ivy-posframe show border
+;; #+BEGIN_EXAMPLE
+;; (set-face-attribute 'internal-border nil :background "gray50")
+;; (setq ivy-posframe-border-width 1)
+;; #+END_EXAMPLE
 
 ;; *** How to show fringe to ivy-posframe
-;; ;; #+BEGIN_EXAMPLE
+;; #+BEGIN_EXAMPLE
 ;; (setq ivy-posframe-parameters
 ;;       '((left-fringe . 8)
 ;;         (right-fringe . 8)))
-;; ;; #+END_EXAMPLE
+;; #+END_EXAMPLE
 
 ;; By the way, User can set *any* parameters of ivy-posframe with
 ;; the help of `ivy-posframe-parameters'.
@@ -108,11 +110,11 @@
 ;; *** How to custom your ivy-posframe style
 
 ;; The simplest way is:
-;; ;; #+BEGIN_EXAMPLE
+;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
 ;;   (ivy-posframe--display str #'your-own-poshandler-function))
 ;; (ivy-posframe-enable) ; This line is needed.
-;; ;; #+END_EXAMPLE
+;; #+END_EXAMPLE
 
 ;;; Code:
 ;; * ivy-posframe's code
