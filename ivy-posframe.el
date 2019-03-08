@@ -91,12 +91,6 @@
 
 ;; ** Tips
 
-;; *** How to let ivy-posframe show border
-;; #+BEGIN_EXAMPLE
-;; (set-face-attribute 'internal-border nil :background "gray50")
-;; (setq ivy-posframe-border-width 1)
-;; #+END_EXAMPLE
-
 ;; *** How to show fringe to ivy-posframe
 ;; #+BEGIN_EXAMPLE
 ;; (setq ivy-posframe-parameters
@@ -158,7 +152,7 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'number)
 
-(defcustom ivy-posframe-border-width 0
+(defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
 When 0, no border is showed."
   :group 'ivy-posframe
@@ -176,6 +170,11 @@ When 0, no border is showed."
 
 (defface ivy-posframe
   '((t (:inherit default)))
+  "Face used by the ivy-posframe."
+  :group 'ivy-posframe)
+
+(defface ivy-posframe-border
+  '((t (:inherit default :background "gray50")))
   "Face used by the ivy-posframe."
   :group 'ivy-posframe)
 
@@ -219,7 +218,8 @@ This variable is useful for `ivy-posframe-read-action' .")
        :min-height (or ivy-posframe-min-height 10)
        :min-width (or ivy-posframe-min-width 50)
        :internal-border-width ivy-posframe-border-width
-       :override-parameters ivy-posframe-parameters))))
+       :override-parameters ivy-posframe-parameters
+       :face-remap '((internal-border . ivy-posframe-border))))))
 
 (defun ivy-posframe-display (str)
   (let ((func (intern (format "ivy-posframe-display-at-%s"
