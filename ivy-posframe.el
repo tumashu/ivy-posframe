@@ -42,13 +42,13 @@
 ;; 1. ivy-posframe-display
 ;; 2. ivy-posframe-display-at-frame-center
 ;; 3. ivy-posframe-display-at-window-center
-;;    [[./snapshots/ivy-posframe-display-at-window-center.gif]]
+;;    [[./snapshots/ivy-posframe-display-at-window-center.png]]
 ;; 4. ivy-posframe-display-at-frame-bottom-left
 ;; 5. ivy-posframe-display-at-window-bottom-left
-;;    [[./snapshots/ivy-posframe-display-at-window-bottom-left.gif]]
+;;    [[./snapshots/ivy-posframe-display-at-window-bottom-left.png]]
 ;; 6. ivy-posframe-display-at-frame-bottom-window-center
 ;; 7. ivy-posframe-display-at-point
-;;    [[./snapshots/ivy-posframe-display-at-point.gif]]
+;;    [[./snapshots/ivy-posframe-display-at-point.png]]
 
 ;; ** How to enable ivy-posframe
 ;; *** Global mode
@@ -93,7 +93,7 @@
 
 ;; *** How to show a border
 ;; 1. M-x customize-face internal-border
-;; 2. (setq ivy-posframe-border-width 1)
+;; 2. (setq ivy-posframe-border-width 1) 
 
 ;; *** How to show fringe to ivy-posframe
 ;; ;; #+BEGIN_EXAMPLE
