@@ -191,6 +191,9 @@ When 0, no border is showed."
   "When non-nil, ivy-posframe will ignore prompt.
 This variable is useful for `ivy-posframe-read-action' .")
 
+(defvar ivy-posframe--display-p nil
+  "The status of `ivy-posframe--display'")
+
 ;; Fix warn
 (defvar emacs-basic-display)
 
@@ -198,6 +201,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Show STR in ivy's posframe."
   (if (not (ivy-posframe-workable-p))
       (ivy-display-function-fallback str)
+    (setq ivy-posframe--display-p t)
     (with-selected-window (ivy--get-window ivy-last)
       (posframe-show
        ivy-posframe-buffer
@@ -252,7 +256,8 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (ivy-posframe-workable-p)
-    (posframe-hide ivy-posframe-buffer)))
+    (posframe-hide ivy-posframe-buffer)
+    (setq ivy-posframe--display-p nil)))
 
 (defun ivy-posframe-workable-p ()
   "Test ivy-posframe workable status."
@@ -450,7 +455,9 @@ selection, non-nil otherwise."
 (defun ivy-posframe--minibuffer-setup (orig-func)
   "Advice function of `ivy--minibuffer-setup'."
   (funcall orig-func)
-  (when ivy-posframe-hide-minibuffer
+  (when (and ivy-posframe-hide-minibuffer
+             ;; only hide minibuffer's info when posframe is showed.
+             ivy-posframe--display-p)
     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
       (overlay-put ov 'window (selected-window))
       (overlay-put ov 'face
