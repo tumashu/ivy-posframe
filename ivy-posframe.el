@@ -158,7 +158,7 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'number)
 
-(defcustom ivy-posframe-border-width 0
+(defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
 When 0, no border is showed."
   :group 'ivy-posframe
@@ -176,6 +176,11 @@ When 0, no border is showed."
 
 (defface ivy-posframe
   '((t (:inherit default)))
+  "Face used by the ivy-posframe."
+  :group 'ivy-posframe)
+
+(defface ivy-posframe-border
+  '((t (:inherit default :background "gray50")))
   "Face used by the ivy-posframe."
   :group 'ivy-posframe)
 
@@ -203,6 +208,10 @@ This variable is useful for `ivy-posframe-read-action' .")
       (ivy-display-function-fallback str)
     (setq ivy-posframe--display-p t)
     (with-selected-window (ivy--get-window ivy-last)
+      (set-face-background
+       'internal-border
+       (face-attribute 'ivy-posframe-border :background)
+       (window-frame (ivy--get-window ivy-last)))
       (posframe-show
        ivy-posframe-buffer
        :font ivy-posframe-font
