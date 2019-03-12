@@ -198,7 +198,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe."
-  (if (not (ivy-posframe-workable-p))
+  (if (not (posframe-workable-p))
       (ivy-display-function-fallback str)
     (setq ivy-posframe--display-p t)
     (with-ivy-window
@@ -255,16 +255,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
-  (when (ivy-posframe-workable-p)
+  (when (posframe-workable-p)
     (posframe-hide ivy-posframe-buffer)
     (setq ivy-posframe--display-p nil)))
-
-(defun ivy-posframe-workable-p ()
-  "Test ivy-posframe workable status."
-  (and (>= emacs-major-version 26)
-       (not (or noninteractive
-                emacs-basic-display
-                (not (display-graphic-p))))))
 
 (defun ivy-posframe-dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
