@@ -91,12 +91,6 @@
 
 ;; ** Tips
 
-;; *** How to let ivy-posframe show border
-;; #+BEGIN_EXAMPLE
-;; (set-face-attribute 'internal-border nil :background "gray50")
-;; (setq ivy-posframe-border-width 1)
-;; #+END_EXAMPLE
-
 ;; *** How to show fringe to ivy-posframe
 ;; #+BEGIN_EXAMPLE
 ;; (setq ivy-posframe-parameters
