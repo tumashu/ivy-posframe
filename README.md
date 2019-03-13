@@ -3,24 +3,24 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#orged4b722)
-    1.  [What is ivy-posframe](#orgf4b983c)
-    2.  [Display functions](#org34c2159)
-    3.  [How to enable ivy-posframe](#orgda86c52)
-        1.  [Global mode](#org4f1a9ad)
-        2.  [Per-command mode.](#org9a33c1f)
-        3.  [Fallback mode](#org9aa3677)
-    4.  [Tips](#orgb46c3e5)
-        1.  [How to show fringe to ivy-posframe](#orgce86797)
-        2.  [How to custom your ivy-posframe style](#org7e42dcb)
+1.  [ivy-posframe README](#orgf13cc66)
+    1.  [What is ivy-posframe](#orgbd4ba62)
+    2.  [Display functions](#orge8456a3)
+    3.  [How to enable ivy-posframe](#orge72596b)
+        1.  [Global mode](#org359004f)
+        2.  [Per-command mode.](#orgdfd4dbf)
+        3.  [Fallback mode](#org589575f)
+    4.  [Tips](#orgd8d788b)
+        1.  [How to show fringe to ivy-posframe](#org44b1a57)
+        2.  [How to custom your ivy-posframe style](#org2e4b09d)
 
 
-<a id="orged4b722"></a>
+<a id="orgf13cc66"></a>
 
 # ivy-posframe README
 
 
-<a id="orgf4b983c"></a>
+<a id="orgbd4ba62"></a>
 
 ## What is ivy-posframe
 
@@ -31,7 +31,7 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="org34c2159"></a>
+<a id="orge8456a3"></a>
 
 ## Display functions
 
@@ -47,31 +47,31 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="orgda86c52"></a>
+<a id="orge72596b"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="org4f1a9ad"></a>
+<a id="org359004f"></a>
 
 ### Global mode
 
     (require 'ivy-posframe)
     (setq ivy-display-function #'ivy-posframe-display)
-    (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
-    (setq ivy-display-function #'ivy-posframe-display-at-window-center)
-    (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
-    (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
-    (setq ivy-display-function #'ivy-posframe-display-at-point)
+    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-center)
+    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-center)
+    ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
+    ;; (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
+    ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
     (ivy-posframe-enable)
 
 
-<a id="org9a33c1f"></a>
+<a id="orgdfd4dbf"></a>
 
 ### Per-command mode.
 
     (require 'ivy-posframe)
-    Different command can use different display function.
+    ;; Different command can use different display function.
     (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
     (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
     (push '(swiper . ivy-posframe-display-at-point) ivy-display-functions-alist)
@@ -88,7 +88,7 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org9aa3677"></a>
+<a id="org589575f"></a>
 
 ### Fallback mode
 
@@ -97,12 +97,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
     (ivy-posframe-enable)
 
 
-<a id="orgb46c3e5"></a>
+<a id="orgd8d788b"></a>
 
 ## Tips
 
 
-<a id="orgce86797"></a>
+<a id="org44b1a57"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -114,7 +114,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="org7e42dcb"></a>
+<a id="org2e4b09d"></a>
 
 ### How to custom your ivy-posframe style
 
