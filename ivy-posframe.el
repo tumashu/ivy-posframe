@@ -256,7 +256,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
-    (posframe-hide ivy-posframe-buffer)
+    (posframe-delete ivy-posframe-buffer)
     (setq ivy-posframe--display-p nil)))
 
 (defun ivy-posframe-dispatching-done ()
