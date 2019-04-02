@@ -206,7 +206,7 @@ This variable is useful for `ivy-posframe-read-action' .")
        ivy-posframe-buffer
        :font ivy-posframe-font
        :string
-       (with-current-buffer (get-buffer-create " *Minibuf-1*")
+       (with-current-buffer (window-buffer (active-minibuffer-window))
          (let ((point (point))
                (string (if ivy-posframe--ignore-prompt
                            str
