@@ -168,6 +168,12 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'string)
 
+(defcustom ivy-posframe-delete-content-after-hide nil
+  "Whether ivy-posframe should delete the buffer content 
+after hide the posframe."
+  :group 'ivy-posframe
+  :type 'boolean)
+
 (defface ivy-posframe
   '((t (:inherit default)))
   "Face used by the ivy-posframe."
@@ -253,10 +259,20 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
 
+(defun ivy-posframe--delete-content (posframe-buffer)
+  (dolist (frame (frame-list))
+    (let ((buffer-info (frame-parameter frame 'posframe-buffer)))
+      (when (or (equal posframe-buffer (car buffer-info))
+                (equal posframe-buffer (cdr buffer-info)))
+        (with-current-buffer posframe-buffer (erase-buffer))
+        (redraw-frame frame)))))
+
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
     (posframe-hide ivy-posframe-buffer)
+    (if ivy-posframe-delete-content-after-hide
+        (ivy-posframe--delete-content ivy-posframe-buffer))
     (setq ivy-posframe--display-p nil)))
 
 (defun ivy-posframe-dispatching-done ()
