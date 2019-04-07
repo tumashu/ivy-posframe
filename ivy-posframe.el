@@ -442,6 +442,15 @@ selection, non-nil otherwise."
   (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
+;;;###autoload
+(defun ivy-posframe-demo ()
+  "Enable a demo config of ivy-posframe.
+This function is used to test ivy-posframe."
+  (interactive)
+  (push '(t . ivy-posframe-display-at-frame-center)
+        ivy-display-functions-alist)
+  (ivy-posframe-enable))
+
 (provide 'ivy-posframe)
 
 ;; Local Variables:
