@@ -445,8 +445,6 @@ selection, non-nil otherwise."
          (push `(,func :cleanup ivy-posframe-cleanup)
                ivy-display-functions-props)))))
 
-(ivy-posframe-setup)
-
 (provide 'ivy-posframe)
 
 ;; Local Variables:
