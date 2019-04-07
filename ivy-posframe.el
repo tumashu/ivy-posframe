@@ -246,9 +246,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe-display-at-frame-bottom-window-center (str)
   (ivy-posframe--display
-   str #'(lambda (info)
-           (cons (car (posframe-poshandler-window-center info))
-                 (cdr (posframe-poshandler-frame-bottom-left-corner info))))))
+   str (lambda (info)
+         (cons (car (posframe-poshandler-window-center info))
+               (cdr (posframe-poshandler-frame-bottom-left-corner info))))))
 
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
@@ -438,12 +438,12 @@ selection, non-nil otherwise."
   "Add all display functions of ivy-posframe to
 `ivy-display-functions-props'."
   (mapatoms
-   #'(lambda (func)
-       (when (and (functionp func)
-                  (string-match-p "^ivy-posframe-display" (symbol-name func))
-                  (not (assq func ivy-display-functions-props)))
-         (push `(,func :cleanup ivy-posframe-cleanup)
-               ivy-display-functions-props)))))
+   (lambda (func)
+     (when (and (functionp func)
+                (string-match-p "^ivy-posframe-display" (symbol-name func))
+                (not (assq func ivy-display-functions-props)))
+       (push `(,func :cleanup ivy-posframe-cleanup)
+             ivy-display-functions-props)))))
 
 (provide 'ivy-posframe)
 
