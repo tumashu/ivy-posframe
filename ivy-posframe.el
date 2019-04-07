@@ -444,12 +444,18 @@ selection, non-nil otherwise."
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
-  "Enable a demo config of ivy-posframe.
-This function is used to test ivy-posframe."
+  "Toggle a demo config of ivy-posframe.
+This function is ONLY used to test ivy-posframe."
   (interactive)
-  (push '(t . ivy-posframe-display-at-frame-center)
-        ivy-display-functions-alist)
-  (ivy-posframe-enable))
+  (ivy-posframe-enable)
+  (let ((config '(t . ivy-posframe-display-at-frame-center)))
+    (if (member config ivy-display-functions-alist)
+        (progn
+          (setq ivy-display-functions-alist
+                (remove config ivy-display-functions-alist))
+          (message "Ivy-posframe: Demo is disabled."))
+      (push config ivy-display-functions-alist)
+      (message "Ivy-posframe: Demo is enabled."))))
 
 (provide 'ivy-posframe)
 
