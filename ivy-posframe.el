@@ -424,7 +424,15 @@ selection, non-nil otherwise."
   "Enable ivy-posframe."
   (interactive)
   (require 'ivy)
-  (ivy-posframe-setup)
+  ;; Add all display functions of ivy-posframe to
+  ;; `ivy-display-functions-props'.
+  (mapatoms
+   (lambda (func)
+     (when (and (functionp func)
+                (string-match-p "^ivy-posframe-display" (symbol-name func))
+                (not (assq func ivy-display-functions-props)))
+       (push `(,func :cleanup ivy-posframe-cleanup)
+             ivy-display-functions-props))))
   (define-key ivy-minibuffer-map
     [remap ivy-read-action] 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map
@@ -433,17 +441,6 @@ selection, non-nil otherwise."
   (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
   (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
-
-(defun ivy-posframe-setup ()
-  "Add all display functions of ivy-posframe to
-`ivy-display-functions-props'."
-  (mapatoms
-   (lambda (func)
-     (when (and (functionp func)
-                (string-match-p "^ivy-posframe-display" (symbol-name func))
-                (not (assq func ivy-display-functions-props)))
-       (push `(,func :cleanup ivy-posframe-cleanup)
-             ivy-display-functions-props)))))
 
 (provide 'ivy-posframe)
 
