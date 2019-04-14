@@ -408,7 +408,8 @@ selection, non-nil otherwise."
 
 (defun ivy-posframe--minibuffer-setup (orig-func)
   "Advice function of `ivy--minibuffer-setup'."
-  (funcall orig-func)
+  (let ((ivy-fixed-height-minibuffer nil))
+    (funcall orig-func))
   (when (and ivy-posframe-hide-minibuffer
              ;; only hide minibuffer's info when posframe is showed.
              ivy-posframe--display-p)
