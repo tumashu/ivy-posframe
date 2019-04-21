@@ -215,8 +215,8 @@ This variable is useful for `ivy-posframe-read-action' .")
            string))
        :position (point)
        :poshandler poshandler
-       :background-color (face-attribute 'ivy-posframe :background)
-       :foreground-color (face-attribute 'ivy-posframe :foreground)
+       :background-color (face-attribute 'ivy-posframe :background nil t)
+       :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
        :height ivy-posframe-height
        :width ivy-posframe-width
        :min-height (or ivy-posframe-min-height (+ ivy-height 1))
