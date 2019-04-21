@@ -222,7 +222,7 @@ This variable is useful for `ivy-posframe-read-action' .")
        :min-height (or ivy-posframe-min-height (+ ivy-height 1))
        :min-width (or ivy-posframe-min-width (round (* (frame-width) 0.62)))
        :internal-border-width ivy-posframe-border-width
-       :internal-border-color (face-attribute 'ivy-posframe-border :background)
+       :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
        :override-parameters ivy-posframe-parameters))))
 
 (defun ivy-posframe-display (str)
