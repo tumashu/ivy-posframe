@@ -410,8 +410,12 @@ selection, non-nil otherwise."
   "Advice function of `ivy--minibuffer-setup'."
   (let ((ivy-fixed-height-minibuffer nil))
     (funcall orig-func))
+
+  ;; change ivy-height as let variable defined in ivy.el:L1936 at c47a7dc
   (when ivy-posframe-min-height
     (setq ivy-height (max ivy-height ivy-posframe-min-height)))
+
+  ;; additional minibuffer configrations
   (when (and ivy-posframe-hide-minibuffer
              ;; only hide minibuffer's info when posframe is showed.
              ivy-posframe--display-p)
