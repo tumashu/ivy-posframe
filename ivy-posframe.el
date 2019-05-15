@@ -8,7 +8,7 @@
 ;; URL: https://github.com/tumashu/ivy-posframe
 ;; Version: 0.1.0
 ;; Keywords: abbrev, convenience, matching, ivy
-;; Package-Requires: ((emacs "26.0")(posframe "0.1.0")(ivy "0.10.0"))
+;; Package-Requires: ((emacs "26.0")(posframe "0.1.0")(ivy "0.11.0"))
 
 ;; This file is part of GNU Emacs.
 
