@@ -205,14 +205,7 @@ This variable is useful for `ivy-posframe-read-action' .")
       (posframe-show
        ivy-posframe-buffer
        :font ivy-posframe-font
-       :string
-       (with-current-buffer (window-buffer (active-minibuffer-window))
-         (let ((point (point))
-               (string (if ivy-posframe--ignore-prompt
-                           str
-                         (concat (buffer-string) "  " str))))
-           (add-text-properties (- point 1) point '(face ivy-posframe-cursor) string)
-           string))
+       :string str
        :position (point)
        :poshandler poshandler
        :background-color (face-attribute 'ivy-posframe :background nil t)
@@ -223,7 +216,8 @@ This variable is useful for `ivy-posframe-read-action' .")
        :min-width (or ivy-posframe-min-width (round (* (frame-width) 0.62)))
        :internal-border-width ivy-posframe-border-width
        :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-       :override-parameters ivy-posframe-parameters))))
+       :override-parameters ivy-posframe-parameters))
+    (ivy-posframe--add-prompt)))
 
 (defun ivy-posframe-display (str)
   (let ((func (intern (format "ivy-posframe-display-at-%s"
@@ -264,6 +258,19 @@ This variable is useful for `ivy-posframe-read-action' .")
   (interactive)
   (when (ivy-posframe-read-action)
     (ivy-done)))
+
+(defun ivy-posframe--add-prompt ()
+  "Add the ivy prompt to the posframe."
+  (unless ivy-posframe--ignore-prompt
+    (with-current-buffer (window-buffer (active-minibuffer-window))
+      (let ((point (point))
+            (prompt (buffer-string)))
+        (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
+        (with-current-buffer ivy-posframe-buffer
+          (goto-char (point-min))
+          (kill-line 1)
+          (insert prompt "  \n")
+          (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
 (defun ivy-posframe-read-action ()
   "Change the action to one of the available ones.
@@ -441,6 +448,7 @@ selection, non-nil otherwise."
   (define-key ivy-minibuffer-map [remap ivy-avy] 'ivy-posframe-avy)
   (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
   (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
+  (advice-add 'ivy--queue-exhibit :after #'ivy-posframe--add-prompt)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
 ;;;###autoload
