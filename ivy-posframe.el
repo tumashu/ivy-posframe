@@ -268,7 +268,7 @@ This variable is useful for `ivy-posframe-read-action' .")
         (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
         (with-current-buffer ivy-posframe-buffer
           (goto-char (point-min))
-          (kill-line 1)
+          (delete-region (point) (save-excursion (line-move 1 'noerror) (point)))
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
