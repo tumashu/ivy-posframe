@@ -121,11 +121,6 @@
   :group 'ivy
   :prefix "ivy-posframe")
 
-(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
-  "The ivy function, display function alist."
-  :group 'ivy-posframe
-  :type 'sexp)
-
 (defcustom ivy-posframe-style 'window-bottom-left
   "The style of ivy-posframe."
   :group 'ivy-posframe
@@ -172,6 +167,14 @@ When 0, no border is showed."
   "The frame parameters used by ivy-posframe."
   :group 'ivy-posframe
   :type 'string)
+
+(defcustom ivy-posframe-configure-alist
+  `(,@(when ivy-posframe-height
+        `(ivy-height-alist . ((t . ,ivy-posframe-height))))
+    (ivy-display-functions-alist . ((t . ivy-posframe-display))))
+  "The ivy configuration alist."
+  :group 'ivy-posframe
+  :type 'sexp)
 
 (defface ivy-posframe
   '((t (:inherit default)))
@@ -466,17 +469,20 @@ selection, non-nil otherwise."
   (let ((fncs ivy-posframe-display-function-list)
         (advs ivy-posframe-advice-alist)
         (keys ivy-posframe-keybind-list)
-        (dfns ivy-posframe-display-functions-alist))
+        (configures ivy-posframe-configure-alist))
     (if ivy-posframe-mode
         (eval
          `(progn
-            ,@(mapcar (lambda (elm) `(push ',elm ivy-display-functions-alist)) dfns)
+            ,@(mapcan
+               (lambda (conf) (mapcar (lambda (elm) `(push ',elm ,(car conf))) (cdr conf))) configures)
             ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
             ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advs)
             ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm))) keys)))
       (eval
        `(progn
-          ,@(mapcar (lambda (elm) `(setq ivy-display-functions-alist (delete ',elm ivy-display-functions-alist))) dfns)
+          ,@(mapcan
+             (lambda (conf) (mapcar (lambda (elm) `(setq ,(car conf) (remove ',elm ,(car conf)))) (cdr conf))) configures)
+          ,@(mapcar (lambda (elm) `(setq ivy-display-functions-alist (delete ',elm ivy-display-functions-alist))) configures)
           ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
           ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs)
           ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) nil)) keys))))))
