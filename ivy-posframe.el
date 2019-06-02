@@ -466,7 +466,12 @@ selection, non-nil otherwise."
          `(progn
             (mapcar (lambda (elm) `(push `(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
             (mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) vars)
-            (mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm)) keys)))))))
+            (mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm)) keys))))
+      (eval
+       `(progn
+          (mapcar (lambda (elm) `(push `(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
+          (mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) vars)
+          (mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) nil) keys)))))))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
