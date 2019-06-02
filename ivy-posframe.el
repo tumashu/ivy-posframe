@@ -268,19 +268,6 @@ This variable is useful for `ivy-posframe-read-action' .")
   (when (ivy-posframe-read-action)
     (ivy-done)))
 
-(defun ivy-posframe--add-prompt ()
-  "Add the ivy prompt to the posframe."
-  (unless ivy-posframe--ignore-prompt
-    (with-current-buffer (window-buffer (active-minibuffer-window))
-      (let ((point (point))
-            (prompt (buffer-string)))
-        (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
-        (with-current-buffer ivy-posframe-buffer
-          (goto-char (point-min))
-          (delete-region (point) (save-excursion (line-move 1 'noerror) (point)))
-          (insert prompt "  \n")
-          (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
-
 (defun ivy-posframe-read-action ()
   "Change the action to one of the available ones.
 
@@ -435,6 +422,19 @@ selection, non-nil otherwise."
                    (let ((bg-color (face-background 'default nil)))
                      `(:background ,bg-color :foreground ,bg-color)))
       (setq-local cursor-type nil))))
+
+(defun ivy-posframe--add-prompt ()
+  "Add the ivy prompt to the posframe."
+  (unless ivy-posframe--ignore-prompt
+    (with-current-buffer (window-buffer (active-minibuffer-window))
+      (let ((point (point))
+            (prompt (buffer-string)))
+        (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
+        (with-current-buffer ivy-posframe-buffer
+          (goto-char (point-min))
+          (delete-region (point) (save-excursion (line-move 1 'noerror) (point)))
+          (insert prompt "  \n")
+          (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
