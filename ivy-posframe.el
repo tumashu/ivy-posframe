@@ -431,7 +431,6 @@ selection, non-nil otherwise."
 (defun ivy-posframe-enable ()
   "Enable ivy-posframe."
   (interactive)
-  (require 'ivy)
   ;; Add all display functions of ivy-posframe to
   ;; `ivy-display-functions-props'.
   (mapatoms
