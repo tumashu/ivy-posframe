@@ -475,12 +475,6 @@ selection, non-nil otherwise."
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit    . ivy-posframe--add-prompt)))
 
-(defvar ivy-posframe-keybind-list
-  '((ivy-minibuffer-map [remap ivy-read-action] ivy-posframe-read-action)
-    (ivy-minibuffer-map [remap ivy-dispatching-done] ivy-posframe-dispatching-done)
-    (ivy-minibuffer-map [remap ivy-avy] ivy-posframe-avy)
-    (ivy-minibuffer-map [remap swiper-avy] ivy-posframe-swiper-avy)))
-
 ;;;###autoload
 (define-minor-mode ivy-posframe-mode
   "Display ivy via posframe."
@@ -488,9 +482,12 @@ selection, non-nil otherwise."
   :global t
   :lighter " ivy-pf"
   :group 'ivy-posframe
+  :keymap '(([remap ivy-read-action] ivy-posframe-read-action)
+            ([remap ivy-dispatching-done] ivy-posframe-dispatching-done)
+            ([remap ivy-avy] ivy-posframe-avy)
+            ([remap swiper-avy] ivy-posframe-swiper-avy))
   (let ((fncs ivy-posframe-display-function-list)
         (advs ivy-posframe-advice-alist)
-        (keys ivy-posframe-keybind-list)
         (configures ivy-posframe-configure-alist))
     (if ivy-posframe-mode
         (eval
@@ -498,16 +495,14 @@ selection, non-nil otherwise."
             ,@(mapcan
                (lambda (conf) (mapcar (lambda (elm) `(push ',elm ,(car conf))) (cdr conf))) configures)
             ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
-            ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advs)
-            ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm))) keys)))
+            ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advs)))
       (eval
        `(progn
           ,@(mapcan
              (lambda (conf) (mapcar (lambda (elm) `(setq ,(car conf) (remove ',elm ,(car conf)))) (cdr conf))) configures)
           ,@(mapcar (lambda (elm) `(setq ivy-display-functions-alist (delete ',elm ivy-display-functions-alist))) configures)
           ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
-          ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs)
-          ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) nil)) keys))))))
+          ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs))))))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
