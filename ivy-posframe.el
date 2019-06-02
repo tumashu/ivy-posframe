@@ -247,6 +247,15 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
 
+(defvar ivy-posframe-display-functions
+  '(ivy-posframe-display
+    ivy-posframe-display-at-window-center
+    ivy-posframe-display-at-frame-center
+    ivy-posframe-display-at-window-bottom-left
+    ivy-posframe-display-at-frame-bottom-left
+    ivy-posframe-display-at-frame-bottom-window-center
+    ivy-posframe-display-at-point))
+
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
@@ -431,15 +440,11 @@ selection, non-nil otherwise."
 (defun ivy-posframe-enable ()
   "Enable ivy-posframe."
   (interactive)
-  ;; Add all display functions of ivy-posframe to
-  ;; `ivy-display-functions-props'.
-  (mapatoms
-   (lambda (func)
-     (when (and (functionp func)
-                (string-match-p "^ivy-posframe-display" (symbol-name func))
-                (not (assq func ivy-display-functions-props)))
-       (push `(,func :cleanup ivy-posframe-cleanup)
-             ivy-display-functions-props))))
+  (eval
+   `(progn
+      (mapcar (lambda (fn)
+                `(push `(,fn :cleanup ivy-posframe-cleanup) ivy-display-functions-props))
+              ivy-posframe-display-functions)))
   (define-key ivy-minibuffer-map
     [remap ivy-read-action] 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map
