@@ -217,7 +217,7 @@ This variable is useful for `ivy-posframe-read-action' .")
        :internal-border-width ivy-posframe-border-width
        :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
        :override-parameters ivy-posframe-parameters))
-    (ivy-posframe--add-prompt)))
+    (ivy-posframe--add-prompt 'ignore)))
 
 (defun ivy-posframe-display (str)
   "Display STR via `posframe' by `ivy-posframe-style'."
@@ -461,14 +461,14 @@ selection, non-nil otherwise."
     (if ivy-posframe-mode
         (eval
          `(progn
-            (mapcar (lambda (elm) `(push `(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
-            (mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) vars)
-            (mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm)) keys))))
+            ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
+            ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advs)
+            ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) ',(nth 2 elm))) keys)))
       (eval
        `(progn
-          (mapcar (lambda (elm) `(push `(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
-          (mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) vars)
-          (mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) nil) keys)))))))
+          ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
+          ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs)
+          ,@(mapcar (lambda (elm) `(define-key ,(nth 0 elm) ,(nth 1 elm) nil)) keys))))))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
