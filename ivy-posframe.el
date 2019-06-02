@@ -471,6 +471,14 @@ selection, non-nil otherwise."
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
+(defun ivy-posframe--display-function-prop (fn &rest args)
+  "Around advice of FN with ARGS."
+  (let ((ivy-display-functions-props
+         (append ivy-display-functions-props
+                 (mapcar (lambda (elm) `(,elm :cleanup ivy-posframe-cleanup))
+                         ivy-posframe-display-function-list))))
+    (apply fn args)))
+
 (defun ivy-posframe--height (fn &rest args)
   "Around advide of FN with ARGS."
   (let ((ivy-height-alist
@@ -496,6 +504,7 @@ selection, non-nil otherwise."
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit    . ivy-posframe--add-prompt)
+    (ivy--display-function-prop . ivy-posframe--display-function-prop)
     (ivy--height           . ivy-posframe--height)
     (ivy-read              . ivy-posframe--read)))
 
