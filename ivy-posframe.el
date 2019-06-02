@@ -409,6 +409,8 @@ selection, non-nil otherwise."
         (ivy-quit-and-run
           (avy-action-goto (avy-candidate-beg candidate)))))))
 
+;;; Advice
+
 (defun ivy-posframe--minibuffer-setup (orig-func)
   "Advice function of `ivy--minibuffer-setup'."
   (let ((ivy-fixed-height-minibuffer nil))
@@ -435,6 +437,10 @@ selection, non-nil otherwise."
           (delete-region (point) (save-excursion (line-move 1 'noerror) (point)))
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
+
+(defvar ivy-posframe-advice-alist
+  '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
+    (ivy--queue-exhibit    . ivy-posframe--add-prompt)))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
