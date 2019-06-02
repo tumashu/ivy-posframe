@@ -451,15 +451,16 @@ selection, non-nil otherwise."
    `(progn
       (mapcar (lambda (fn)
                 `(push `(,fn :cleanup ivy-posframe-cleanup) ivy-display-functions-props))
-              ivy-posframe-display-functions)))
+              ivy-posframe-display-functions)
+      (mapcar (lambda (elm)
+                `(advice-add ',(car elm) :around #',(cdr elm)))
+              ivy-posframe-advice-alist)))
   (define-key ivy-minibuffer-map
     [remap ivy-read-action] 'ivy-posframe-read-action)
   (define-key ivy-minibuffer-map
     [remap ivy-dispatching-done] 'ivy-posframe-dispatching-done)
   (define-key ivy-minibuffer-map [remap ivy-avy] 'ivy-posframe-avy)
   (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
-  (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
-  (advice-add 'ivy--queue-exhibit :around #'ivy-posframe--add-prompt)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
 ;;;###autoload
