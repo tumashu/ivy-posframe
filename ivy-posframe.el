@@ -191,13 +191,13 @@ When 0, no border is showed."
 This variable is useful for `ivy-posframe-read-action' .")
 
 (defvar ivy-posframe--display-p nil
-  "The status of `ivy-posframe--display'")
+  "The status of `ivy-posframe--display'.")
 
 ;; Fix warn
 (defvar emacs-basic-display)
 
 (defun ivy-posframe--display (str &optional poshandler)
-  "Show STR in ivy's posframe."
+  "Show STR in ivy's posframe with POSHANDLER."
   (if (not (posframe-workable-p))
       (ivy-display-function-fallback str)
     (setq ivy-posframe--display-p t)
@@ -220,8 +220,8 @@ This variable is useful for `ivy-posframe-read-action' .")
     (ivy-posframe--add-prompt)))
 
 (defun ivy-posframe-display (str)
-  (let ((func (intern (format "ivy-posframe-display-at-%s"
-                              ivy-posframe-style))))
+  "Display STR via `posframe' by `ivy-posframe-style'."
+  (let ((func (intern (format "ivy-posframe-display-at-%s" ivy-posframe-style))))
     (if (functionp func)
         (funcall func str)
       (ivy-posframe-display-at-frame-bottom-left str))))
@@ -405,7 +405,7 @@ selection, non-nil otherwise."
 ;;; Advice
 
 (defun ivy-posframe--minibuffer-setup (fn &rest args)
-  "Advice function of `ivy--minibuffer-setup'."
+  "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
   (when (and ivy-posframe-hide-minibuffer
@@ -419,7 +419,7 @@ selection, non-nil otherwise."
       (setq-local cursor-type nil))))
 
 (defun ivy-posframe--add-prompt (fn &rest args)
-  "Add the ivy prompt to the posframe."
+  "Add the ivy prompt to the posframe.  Advice FN with ARGS."
   (apply fn args)
   (unless ivy-posframe--ignore-prompt
     (with-current-buffer (window-buffer (active-minibuffer-window))
