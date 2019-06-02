@@ -197,6 +197,11 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'sexp)
 
+(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
+  "The `ivy-display-functions-alist' while working ivy-posframe."
+  :group 'ivy-posframe
+  :type 'sexp)
+
 (defcustom ivy-posframe-additional-display-functions nil
   "The additional display functions"
   :group 'ivy-posframe
@@ -472,6 +477,12 @@ selection, non-nil otherwise."
          (append ivy-posframe-height-alist ivy-height-alist)))
     (apply fn args)))
 
+(defun ivy-posframe--read (fn &rest args)
+  "Around advice of FN with AGS."
+  (let ((ivy-display-functions-alist
+         (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
+    (apply fn args)))
+
 ;;; variables
 
 (defvar ivy-posframe-display-function-list
@@ -485,7 +496,8 @@ selection, non-nil otherwise."
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit    . ivy-posframe--add-prompt)
-    (ivy--height           . ivy-posframe--height)))
+    (ivy--height           . ivy-posframe--height)
+    (ivy-read              . ivy-posframe--read)))
 
 ;;;###autoload
 (define-minor-mode ivy-posframe-mode
