@@ -439,9 +439,17 @@ selection, non-nil otherwise."
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
+;;; variables
+
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit    . ivy-posframe--add-prompt)))
+
+(defvar ivy-posframe-keybind-list
+  '((ivy-minibuffer-map [remap ivy-read-action] ivy-posframe-read-action)
+    (ivy-minibuffer-map [remap ivy-dispatching-done] ivy-posframe-dispatching-done)
+    (ivy-minibuffer-map [remap ivy-avy] ivy-posframe-avy)
+    (ivy-minibuffer-map [remap swiper-avy] ivy-posframe-swiper-avy)))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
@@ -454,13 +462,11 @@ selection, non-nil otherwise."
               ivy-posframe-display-functions)
       (mapcar (lambda (elm)
                 `(advice-add ',(car elm) :around #',(cdr elm)))
-              ivy-posframe-advice-alist)))
-  (define-key ivy-minibuffer-map
-    [remap ivy-read-action] 'ivy-posframe-read-action)
-  (define-key ivy-minibuffer-map
-    [remap ivy-dispatching-done] 'ivy-posframe-dispatching-done)
-  (define-key ivy-minibuffer-map [remap ivy-avy] 'ivy-posframe-avy)
-  (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
+              ivy-posframe-advice-alist)
+      (mapcar (lambda (elm)
+                (let ((map (nth 0 elm)) (key (nth 1 elm)) (cmd (nth 2 elm)))
+                  `(define-key ,map ,key ',cmd)))
+              ivy-posframe-keybind-list)))
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
 ;;;###autoload
