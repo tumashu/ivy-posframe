@@ -519,22 +519,14 @@ selection, non-nil otherwise."
             ([remap ivy-dispatching-done] ivy-posframe-dispatching-done)
             ([remap ivy-avy] ivy-posframe-avy)
             ([remap swiper-avy] ivy-posframe-swiper-avy))
-  (let ((fncs ivy-posframe-display-function-list)
-        (advs ivy-posframe-advice-alist)
-        (configures ivy-posframe-configure-alist))
+  (let ((advices ivy-posframe-advice-alist))
     (if ivy-posframe-mode
         (eval
          `(progn
-            ,@(mapcan
-               (lambda (conf) (mapcar (lambda (elm) `(push ',elm ,(car conf))) (cdr conf))) configures)
-            ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ivy-posframe-cleanup) ivy-display-functions-props)) fncs)
-            ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advs)))
+            ,@(mapcar (lambda (elm) `(advice-add ',(car elm) :around #',(cdr elm))) advices)))
       (eval
        `(progn
-          ,@(mapcan
-             (lambda (conf) (mapcar (lambda (elm) `(setq ,(car conf) (remove ',elm ,(car conf)))) (cdr conf))) configures)
-          ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
-          ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs))))))
+          ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advices))))))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
