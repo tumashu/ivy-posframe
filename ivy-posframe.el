@@ -452,11 +452,11 @@ selection, non-nil otherwise."
      ivy-posframe-display-at-frame-bottom-window-center)))
 
 (defvar ivy-posframe-advice-alist
-  '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
-    (ivy--queue-exhibit    . ivy-posframe--add-prompt)
+  '((ivy--minibuffer-setup      . ivy-posframe--minibuffer-setup)
+    (ivy--queue-exhibit         . ivy-posframe--add-prompt)
     (ivy--display-function-prop . ivy-posframe--display-function-prop)
-    (ivy--height           . ivy-posframe--height)
-    (ivy-read              . ivy-posframe--read)))
+    (ivy--height                . ivy-posframe--height)
+    (ivy-read                   . ivy-posframe--read)))
 
 ;;; Advice
 
