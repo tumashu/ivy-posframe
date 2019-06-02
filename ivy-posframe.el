@@ -176,6 +176,11 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'sexp)
 
+(defcustom ivy-posframe-additional-display-functions nil
+  "The additional display functions"
+  :group 'ivy-posframe
+  :type 'sexp)
+
 (defface ivy-posframe
   '((t (:inherit default)))
   "Face used by the ivy-posframe."
@@ -444,10 +449,11 @@ selection, non-nil otherwise."
 
 (defvar ivy-posframe-display-function-list
   (append
+   ivy-posframe-additional-display-functions
    (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
-           ivy-posframe-display-function-alist))
-  '(ivy-posframe-display
-    ivy-posframe-display-at-frame-bottom-window-center))
+           ivy-posframe-display-function-alist)
+   '(ivy-posframe-display
+     ivy-posframe-display-at-frame-bottom-window-center)))
 
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
