@@ -441,6 +441,23 @@ selection, non-nil otherwise."
         (ivy-quit-and-run
           (avy-action-goto (avy-candidate-beg candidate)))))))
 
+;;; Variables
+
+(defvar ivy-posframe-display-function-list
+  (append
+   ivy-posframe-additional-display-functions
+   (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
+           ivy-posframe-display-function-alist)
+   '(ivy-posframe-display
+     ivy-posframe-display-at-frame-bottom-window-center)))
+
+(defvar ivy-posframe-advice-alist
+  '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
+    (ivy--queue-exhibit    . ivy-posframe--add-prompt)
+    (ivy--display-function-prop . ivy-posframe--display-function-prop)
+    (ivy--height           . ivy-posframe--height)
+    (ivy-read              . ivy-posframe--read)))
+
 ;;; Advice
 
 (defun ivy-posframe--minibuffer-setup (fn &rest args)
@@ -490,23 +507,6 @@ selection, non-nil otherwise."
   (let ((ivy-display-functions-alist
          (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
     (apply fn args)))
-
-;;; variables
-
-(defvar ivy-posframe-display-function-list
-  (append
-   ivy-posframe-additional-display-functions
-   (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
-           ivy-posframe-display-function-alist)
-   '(ivy-posframe-display
-     ivy-posframe-display-at-frame-bottom-window-center)))
-
-(defvar ivy-posframe-advice-alist
-  '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
-    (ivy--queue-exhibit    . ivy-posframe--add-prompt)
-    (ivy--display-function-prop . ivy-posframe--display-function-prop)
-    (ivy--height           . ivy-posframe--height)
-    (ivy-read              . ivy-posframe--read)))
 
 ;;;###autoload
 (define-minor-mode ivy-posframe-mode
