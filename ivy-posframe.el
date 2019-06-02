@@ -60,7 +60,7 @@
 ;; ;; (setq ivy-display-function #'ivy-posframe-display-at-frame-bottom-left)
 ;; ;; (setq ivy-display-function #'ivy-posframe-display-at-window-bottom-left)
 ;; ;; (setq ivy-display-function #'ivy-posframe-display-at-point)
-;; (ivy-posframe-enable)
+;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 ;; *** Per-command mode.
 ;; #+BEGIN_EXAMPLE
@@ -69,7 +69,7 @@
 ;; (push '(counsel-M-x . ivy-posframe-display-at-window-bottom-left) ivy-display-functions-alist)
 ;; (push '(complete-symbol . ivy-posframe-display-at-point) ivy-display-functions-alist)
 ;; (push '(swiper . ivy-posframe-display-at-point) ivy-display-functions-alist)
-;; (ivy-posframe-enable)
+;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 ;;
 ;; NOTE: Using swiper as example: swiper's display function *only*
@@ -86,7 +86,7 @@
 ;; #+BEGIN_EXAMPLE
 ;; (require 'ivy-posframe)
 ;; (push '(t . ivy-posframe-display) ivy-display-functions-alist)
-;; (ivy-posframe-enable)
+;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 
 ;; ** Tips
@@ -107,7 +107,7 @@
 ;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
 ;;   (ivy-posframe--display str #'your-own-poshandler-function))
-;; (ivy-posframe-enable) ; This line is needed.
+;; (ivy-posframe-mode t) ; This line is needed.
 ;; #+END_EXAMPLE
 
 ;;; Code:
@@ -452,29 +452,32 @@ selection, non-nil otherwise."
     (ivy-minibuffer-map [remap swiper-avy] ivy-posframe-swiper-avy)))
 
 ;;;###autoload
-(defun ivy-posframe-enable ()
-  "Enable ivy-posframe."
-  (interactive)
-  (eval
-   `(progn
-      (mapcar (lambda (fn)
-                `(push `(,fn :cleanup ivy-posframe-cleanup) ivy-display-functions-props))
-              ivy-posframe-display-functions)
-      (mapcar (lambda (elm)
-                `(advice-add ',(car elm) :around #',(cdr elm)))
-              ivy-posframe-advice-alist)
-      (mapcar (lambda (elm)
-                (let ((map (nth 0 elm)) (key (nth 1 elm)) (cmd (nth 2 elm)))
-                  `(define-key ,map ,key ',cmd)))
-              ivy-posframe-keybind-list)))
-  (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
+(define-minor-mode ivy-posframe-mode
+  "Display ivy via posframe."
+  :init-value nil
+  :global t
+  :lighter " ivy-pf"
+  :group 'ivy-posframe
+  (if ivy-posframe-mode
+      (eval
+       `(progn
+          (mapcar (lambda (fn)
+                    `(push `(,fn :cleanup ivy-posframe-cleanup) ivy-display-functions-props))
+                  ivy-posframe-display-functions)
+          (mapcar (lambda (elm)
+                    `(advice-add ',(car elm) :around #',(cdr elm)))
+                  ivy-posframe-advice-alist)
+          (mapcar (lambda (elm)
+                    (let ((map (nth 0 elm)) (key (nth 1 elm)) (cmd (nth 2 elm)))
+                      `(define-key ,map ,key ',cmd)))
+                  ivy-posframe-keybind-list)))))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
   "Toggle a demo config of ivy-posframe.
 This function is ONLY used to test ivy-posframe."
   (interactive)
-  (ivy-posframe-enable)
+  (ivy-posframe-mode t)
   (let ((config '(t . ivy-posframe-display-at-frame-center)))
     (if (member config ivy-display-functions-alist)
         (progn
