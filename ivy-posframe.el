@@ -247,15 +247,6 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
 
-(defvar ivy-posframe-display-functions
-  '(ivy-posframe-display
-    ivy-posframe-display-at-window-center
-    ivy-posframe-display-at-frame-center
-    ivy-posframe-display-at-window-bottom-left
-    ivy-posframe-display-at-frame-bottom-left
-    ivy-posframe-display-at-frame-bottom-window-center
-    ivy-posframe-display-at-point))
-
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
@@ -440,6 +431,15 @@ selection, non-nil otherwise."
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
 ;;; variables
+
+(defvar ivy-posframe-display-functions
+  '(ivy-posframe-display
+    ivy-posframe-display-at-window-center
+    ivy-posframe-display-at-frame-center
+    ivy-posframe-display-at-window-bottom-left
+    ivy-posframe-display-at-frame-bottom-left
+    ivy-posframe-display-at-frame-bottom-window-center
+    ivy-posframe-display-at-point))
 
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
