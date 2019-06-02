@@ -226,7 +226,7 @@ This variable is useful for `ivy-posframe-read-action' .")
         (funcall func str)
       (ivy-posframe-display-at-frame-bottom-left str))))
 
-(defvar ivy-posframe-display-functions-alist
+(defvar ivy-posframe-display-function-alist
   '((window-center      . window-center)
     (frame-center       . frame-center)
     (window-bottom-left . window-bottom-left-corner)
@@ -240,7 +240,7 @@ This variable is useful for `ivy-posframe-read-action' .")
          `(defun ,(intern (format "ivy-posframe-display-at-%s" (car elm))) (str)
             ,(format "Display STR via `posframe' at %s." (car elm))
             (ivy-posframe--display str #',(intern (format "posframe-poshandler-%s" (cdr elm))))))
-       ivy-posframe-display-functions-alist)))
+       ivy-posframe-display-function-alist)))
 
 (defun ivy-posframe-display-at-frame-bottom-window-center (str)
   "Display STR via `posframe' at frame-bottom-window-center."
@@ -437,7 +437,7 @@ selection, non-nil otherwise."
 (defvar ivy-posframe-display-function-list
   (append
    (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
-           ivy-posframe-display-functions-alist))
+           ivy-posframe-display-function-alist))
   '(ivy-posframe-display
     ivy-posframe-display-at-frame-bottom-window-center))
 
