@@ -54,29 +54,23 @@
 ;; *** Global mode
 ;; #+BEGIN_EXAMPLE
 ;; (require 'ivy-posframe)
-;; (setq ivy-posframe-configure-alist
-;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display)))))
-;; ;; (setq ivy-posframe-configure-alist
-;; ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-frame-center)))))
-;; ;; (setq ivy-posframe-configure-alist
-;; ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-window-center)))))
-;; ;; (setq ivy-posframe-configure-alist
-;; ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-frame-bottom-left)))))
-;; ;; (setq ivy-posframe-configure-alist
-;; ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-window-bottom-left)))))
-;; ;; (setq ivy-posframe-configure-alist
-;; ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-point)))))
+;; ;; display at `ivy-posframe-style'
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
+;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
 ;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 ;; *** Per-command mode.
 ;; #+BEGIN_EXAMPLE
 ;; (require 'ivy-posframe)
 ;; ;; Different command can use different display function.
-;; (setq ivy-posframe-configure-alist
-;;       '((ivy-display-functions-alist . ((swiper          . ivy-posframe-display-at-point)
-;;                                         (complete-symbol . ivy-posframe-display-at-point)
-;;                                         (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
-;;                                         (t               . ivy-posframe-display)))))
+;; (setq ivy-posframe-display-functions-alist
+;;       '((swiper          . ivy-posframe-display-at-point)
+;;         (complete-symbol . ivy-posframe-display-at-point)
+;;         (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+;;         (t               . ivy-posframe-display)))
 ;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 ;;
@@ -86,11 +80,31 @@
 ;; #+BEGIN_EXAMPLE
 ;; (require 'ivy-posframe)
 ;; ;; Different command can use different display function.
-;; (setq ivy-posframe-configure-alist
-;;       '((ivy-display-functions-alist . ((swiper          . nil)
-;;                                         (complete-symbol . ivy-posframe-display-at-point)
-;;                                         (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
-;;                                         (t               . ivy-posframe-display)))))
+;; (setq ivy-posframe-display-functions-alist
+;;       '((swiper          . nil)
+;;         (complete-symbol . ivy-posframe-display-at-point)
+;;         (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+;;         (t               . ivy-posframe-display)))
+;; (ivy-posframe-mode t)
+;; #+END_EXAMPLE
+;;
+;; You may want to change the height of ivy by a function only while
+;; using posframe. This is possible with the code below.
+;;
+;; The following example displays swiper on 20 lines by default for ivy,
+;; and displays other functions in posframe at the location specified on
+;; 40 lines.
+;; #+BEGIN_EXAMPLE
+;; (require 'ivy-posframe)
+;; ;; Different command can use different display function.
+;; (setq ivy-posframe-height-alist '((swiper . 20)
+;;                                   (t      . 40)))
+;;
+;; (setq ivy-posframe-display-functions-alist
+;;       '((swiper          . nil)
+;;         (complete-symbol . ivy-posframe-display-at-point)
+;;         (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+;;         (t               . ivy-posframe-display)))
 ;; (ivy-posframe-mode t)
 ;; #+END_EXAMPLE
 ;;
