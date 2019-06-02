@@ -184,14 +184,6 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'string)
 
-(defcustom ivy-posframe-configure-alist
-  `(,@(when ivy-posframe-height
-        `(ivy-height-alist . ((t . ,ivy-posframe-height))))
-    (ivy-display-functions-alist . ((t . ivy-posframe-display))))
-  "The ivy configuration alist."
-  :group 'ivy-posframe
-  :type 'sexp)
-
 (defcustom ivy-posframe-height-alist nil
   "The `ivy-height-alist' while working ivy-posframe."
   :group 'ivy-posframe
