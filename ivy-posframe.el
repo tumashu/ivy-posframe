@@ -434,6 +434,13 @@ selection, non-nil otherwise."
 
 ;;; variables
 
+(defvar ivy-posframe-display-function-list
+  (append
+   (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
+           ivy-posframe-display-functions-alist))
+  '(ivy-posframe-display
+    ivy-posframe-display-at-frame-bottom-window-center))
+
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit    . ivy-posframe--add-prompt)))
@@ -451,11 +458,7 @@ selection, non-nil otherwise."
   :global t
   :lighter " ivy-pf"
   :group 'ivy-posframe
-  (let ((fncs (append (mapcar
-                       (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
-                       ivy-posframe-display-functions-alist)
-                      '(ivy-posframe-display
-                        ivy-posframe-display-at-frame-bottom-window-center)))
+  (let ((fncs ivy-posframe-display-function-list)
         (advs ivy-posframe-advice-alist)
         (keys ivy-posframe-keybind-list))
     (if ivy-posframe-mode
