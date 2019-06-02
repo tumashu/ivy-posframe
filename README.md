@@ -3,23 +3,23 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # Table of Contents
 
-1.  [ivy-posframe README](#orgd3c904b)
-    1.  [What is ivy-posframe](#org0585c98)
-    2.  [Display functions](#org33d88e8)
-    3.  [How to enable ivy-posframe](#org1951a71)
-        1.  [Global mode](#orga4b2102)
-        2.  [Per-command mode.](#org5502e77)
-    4.  [Tips](#orgaaa4442)
-        1.  [How to show fringe to ivy-posframe](#org84cabb8)
-        2.  [How to custom your ivy-posframe style](#orgc5ae827)
+1.  [ivy-posframe README](#orgb29527d)
+    1.  [What is ivy-posframe](#org73ec970)
+    2.  [Display functions](#org7dc9307)
+    3.  [How to enable ivy-posframe](#org491e830)
+        1.  [Global mode](#org38e37cf)
+        2.  [Per-command mode.](#org89e4db4)
+    4.  [Tips](#org2af7073)
+        1.  [How to show fringe to ivy-posframe](#orgc0851d4)
+        2.  [How to custom your ivy-posframe style](#orgdab58bc)
 
 
-<a id="orgd3c904b"></a>
+<a id="orgb29527d"></a>
 
 # ivy-posframe README
 
 
-<a id="org0585c98"></a>
+<a id="org73ec970"></a>
 
 ## What is ivy-posframe
 
@@ -30,7 +30,7 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="org33d88e8"></a>
+<a id="org7dc9307"></a>
 
 ## Display functions
 
@@ -46,42 +46,36 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="org1951a71"></a>
+<a id="org491e830"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="orga4b2102"></a>
+<a id="org38e37cf"></a>
 
 ### Global mode
 
     (require 'ivy-posframe)
-    (setq ivy-posframe-configure-alist
-          '((ivy-display-functions-alist . ((t . ivy-posframe-display)))))
-    ;; (setq ivy-posframe-configure-alist
-    ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-frame-center)))))
-    ;; (setq ivy-posframe-configure-alist
-    ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-window-center)))))
-    ;; (setq ivy-posframe-configure-alist
-    ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-frame-bottom-left)))))
-    ;; (setq ivy-posframe-configure-alist
-    ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-window-bottom-left)))))
-    ;; (setq ivy-posframe-configure-alist
-    ;;       '((ivy-display-functions-alist . ((t . ivy-posframe-display-at-point)))))
+    ;; display at `ivy-posframe-style'
+    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
+    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
     (ivy-posframe-mode t)
 
 
-<a id="org5502e77"></a>
+<a id="org89e4db4"></a>
 
 ### Per-command mode.
 
     (require 'ivy-posframe)
     ;; Different command can use different display function.
-    (setq ivy-posframe-configure-alist
-          '((ivy-display-functions-alist . ((swiper          . ivy-posframe-display-at-point)
-                                            (complete-symbol . ivy-posframe-display-at-point)
-                                            (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
-                                            (t               . ivy-posframe-display)))))
+    (setq ivy-posframe-display-functions-alist
+          '((swiper          . ivy-posframe-display-at-point)
+            (complete-symbol . ivy-posframe-display-at-point)
+            (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+            (t               . ivy-posframe-display)))
     (ivy-posframe-mode t)
 
 You can use ivy original display function on specify function.
@@ -90,11 +84,30 @@ of Swiper at point hides the contents of the buffer.
 
     (require 'ivy-posframe)
     ;; Different command can use different display function.
-    (setq ivy-posframe-configure-alist
-          '((ivy-display-functions-alist . ((swiper          . nil)
-                                            (complete-symbol . ivy-posframe-display-at-point)
-                                            (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
-                                            (t               . ivy-posframe-display)))))
+    (setq ivy-posframe-display-functions-alist
+          '((swiper          . nil)
+            (complete-symbol . ivy-posframe-display-at-point)
+            (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+            (t               . ivy-posframe-display)))
+    (ivy-posframe-mode t)
+
+You may want to change the height of ivy by a function only while
+using posframe. This is possible with the code below.
+
+The following example displays swiper on 20 lines by default for ivy,
+and displays other functions in posframe at the location specified on
+40 lines.
+
+    (require 'ivy-posframe)
+    ;; Different command can use different display function.
+    (setq ivy-posframe-height-alist '((swiper . 20)
+                                      (t      . 40)))
+    
+    (setq ivy-posframe-display-functions-alist
+          '((swiper          . nil)
+            (complete-symbol . ivy-posframe-display-at-point)
+            (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
+            (t               . ivy-posframe-display)))
     (ivy-posframe-mode t)
 
 NOTE: Using swiper as example: swiper's display function **only**
@@ -108,12 +121,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="orgaaa4442"></a>
+<a id="org2af7073"></a>
 
 ## Tips
 
 
-<a id="org84cabb8"></a>
+<a id="orgc0851d4"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -125,7 +138,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="orgc5ae827"></a>
+<a id="orgdab58bc"></a>
 
 ### How to custom your ivy-posframe style
 
