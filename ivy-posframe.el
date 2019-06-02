@@ -500,7 +500,6 @@ selection, non-nil otherwise."
        `(progn
           ,@(mapcan
              (lambda (conf) (mapcar (lambda (elm) `(setq ,(car conf) (remove ',elm ,(car conf)))) (cdr conf))) configures)
-          ,@(mapcar (lambda (elm) `(setq ivy-display-functions-alist (delete ',elm ivy-display-functions-alist))) configures)
           ,@(mapcar (lambda (elm) `(push '(,elm :cleanup ignore) ivy-display-functions-props)) fncs)
           ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advs))))))
 
