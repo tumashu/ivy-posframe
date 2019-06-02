@@ -411,10 +411,10 @@ selection, non-nil otherwise."
 
 ;;; Advice
 
-(defun ivy-posframe--minibuffer-setup (orig-func)
+(defun ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of `ivy--minibuffer-setup'."
   (let ((ivy-fixed-height-minibuffer nil))
-    (funcall orig-func))
+    (apply fn args))
   (when (and ivy-posframe-hide-minibuffer
              ;; only hide minibuffer's info when posframe is showed.
              ivy-posframe--display-p)
@@ -425,8 +425,9 @@ selection, non-nil otherwise."
                      `(:background ,bg-color :foreground ,bg-color)))
       (setq-local cursor-type nil))))
 
-(defun ivy-posframe--add-prompt ()
+(defun ivy-posframe--add-prompt (fn &rest args)
   "Add the ivy prompt to the posframe."
+  (apply fn args)
   (unless ivy-posframe--ignore-prompt
     (with-current-buffer (window-buffer (active-minibuffer-window))
       (let ((point (point))
@@ -458,7 +459,7 @@ selection, non-nil otherwise."
   (define-key ivy-minibuffer-map [remap ivy-avy] 'ivy-posframe-avy)
   (define-key ivy-minibuffer-map [remap swiper-avy] 'ivy-posframe-swiper-avy)
   (advice-add 'ivy--minibuffer-setup :around #'ivy-posframe--minibuffer-setup)
-  (advice-add 'ivy--queue-exhibit :after #'ivy-posframe--add-prompt)
+  (advice-add 'ivy--queue-exhibit :around #'ivy-posframe--add-prompt)
   (message "ivy-posframe is enabled, disabling it need to reboot emacs."))
 
 ;;;###autoload
