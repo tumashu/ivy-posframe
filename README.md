@@ -1,25 +1,25 @@
 Note: this file is auto converted from ivy-posframe.el by [el2org](https://github.com/tumashu/el2org), please do not edit it by hand!!!
 
 
-# Table of Contents
+# &#30446;&#24405;
 
-1.  [ivy-posframe README](#orgb29527d)
-    1.  [What is ivy-posframe](#org73ec970)
-    2.  [Display functions](#org7dc9307)
-    3.  [How to enable ivy-posframe](#org491e830)
-        1.  [Global mode](#org38e37cf)
-        2.  [Per-command mode.](#org89e4db4)
-    4.  [Tips](#org2af7073)
-        1.  [How to show fringe to ivy-posframe](#orgc0851d4)
-        2.  [How to custom your ivy-posframe style](#orgdab58bc)
+1.  [ivy-posframe README](#org2962756)
+    1.  [What is ivy-posframe](#orgaf66256)
+    2.  [Display functions](#org73fd3df)
+    3.  [How to enable ivy-posframe](#orgd476ad5)
+        1.  [Global mode](#org7ed67b1)
+        2.  [Per-command mode.](#orgc8f8488)
+    4.  [Tips](#org747f108)
+        1.  [How to show fringe to ivy-posframe](#orgf898a9e)
+        2.  [How to custom your ivy-posframe style](#org2c20ab8)
 
 
-<a id="orgb29527d"></a>
+<a id="org2962756"></a>
 
 # ivy-posframe README
 
 
-<a id="org73ec970"></a>
+<a id="orgaf66256"></a>
 
 ## What is ivy-posframe
 
@@ -30,7 +30,7 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="org7dc9307"></a>
+<a id="org73fd3df"></a>
 
 ## Display functions
 
@@ -46,12 +46,12 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="org491e830"></a>
+<a id="orgd476ad5"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="org38e37cf"></a>
+<a id="org7ed67b1"></a>
 
 ### Global mode
 
@@ -62,10 +62,10 @@ click.
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
-    (ivy-posframe-mode t)
+    (ivy-posframe-mode 1)
 
 
-<a id="org89e4db4"></a>
+<a id="orgc8f8488"></a>
 
 ### Per-command mode.
 
@@ -76,7 +76,7 @@ click.
             (complete-symbol . ivy-posframe-display-at-point)
             (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
             (t               . ivy-posframe-display)))
-    (ivy-posframe-mode t)
+    (ivy-posframe-mode 1)
 
 You can use ivy original display function on specify function.
 You may want to use the original display function because display
@@ -89,7 +89,7 @@ of Swiper at point hides the contents of the buffer.
             (complete-symbol . ivy-posframe-display-at-point)
             (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
             (t               . ivy-posframe-display)))
-    (ivy-posframe-mode t)
+    (ivy-posframe-mode 1)
 
 You may want to change the height of ivy by a function only while
 using posframe. This is possible with the code below.
@@ -108,7 +108,7 @@ and displays other functions in posframe at the location specified on
             (complete-symbol . ivy-posframe-display-at-point)
             (counsel-M-x     . ivy-posframe-display-at-window-bottom-left)
             (t               . ivy-posframe-display)))
-    (ivy-posframe-mode t)
+    (ivy-posframe-mode 1)
 
 NOTE: Using swiper as example: swiper's display function **only**
 take effect when you call swiper command with global keybinding, if
@@ -121,12 +121,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org2af7073"></a>
+<a id="org747f108"></a>
 
 ## Tips
 
 
-<a id="orgc0851d4"></a>
+<a id="orgf898a9e"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -138,7 +138,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="orgdab58bc"></a>
+<a id="org2c20ab8"></a>
 
 ### How to custom your ivy-posframe style
 
@@ -146,6 +146,6 @@ The simplest way is:
 
     (defun ivy-posframe-display-at-XXX (str)
       (ivy-posframe--display str #'your-own-poshandler-function))
-    (push 'ivy-posframe-display-at-XXX ivy-posframe-display-function-list) ; This line is needed.
-    (ivy-posframe-mode t) ; This line is needed.
+    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-XXX)))
+    (ivy-posframe-mode 1) ; This line is needed.
 
