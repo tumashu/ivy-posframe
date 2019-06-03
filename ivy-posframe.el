@@ -136,7 +136,7 @@
 ;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
 ;;   (ivy-posframe--display str #'your-own-poshandler-function))
-;; (push 'ivy-posframe-display-at-XXX ivy-posframe-display-function-list) ; This line is needed.
+;; (push 'ivy-posframe-display-at-XXX ivy-posframe-additional-display-functions) ; This line is needed.
 ;; (ivy-posframe-mode t) ; This line is needed.
 ;; #+END_EXAMPLE
 
@@ -291,14 +291,6 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
-
-(defvar ivy-posframe-display-function-list '(ivy-posframe-display
-                                             ivy-posframe-display-at-window-center
-                                             ivy-posframe-display-at-frame-center
-                                             ivy-posframe-display-at-window-bottom-left
-                                             ivy-posframe-display-at-frame-bottom-left
-                                             ivy-posframe-display-at-frame-bottom-window-center
-                                             ivy-posframe-display-at-point))
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
@@ -455,9 +447,6 @@ selection, non-nil otherwise."
 
 ;;; Variables
 
-(defvar ivy-posframe-display-function-list
-  (append ivy-posframe-additional-display-functions ivy-posframe-display-function-list))
-
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup      . ivy-posframe--minibuffer-setup)
     (ivy--queue-exhibit         . ivy-posframe--add-prompt)
@@ -499,8 +488,17 @@ selection, non-nil otherwise."
   "Around advice of FN with ARGS."
   (let ((ivy-display-functions-props
          (append ivy-display-functions-props
-                 (mapcar (lambda (elm) `(,elm :cleanup ivy-posframe-cleanup))
-                         ivy-posframe-display-function-list))))
+                 (mapcar
+                  (lambda (elm)
+                    `(,elm :cleanup ivy-posframe-cleanup))
+                  `(,@ivy-posframe-additional-display-functions
+                    ivy-posframe-display
+                    ivy-posframe-display-at-window-center
+                    ivy-posframe-display-at-frame-center
+                    ivy-posframe-display-at-window-bottom-left
+                    ivy-posframe-display-at-frame-bottom-left
+                    ivy-posframe-display-at-frame-bottom-window-center
+                    ivy-posframe-display-at-point)))))
     (apply fn args)))
 
 (defun ivy-posframe--height (fn &rest args)
