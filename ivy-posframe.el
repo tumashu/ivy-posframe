@@ -271,28 +271,34 @@ This variable is useful for `ivy-posframe-read-action' .")
         (funcall func str)
       (ivy-posframe-display-at-frame-bottom-left str))))
 
-(defvar ivy-posframe-display-function-alist
-  '((window-center      . posframe-poshandler-window-center)
-    (frame-center       . posframe-poshandler-frame-center)
-    (window-bottom-left . posframe-poshandler-window-bottom-left-corner)
-    (frame-bottom-left  . posframe-poshandler-frame-bottom-left-corner)
-    (point              . posframe-poshandler-point-bottom-left-corner)))
+(defun ivy-posframe-display-at-window-center (str)
+  (ivy-posframe--display str #'posframe-poshandler-window-center))
 
-(defmacro ivy-posframe-define-display-function (pair)
-  "Define display-function for ivy-posframe."
-  `(defun ,(intern (format "ivy-posframe-display-at-%s" (car pair))) (str)
-     ,(format "Display STR via `posframe' at %s." (car pair))
-     (ivy-posframe--display str #',(cdr pair))))
+(defun ivy-posframe-display-at-frame-center (str)
+  (ivy-posframe--display str #'posframe-poshandler-frame-center))
 
-(mapc (lambda (elm) (ivy-posframe-define-display-function elm))
-      ivy-posframe-display-function-alist)
+(defun ivy-posframe-display-at-window-bottom-left (str)
+  (ivy-posframe--display str #'posframe-poshandler-window-bottom-left-corner))
+
+(defun ivy-posframe-display-at-frame-bottom-left (str)
+  (ivy-posframe--display str #'posframe-poshandler-frame-bottom-left-corner))
 
 (defun ivy-posframe-display-at-frame-bottom-window-center (str)
-  "Display STR via `posframe' at frame-bottom-window-center."
   (ivy-posframe--display
    str (lambda (info)
          (cons (car (posframe-poshandler-window-center info))
                (cdr (posframe-poshandler-frame-bottom-left-corner info))))))
+
+(defun ivy-posframe-display-at-point (str)
+  (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
+
+(defvar ivy-posframe-display-function-list '(ivy-posframe-display
+                                             ivy-posframe-display-at-window-center
+                                             ivy-posframe-display-at-frame-center
+                                             ivy-posframe-display-at-window-bottom-left
+                                             ivy-posframe-display-at-frame-bottom-left
+                                             ivy-posframe-display-at-frame-bottom-window-center
+                                             ivy-posframe-display-at-point))
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
@@ -450,12 +456,7 @@ selection, non-nil otherwise."
 ;;; Variables
 
 (defvar ivy-posframe-display-function-list
-  (append
-   ivy-posframe-additional-display-functions
-   (mapcar (lambda (elm) (intern (format "ivy-posframe-display-at-%s" (car elm))))
-           ivy-posframe-display-function-alist)
-   '(ivy-posframe-display
-     ivy-posframe-display-at-frame-bottom-window-center)))
+  (append ivy-posframe-additional-display-functions ivy-posframe-display-function-list))
 
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup      . ivy-posframe--minibuffer-setup)
