@@ -537,21 +537,6 @@ selection, non-nil otherwise."
   (ivy-posframe-mode 1)
   (message "ivy-posframe: suggest use `ivy-posframe-mode' instead."))
 
-;;;###autoload
-(defun ivy-posframe-demo ()
-  "Toggle a demo config of ivy-posframe.
-This function is ONLY used to test ivy-posframe."
-  (interactive)
-  (ivy-posframe-mode t)
-  (let ((config '(t . ivy-posframe-display-at-frame-center)))
-    (if (member config ivy-display-functions-alist)
-        (progn
-          (setq ivy-display-functions-alist
-                (remove config ivy-display-functions-alist))
-          (message "Ivy-posframe: Demo is disabled."))
-      (push config ivy-display-functions-alist)
-      (message "Ivy-posframe: Demo is enabled."))))
-
 (provide 'ivy-posframe)
 
 ;; Local Variables:
