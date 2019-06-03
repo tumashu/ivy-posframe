@@ -535,6 +535,9 @@ selection, non-nil otherwise."
           ,@(mapcar (lambda (elm) `(advice-remove ',(car elm) #',(cdr elm))) advices))))))
 
 ;;;###autoload
+(defalias 'ivy-posframe-enable 'ivy-posframe-mode)
+
+;;;###autoload
 (defun ivy-posframe-demo ()
   "Toggle a demo config of ivy-posframe.
 This function is ONLY used to test ivy-posframe."
