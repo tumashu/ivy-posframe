@@ -136,7 +136,7 @@
 ;; #+BEGIN_EXAMPLE
 ;; (defun ivy-posframe-display-at-XXX (str)
 ;;   (ivy-posframe--display str #'your-own-poshandler-function))
-;; (push 'ivy-posframe-display-at-XXX ivy-posframe-additional-display-functions) ; This line is needed.
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-XXX)))
 ;; (ivy-posframe-mode 1) ; This line is needed.
 ;; #+END_EXAMPLE
 
@@ -205,11 +205,6 @@ When 0, no border is showed."
 
 (defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
   "The `ivy-display-functions-alist' while working ivy-posframe."
-  :group 'ivy-posframe
-  :type 'sexp)
-
-(defcustom ivy-posframe-additional-display-functions nil
-  "The additional display functions"
   :group 'ivy-posframe
   :type 'sexp)
 
@@ -491,14 +486,7 @@ selection, non-nil otherwise."
                  (mapcar
                   (lambda (elm)
                     `(,elm :cleanup ivy-posframe-cleanup))
-                  `(,@ivy-posframe-additional-display-functions
-                    ivy-posframe-display
-                    ivy-posframe-display-at-window-center
-                    ivy-posframe-display-at-frame-center
-                    ivy-posframe-display-at-window-bottom-left
-                    ivy-posframe-display-at-frame-bottom-left
-                    ivy-posframe-display-at-frame-bottom-window-center
-                    ivy-posframe-display-at-point)))))
+                  (mapcar #'cdr ivy-posframe-display-functions-alist)))))
     (apply fn args)))
 
 (defun ivy-posframe--height (fn &rest args)
