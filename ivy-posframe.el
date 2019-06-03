@@ -491,7 +491,8 @@ selection, non-nil otherwise."
                  (mapcar
                   (lambda (elm)
                     `(,elm :cleanup ivy-posframe-cleanup))
-                  (mapcar #'cdr ivy-posframe-display-functions-alist)))))
+                  (remove nil `(,@(mapcar #'cdr ivy-posframe-display-functions-alist)
+                                ,ivy-display-function))))))
     (apply fn args)))
 
 (defun ivy-posframe--height (fn &rest args)
