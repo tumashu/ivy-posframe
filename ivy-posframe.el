@@ -528,8 +528,12 @@ selection, non-nil otherwise."
             ([remap swiper-avy] ivy-posframe-swiper-avy))
   (let ((advices ivy-posframe-advice-alist))
     (if ivy-posframe-mode
-        (mapcar (lambda (elm) (advice-add (car elm) :around (cdr elm))) advices)
-      (mapcar (lambda (elm) (advice-remove (car elm) (cdr elm))) advices))))
+        (mapcar (lambda (elm)
+                  (advice-add (car elm) :around (cdr elm)))
+                advices)
+      (mapcar (lambda (elm)
+                (advice-remove (car elm) (cdr elm)))
+              advices))))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
