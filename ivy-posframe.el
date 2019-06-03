@@ -518,13 +518,15 @@ selection, non-nil otherwise."
             ([remap ivy-avy] ivy-posframe-avy)
             ([remap swiper-avy] ivy-posframe-swiper-avy))
   (let ((advices ivy-posframe-advice-alist))
-    (if ivy-posframe-mode
+    (if ivy-display-function
+        (message "ivy-posframe: `ivy-display-function' is used, so ivy-posframe-mode can not enable.")
+      (if ivy-posframe-mode
+          (mapcar (lambda (elm)
+                    (advice-add (car elm) :around (cdr elm)))
+                  advices)
         (mapcar (lambda (elm)
-                  (advice-add (car elm) :around (cdr elm)))
-                advices)
-      (mapcar (lambda (elm)
-                (advice-remove (car elm) (cdr elm)))
-              advices))))
+                  (advice-remove (car elm) (cdr elm)))
+                advices)))))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
