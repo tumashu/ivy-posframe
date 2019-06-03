@@ -5,6 +5,7 @@
 
 ;; Author: Feng Shu
 ;; Maintainer: Feng Shu <tumashu@163.com>
+;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; URL: https://github.com/tumashu/ivy-posframe
 ;; Version: 0.1.0
 ;; Keywords: abbrev, convenience, matching, ivy
