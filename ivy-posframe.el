@@ -532,7 +532,10 @@ selection, non-nil otherwise."
       (mapcar (lambda (elm) (advice-remove (car elm) (cdr elm))) advices))))
 
 ;;;###autoload
-(defalias 'ivy-posframe-enable 'ivy-posframe-mode)
+(defun ivy-posframe-enable ()
+  (interactive)
+  (ivy-posframe-mode 1)
+  (message "ivy-posframe: suggest use `ivy-posframe-mode' instead."))
 
 ;;;###autoload
 (defun ivy-posframe-demo ()
