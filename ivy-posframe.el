@@ -208,6 +208,11 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'sexp)
 
+(defcustom ivy-posframe-lighter " ivy-posframe"
+  "The lighter string used by `ivy-posframe-mode'."
+  :group 'ivy-posframe
+  :type 'string)
+
 (defface ivy-posframe
   '((t (:inherit default)))
   "Face used by the ivy-posframe."
@@ -506,7 +511,7 @@ selection, non-nil otherwise."
   "Display ivy via posframe."
   :init-value nil
   :global t
-  :lighter " ivy-pf"
+  :lighter ivy-posframe-lighter
   :group 'ivy-posframe
   :keymap '(([remap ivy-read-action] ivy-posframe-read-action)
             ([remap ivy-dispatching-done] ivy-posframe-dispatching-done)
