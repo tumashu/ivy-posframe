@@ -272,17 +272,17 @@ This variable is useful for `ivy-posframe-read-action' .")
       (ivy-posframe-display-at-frame-bottom-left str))))
 
 (defvar ivy-posframe-display-function-alist
-  '((window-center      . window-center)
-    (frame-center       . frame-center)
-    (window-bottom-left . window-bottom-left-corner)
-    (frame-bottom-left  . frame-bottom-left-corner)
-    (point              . point-bottom-left-corner)))
+  '((window-center      . posframe-poshandler-window-center)
+    (frame-center       . posframe-poshandler-frame-center)
+    (window-bottom-left . posframe-poshandler-window-bottom-left-corner)
+    (frame-bottom-left  . posframe-poshandler-frame-bottom-left-corner)
+    (point              . posframe-poshandler-point-bottom-left-corner)))
 
 (defmacro ivy-posframe-define-display-function (pair)
   "Define display-function for ivy-posframe."
   `(defun ,(intern (format "ivy-posframe-display-at-%s" (car pair))) (str)
      ,(format "Display STR via `posframe' at %s." (car pair))
-     (ivy-posframe--display str #',(intern (format "posframe-poshandler-%s" (cdr pair))))))
+     (ivy-posframe--display str #',(cdr pair))))
 
 (mapc (lambda (elm) (ivy-posframe-define-display-function elm))
       ivy-posframe-display-function-alist)
