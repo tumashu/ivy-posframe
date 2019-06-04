@@ -481,7 +481,8 @@ selection, non-nil otherwise."
         (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
         (with-current-buffer ivy-posframe-buffer
           (goto-char (point-min))
-          (delete-region (point) (save-excursion (line-move 1 'noerror) (point)))
+          (kill-line 1)
+          (setq kill-ring (cdr kill-ring))
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
