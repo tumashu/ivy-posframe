@@ -515,10 +515,10 @@ selection, non-nil otherwise."
   :global t
   :lighter ivy-posframe-lighter
   :group 'ivy-posframe
-  :keymap '(([remap ivy-read-action] ivy-posframe-read-action)
-            ([remap ivy-dispatching-done] ivy-posframe-dispatching-done)
-            ([remap ivy-avy] ivy-posframe-avy)
-            ([remap swiper-avy] ivy-posframe-swiper-avy))
+  :keymap '(([remap ivy-avy]              . ivy-posframe-avy)
+            ([remap swiper-avy]           . ivy-posframe-swiper-avy)
+            ([remap ivy-read-action]      . ivy-posframe-read-action)
+            ([remap ivy-dispatching-done] . ivy-posframe-dispatching-done))
   (let ((advices ivy-posframe-advice-alist))
     (if ivy-posframe-mode
         (mapcar (lambda (elm)
