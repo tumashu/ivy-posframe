@@ -513,6 +513,7 @@ selection, non-nil otherwise."
   "Display ivy via posframe."
   :init-value nil
   :global t
+  :require 'ivy-posframe
   :lighter ivy-posframe-lighter
   :group 'ivy-posframe
   :keymap '(([remap ivy-avy]              . ivy-posframe-avy)
