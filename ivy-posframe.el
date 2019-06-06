@@ -163,25 +163,31 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'string)
 
-(defcustom ivy-posframe-width nil
-  "The width of ivy-posframe."
+(defcustom ivy-posframe-width 'ivy-posframe-default-width
+  "The width of ivy-posframe.
+ This can either be a function calculating the width or the
+ number of characters wide."
   :group 'ivy-posframe
-  :type 'number)
+  :type '(choice (number :tag "width in characters")
+                 (symbol :tag "function")))
 
-(defcustom ivy-posframe-height nil
-  "The height of ivy-posframe."
+(defcustom ivy-posframe-height 'ivy-posframe-default-height
+  "The height of ivy-posframe.
+ This can either be function calculating the height or the number
+ of lines tall."
   :group 'ivy-posframe
-  :type 'number)
+  :type '(choice (number :tag "height in lines")
+                 (symbol :tag "function")))
 
-(defcustom ivy-posframe-min-width nil
-  "The width of ivy-min-posframe."
+(defcustom ivy-posframe-dynamic-height nil
+  "Adjust the height of the posframe based on content."
   :group 'ivy-posframe
-  :type 'number)
+  :type 'boolean)
 
-(defcustom ivy-posframe-min-height nil
-  "The height of ivy-min-posframe."
+(defcustom ivy-posframe-dynamic-width nil
+  "Adjust the width of the posframe based on content."
   :group 'ivy-posframe
-  :type 'number)
+  :type 'boolean)
 
 (defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
@@ -248,21 +254,27 @@ This variable is useful for `ivy-posframe-read-action' .")
       (ivy-display-function-fallback str)
     (setq ivy-posframe--display-p t)
     (with-ivy-window
-      (posframe-show
-       ivy-posframe-buffer
-       :font ivy-posframe-font
-       :string str
-       :position (point)
-       :poshandler poshandler
-       :background-color (face-attribute 'ivy-posframe :background nil t)
-       :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-       :height ivy-posframe-height
-       :width ivy-posframe-width
-       :min-height (or ivy-posframe-min-height (+ ivy-height 1))
-       :min-width (or ivy-posframe-min-width (round (* (frame-width) 0.62)))
-       :internal-border-width ivy-posframe-border-width
-       :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-       :override-parameters ivy-posframe-parameters))
+      (let ((height (ivy-posframe--dimension
+                     ivy-posframe-height
+                     'ivy-posframe-default-height))
+            (width (ivy-posframe--dimension
+                    ivy-posframe-width
+                    'ivy-posframe-default-width)))
+        (posframe-show
+         ivy-posframe-buffer
+         :font ivy-posframe-font
+         :string str
+         :position (point)
+         :poshandler poshandler
+         :background-color (face-attribute 'ivy-posframe :background nil t)
+         :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+         :height (unless ivy-posframe-dynamic-height height)
+         :width (unless ivy-posframe-dynamic-width width)
+         :min-height height
+         :min-width width
+         :internal-border-width ivy-posframe-border-width
+         :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
+         :override-parameters ivy-posframe-parameters)))
     (ivy-posframe--add-prompt 'ignore)))
 
 (defun ivy-posframe-display (str)
@@ -298,6 +310,21 @@ This variable is useful for `ivy-posframe-read-action' .")
   (when (posframe-workable-p)
     (posframe-hide ivy-posframe-buffer)
     (setq ivy-posframe--display-p nil)))
+
+(defun ivy-posframe--dimension (dim &optional fall-back)
+  "Return height of ivy posframe"
+  (pcase dim
+    ((pred functionp) (funcall dim))
+    ((pred numberp) dim)
+    (_ (funcall fall-back))))
+
+(defun ivy-posframe-default-height ()
+  "Default function to calculate the height of the posframe."
+  (1+ ivy-height))
+
+(defun ivy-posframe-default-width ()
+  "Default function to calculate the width of the ivy posframe."
+  (round (* (frame-width) 0.62)))
 
 (defun ivy-posframe-dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
