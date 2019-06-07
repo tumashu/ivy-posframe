@@ -183,6 +183,11 @@ When nil, Using current frame's font as fallback."
   :group 'ivy-posframe
   :type 'number)
 
+(defcustom ivy-posframe-size-function #'ivy-posframe-get-size
+  "The function which is used to deal with posframe's size."
+  :group 'ivy-posframe
+  :type 'function)
+
 (defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
 When 0, no border is showed."
@@ -248,22 +253,27 @@ This variable is useful for `ivy-posframe-read-action' .")
       (ivy-display-function-fallback str)
     (setq ivy-posframe--display-p t)
     (with-ivy-window
-      (posframe-show
-       ivy-posframe-buffer
-       :font ivy-posframe-font
-       :string str
-       :position (point)
-       :poshandler poshandler
-       :background-color (face-attribute 'ivy-posframe :background nil t)
-       :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-       :height ivy-posframe-height
-       :width ivy-posframe-width
-       :min-height (or ivy-posframe-min-height (+ ivy-height 1))
-       :min-width (or ivy-posframe-min-width (round (* (frame-width) 0.62)))
-       :internal-border-width ivy-posframe-border-width
-       :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-       :override-parameters ivy-posframe-parameters))
+      (apply #'posframe-show
+             ivy-posframe-buffer
+             :font ivy-posframe-font
+             :string str
+             :position (point)
+             :poshandler poshandler
+             :background-color (face-attribute 'ivy-posframe :background nil t)
+             :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+             :internal-border-width ivy-posframe-border-width
+             :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
+             :override-parameters ivy-posframe-parameters
+             (funcall ivy-posframe-size-function)))
     (ivy-posframe--add-prompt 'ignore)))
+
+(defun ivy-posframe-get-size ()
+  "The default functon used by `ivy-posframe-size-function'."
+  (list
+   :height ivy-posframe-height
+   :width ivy-posframe-width
+   :min-height (or ivy-posframe-min-height (+ ivy-height 1))
+   :min-width (or ivy-posframe-min-width (round (* (frame-width) 0.62)))))
 
 (defun ivy-posframe-display (str)
   "Display STR via `posframe' by `ivy-posframe-style'."
