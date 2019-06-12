@@ -265,7 +265,9 @@ This variable is useful for `ivy-posframe-read-action' .")
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
              (funcall ivy-posframe-size-function)))
-    (ivy-posframe--add-prompt 'ignore)))
+    (ivy-posframe--add-prompt 'ignore)
+    (with-current-buffer ivy-posframe-buffer
+      (setq-local tab-width 2))))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
@@ -490,7 +492,6 @@ selection, non-nil otherwise."
             (prompt (buffer-string)))
         (remove-text-properties 0 (length prompt) '(read-only nil) prompt)
         (with-current-buffer ivy-posframe-buffer
-          (setq-local tab-width 2)
           (goto-char (point-min))
           (delete-region (point) (line-beginning-position 2))
           (insert prompt "  \n")
