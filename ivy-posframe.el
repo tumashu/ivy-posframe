@@ -469,13 +469,7 @@ selection, non-nil otherwise."
 
 (defun ivy-posframe--posframe-p-advice (advice-fn &rest args)
   "Advice function of ADVICE-FN, used to bypass the advice from
-`ivy-posframe-advice-alist' if the posframe cannot be displayed.
-
-ADVICE-FN should be a value from `ivy-posframe-advice-alist', but
-the function only errors if ARGS is empty. There should at least be
-the advised function there (a key from `ivy-posframe-advice-alist')."
-  (unless (< 0 (length args))
-    (error "This function should advise an advice, so args should be at least a key from ivy-posframe-advice-alist"))
+`ivy-posframe-advice-alist' if the posframe cannot be displayed."
   (if (display-graphic-p)
       (apply advice-fn args)
     (apply (car args) (cdr args))))
