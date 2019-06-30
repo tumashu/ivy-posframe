@@ -478,8 +478,7 @@ the advised function there (a key from `ivy-posframe-advice-alist')."
     (error "This function should advise an advice, so args should be at least a key from ivy-posframe-advice-alist"))
   (if (display-graphic-p)
       (apply advice-fn args)
-    (apply (car args) (cdr args)))
-  )
+    (apply (car args) (cdr args))))
 
 (defun ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
