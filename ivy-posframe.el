@@ -478,11 +478,18 @@ The return value is undefined.
 
 \(fn NAME ARGLIST &optional DOCSTRING DECL &rest BODY)"
   (declare (doc-string 3) (indent 2))
-  `(defun ,name ,arglist
-     ,(when (stringp docstring) docstring)
-     (when (display-graphic-p)
-       ,(unless (stringp docstring) docstring)
-       ,@body)))
+  (let ((decls (cond
+                ((eq (car-safe docstring) 'declare)
+                 (prog1 (cdr docstring) (setq docstring nil)))
+                ((and (stringp docstring)
+                      (eq (car-safe (car body)) 'declare))
+                 (prog1 (cdr (car body)) (setq body (cdr body)))))))
+    `(defun ,name ,arglist
+       ,(when (stringp docstring) docstring)
+       (declare ,@decls)
+       (when (display-graphic-p)
+         ,(unless (stringp docstring) docstring)
+         ,@body))))
 
 (ivy-posframe--defun-advice ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
