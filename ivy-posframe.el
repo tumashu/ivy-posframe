@@ -498,7 +498,7 @@ The return value is undefined.
        ,(unless (stringp docstring) docstring)
        ,@body)))
 
-(defun ivy-posframe--minibuffer-setup (fn &rest args)
+(ivy-posframe--defun-advice ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
@@ -512,7 +512,7 @@ The return value is undefined.
                      `(:background ,bg-color :foreground ,bg-color)))
       (setq-local cursor-type nil))))
 
-(defun ivy-posframe--add-prompt (fn &rest args)
+(ivy-posframe--defun-advice ivy-posframe--add-prompt (fn &rest args)
   "Add the ivy prompt to the posframe.  Advice FN with ARGS."
   (apply fn args)
   (unless ivy-posframe--ignore-prompt
@@ -526,7 +526,7 @@ The return value is undefined.
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
-(defun ivy-posframe--display-function-prop (fn &rest args)
+(ivy-posframe--defun-advice ivy-posframe--display-function-prop (fn &rest args)
   "Around advice of FN with ARGS."
   (let ((ivy-display-functions-props
          (append ivy-display-functions-props
@@ -536,13 +536,13 @@ The return value is undefined.
                   (mapcar #'cdr ivy-posframe-display-functions-alist)))))
     (apply fn args)))
 
-(defun ivy-posframe--height (fn &rest args)
+(ivy-posframe--defun-advice ivy-posframe--height (fn &rest args)
   "Around advide of FN with ARGS."
   (let ((ivy-height-alist
          (append ivy-posframe-height-alist ivy-height-alist)))
     (apply fn args)))
 
-(defun ivy-posframe--read (fn &rest args)
+(ivy-posframe--defun-advice ivy-posframe--read (fn &rest args)
   "Around advice of FN with AGS."
   (let ((ivy-display-functions-alist
          (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
@@ -564,12 +564,10 @@ The return value is undefined.
     (if ivy-posframe-mode
         (mapcar (lambda (elm)
                   (progn
-                    (advice-add (cdr elm) :around 'ivy-posframe--posframe-p-advice)
                     (advice-add (car elm) :around (cdr elm))))
                 advices)
       (mapcar (lambda (elm)
                 (progn
-                  (advice-remove (cdr elm) 'ivy-posframe--posframe-p-advice)
                   (advice-remove (car elm) (cdr elm))))
               advices))))
 
