@@ -553,14 +553,13 @@ The return value is undefined.
             ([remap swiper-avy]           . ivy-posframe-swiper-avy)
             ([remap ivy-read-action]      . ivy-posframe-read-action)
             ([remap ivy-dispatching-done] . ivy-posframe-dispatching-done))
-  (let ((advices ivy-posframe-advice-alist))
-    (if ivy-posframe-mode
-        (mapcar (lambda (elm)
-                  (advice-add (car elm) :around (cdr elm)))
-                advices)
-      (mapcar (lambda (elm)
-                (advice-remove (car elm) (cdr elm)))
-              advices))))
+  (if ivy-posframe-mode
+      (mapc (lambda (elm)
+              (advice-add (car elm) :around (cdr elm)))
+            ivy-posframe-advice-alist)
+    (mapc (lambda (elm)
+            (advice-remove (car elm) (cdr elm)))
+          ivy-posframe-advice-alist)))
 
 ;;;###autoload
 (defun ivy-posframe-enable ()
