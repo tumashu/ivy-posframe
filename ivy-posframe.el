@@ -549,12 +549,10 @@ The return value is undefined.
   (let ((advices ivy-posframe-advice-alist))
     (if ivy-posframe-mode
         (mapcar (lambda (elm)
-                  (progn
-                    (advice-add (car elm) :around (cdr elm))))
+                  (advice-add (car elm) :around (cdr elm)))
                 advices)
       (mapcar (lambda (elm)
-                (progn
-                  (advice-remove (car elm) (cdr elm))))
+                (advice-remove (car elm) (cdr elm)))
               advices))))
 
 ;;;###autoload
