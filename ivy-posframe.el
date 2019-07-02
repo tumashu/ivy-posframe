@@ -555,10 +555,10 @@ The return value is undefined.
             ([remap ivy-dispatching-done] . ivy-posframe-dispatching-done))
   (let ((advices ivy-posframe-advice-alist))
     (if ivy-posframe-mode
-        (mapcar (lambda (elm)
+        (mapc (lambda (elm)
                   (advice-add (car elm) :around (cdr elm)))
                 advices)
-      (mapcar (lambda (elm)
+      (mapc (lambda (elm)
                 (advice-remove (car elm) (cdr elm)))
               advices))))
 
