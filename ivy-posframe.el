@@ -481,6 +481,23 @@ the advised function there (a key from `ivy-posframe-advice-alist')."
     (apply (car args) (cdr args)))
   )
 
+(defmacro ivy-posframe--defun-advice (name arglist &optional docstring &rest body)
+  "Define NAME as a `ivy-posframe' advice function.  see `defun'.
+The definition is (lambda ARGLIST [DOCSTRING] BODY...).
+See also the function `interactive'.
+DECL is a declaration, optional, of the form (declare DECLS...) where
+DECLS is a list of elements of the form (PROP . VALUES).  These are
+interpreted according to `defun-declarations-alist'.
+The return value is undefined.
+
+\(fn NAME ARGLIST &optional DOCSTRING DECL &rest BODY)"
+  (declare (doc-string 3) (indent 2))
+  `(defun ,name ,arglist
+     ,(when (stringp docstring) docstring)
+     (when (display-graphic-p)
+       ,(unless (stringp docstring) docstring)
+       ,@body)))
+
 (defun ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
