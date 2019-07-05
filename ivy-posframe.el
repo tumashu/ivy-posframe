@@ -234,8 +234,16 @@ When 0, no border is showed."
   "Face used by the ivy-posframe's fake cursor."
   :group 'ivy-posframe)
 
-(defvar ivy-posframe-buffer " *ivy-posframe-buffer*"
-  "The posframe-buffer used by ivy-posframe.")
+(defun ivy-posframe-buffer-setter (sym val)
+  "Set SYM as VAL and create buffer named `ivy-posframe-buffer'."
+  (set-default sym val)
+  (get-buffer-create val))
+
+(defcustom ivy-posframe-buffer " *ivy-posframe-buffer*"
+  "The posframe-buffer used by ivy-posframe."
+  :set #'ivy-posframe-buffer-setter
+  :type 'string
+  :group 'ivy-posframe)
 
 (defvar ivy-posframe--ignore-prompt nil
   "When non-nil, ivy-posframe will ignore prompt.
