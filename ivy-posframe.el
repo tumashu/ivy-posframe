@@ -252,7 +252,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar ivy-posframe--display-p nil
   "The status of `ivy-posframe--display'.")
 
-(defvar-local ivy-posframe--last-frame-parameters nil
+(defvar ivy-posframe--last-frame-parameters nil
   "Record the last frame parameters of `ivy-posframe'.
 
 If these parameters have changed, posframe will recreate its
@@ -295,7 +295,7 @@ frame.")
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
              (funcall ivy-posframe-size-function)))
-    (setq-local ivy-posframe--last-frame-parameters
+    (setq ivy-posframe--last-frame-parameters
                 (frame-parameters (window-frame (ivy-posframe--window))))
     (ivy-posframe--add-prompt 'ignore)))
 
