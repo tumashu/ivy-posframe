@@ -503,9 +503,7 @@ The return value is undefined.
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
-  (when (and ivy-posframe-hide-minibuffer
-             ;; only hide minibuffer's info when posframe is showed.
-             ivy-posframe--display-p)
+  (when ivy-posframe-hide-minibuffer
     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
       (overlay-put ov 'window (selected-window))
       (overlay-put ov 'face
