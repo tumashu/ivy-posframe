@@ -252,7 +252,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar ivy-posframe--display-p nil
   "The status of `ivy-posframe--display'.")
 
-(defvar ivy-posframe--last-frame-parameters nil
+(defvar-local ivy-posframe--last-frame-parameters nil
   "Record the last frame parameters of `ivy-posframe'.
 
 If these parameters have changed, posframe will recreate its
@@ -264,16 +264,17 @@ frame.")
 
 (defun ivy-posframe--parameters-changed-p ()
   "Check if ivy-posframe frame parameters changed or not."
-  (let ((old ivy-posframe--last-frame-parameters)
-        (new (frame-parameters (window-frame (ivy-posframe--window))))
-        (check-list '(cursor-color
-                      background-mode
-                      foreground-color
-                      background-color
-                      font)))
-    (remove nil (mapcar
-                 (lambda (x) (unless (equal (assoc x old) (assoc x new)) x))
-                 check-list))))
+  (with-current-buffer ivy-posframe-buffer
+    (let ((old ivy-posframe--last-frame-parameters)
+          (new (frame-parameters (window-frame (ivy-posframe--window))))
+          (check-list '(cursor-color
+                        background-mode
+                        foreground-color
+                        background-color
+                        font)))
+      (remove nil (mapcar
+                   (lambda (x) (unless (equal (assoc x old) (assoc x new)) x))
+                   check-list)))))
 
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe with POSHANDLER."
@@ -295,8 +296,9 @@ frame.")
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
              (funcall ivy-posframe-size-function)))
-    (setq ivy-posframe--last-frame-parameters
-                (frame-parameters (window-frame (ivy-posframe--window))))
+    (with-current-buffer ivy-posframe-buffer
+      (setq-local ivy-posframe--last-frame-parameters
+                  (frame-parameters (window-frame (ivy-posframe--window)))))
     (ivy-posframe--add-prompt 'ignore)))
 
 (defun ivy-posframe-get-size ()
