@@ -312,7 +312,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   (when (posframe-workable-p)
     (posframe-hide ivy-posframe-buffer))
   ;; The below cleanup is required or not? need more test!
-  (when (and ivy-posframe-hide-minibuffer nil)
+  (when ivy-posframe-hide-minibuffer
     (with-current-buffer (window-buffer (active-minibuffer-window))
       (let ((overlays (overlays-at (point-min))))
         (dolist (overlay overlays)
