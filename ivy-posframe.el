@@ -251,6 +251,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 ;; Fix warn
 (defvar emacs-basic-display)
+(defvar ivy--display-function)
 
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe with POSHANDLER."
@@ -310,15 +311,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
-    (posframe-hide ivy-posframe-buffer))
-  ;; The below cleanup is required or not? need more test!
-  (when ivy-posframe-hide-minibuffer
-    (with-current-buffer (window-buffer (active-minibuffer-window))
-      (let ((overlays (overlays-at (point-min))))
-        (dolist (overlay overlays)
-          (when (and (overlayp overlay)
-                     (overlay-get overlay 'ivy-posframe))
-            (delete-overlay overlay)))))))
+    (posframe-hide ivy-posframe-buffer)))
 
 (defun ivy-posframe-dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
@@ -506,7 +499,12 @@ The return value is undefined.
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
-  (when ivy-posframe-hide-minibuffer
+  (when (and ivy-posframe-hide-minibuffer
+             ;; if display-function is not a ivy-posframe style display-function.
+             ;; do not hide minibuffer.
+             ;; The hypothesis is that all ivy-posframe style display functions
+             ;; have ivy-posframe as name prefix, need improve!
+             (string-match-p "^ivy-posframe" (symbol-name ivy--display-function)))
     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
       (overlay-put ov 'window (selected-window))
       (overlay-put ov 'ivy-posframe t)
