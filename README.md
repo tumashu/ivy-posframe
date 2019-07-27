@@ -3,23 +3,23 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org2962756)
-    1.  [What is ivy-posframe](#orgaf66256)
-    2.  [Display functions](#org73fd3df)
-    3.  [How to enable ivy-posframe](#orgd476ad5)
-        1.  [Global mode](#org7ed67b1)
-        2.  [Per-command mode.](#orgc8f8488)
-    4.  [Tips](#org747f108)
-        1.  [How to show fringe to ivy-posframe](#orgf898a9e)
-        2.  [How to custom your ivy-posframe style](#org2c20ab8)
+1.  [ivy-posframe README](#orgce17e19)
+    1.  [What is ivy-posframe](#orgdcfa9f5)
+    2.  [Display functions](#org0fe66fa)
+    3.  [How to enable ivy-posframe](#orgd918c25)
+        1.  [Global mode](#org724949a)
+        2.  [Per-command mode.](#org8e30924)
+    4.  [Tips](#orgf0e22bd)
+        1.  [How to show fringe to ivy-posframe](#org0874911)
+        2.  [How to custom your ivy-posframe style](#orgb04d051)
 
 
-<a id="org2962756"></a>
+<a id="orgce17e19"></a>
 
 # ivy-posframe README
 
 
-<a id="orgaf66256"></a>
+<a id="orgdcfa9f5"></a>
 
 ## What is ivy-posframe
 
@@ -30,7 +30,7 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="org73fd3df"></a>
+<a id="org0fe66fa"></a>
 
 ## Display functions
 
@@ -46,12 +46,12 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="orgd476ad5"></a>
+<a id="orgd918c25"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="org7ed67b1"></a>
+<a id="org724949a"></a>
 
 ### Global mode
 
@@ -62,10 +62,11 @@ click.
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
     ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
+    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
     (ivy-posframe-mode 1)
 
 
-<a id="orgc8f8488"></a>
+<a id="org8e30924"></a>
 
 ### Per-command mode.
 
@@ -121,12 +122,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org747f108"></a>
+<a id="orgf0e22bd"></a>
 
 ## Tips
 
 
-<a id="orgf898a9e"></a>
+<a id="org0874911"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -138,7 +139,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="org2c20ab8"></a>
+<a id="orgb04d051"></a>
 
 ### How to custom your ivy-posframe style
 
