@@ -328,7 +328,7 @@ selection, non-nil otherwise."
   (let* ((actions (ivy-state-action ivy-last))
          (caller (ivy-state-caller ivy-last))
          (display-function
-          (or ivy-display-function
+          (or ivy--display-function
               (cdr (or (assq caller ivy-display-functions-alist)
                        (assq t ivy-display-functions-alist))))))
     (if (not (ivy--actionp actions))
