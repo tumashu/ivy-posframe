@@ -249,9 +249,6 @@ When 0, no border is showed."
   "When non-nil, ivy-posframe will ignore prompt.
 This variable is useful for `ivy-posframe-read-action' .")
 
-(defvar ivy-posframe--display-p nil
-  "The status of `ivy-posframe--display'.")
-
 ;; Fix warn
 (defvar emacs-basic-display)
 
@@ -259,7 +256,6 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Show STR in ivy's posframe with POSHANDLER."
   (if (not (posframe-workable-p))
       (ivy-display-function-fallback str)
-    (setq ivy-posframe--display-p t)
     (with-ivy-window
       (apply #'posframe-show
              ivy-posframe-buffer
@@ -314,8 +310,15 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
   (when (posframe-workable-p)
-    (posframe-hide ivy-posframe-buffer)
-    (setq ivy-posframe--display-p nil)))
+    (posframe-hide ivy-posframe-buffer))
+  ;; The below cleanup is required or not? need more test!
+  (when (and ivy-posframe-hide-minibuffer nil)
+    (with-current-buffer (window-buffer (active-minibuffer-window))
+      (let ((overlays (overlays-at (point-min))))
+        (dolist (overlay overlays)
+          (when (and (overlayp overlay)
+                     (overlay-get overlay 'ivy-posframe))
+            (delete-overlay overlay)))))))
 
 (defun ivy-posframe-dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
@@ -503,11 +506,10 @@ The return value is undefined.
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
-  (when (and ivy-posframe-hide-minibuffer
-             ;; only hide minibuffer's info when posframe is showed.
-             ivy-posframe--display-p)
+  (when ivy-posframe-hide-minibuffer
     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
       (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'ivy-posframe t)
       (overlay-put ov 'face
                    (let ((bg-color (face-background 'default nil)))
                      `(:background ,bg-color :foreground ,bg-color)))
