@@ -61,6 +61,7 @@
 ;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
 ;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
 ;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
+;; ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
 ;; (ivy-posframe-mode 1)
 ;; #+END_EXAMPLE
 ;; *** Per-command mode.
@@ -307,6 +308,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe-display-at-point (str)
   (ivy-posframe--display str #'posframe-poshandler-point-bottom-left-corner))
+
+(defun ivy-posframe-display-at-frame-top-center (str)
+  (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
 
 (defun ivy-posframe-cleanup ()
   "Cleanup ivy's posframe."
