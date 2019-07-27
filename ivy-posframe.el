@@ -500,6 +500,7 @@ The return value is undefined.
   (let ((ivy-fixed-height-minibuffer nil))
     (apply fn args))
   (when (and ivy-posframe-hide-minibuffer
+             (posframe-workable-p)
              ;; if display-function is not a ivy-posframe style display-function.
              ;; do not hide minibuffer.
              ;; The hypothesis is that all ivy-posframe style display functions
