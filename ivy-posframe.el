@@ -475,53 +475,32 @@ selection, non-nil otherwise."
 
 ;;; Advice
 
-(defmacro ivy-posframe--defun-advice (name arglist &optional docstring &rest body)
-  "Define NAME as a `ivy-posframe' advice function.  see `defun'.
-The definition is (lambda ARGLIST [DOCSTRING] BODY...).
-See also the function `interactive'.
-DECL is a declaration, optional, of the form (declare DECLS...) where
-DECLS is a list of elements of the form (PROP . VALUES).  These are
-interpreted according to `defun-declarations-alist'.
-The return value is undefined.
-
-\(fn NAME ARGLIST &optional DOCSTRING DECL &rest BODY)"
-  (declare (doc-string 3) (indent 2))
-  (let ((decls (cond
-                ((eq (car-safe docstring) 'declare)
-                 (prog1 (cdr docstring) (setq docstring nil)))
-                ((and (stringp docstring)
-                      (eq (car-safe (car body)) 'declare))
-                 (prog1 (cdr (car body)) (setq body (cdr body)))))))
-    `(defun ,name ,arglist
-       ,(when (stringp docstring) docstring)
-       (declare ,@decls)
-       (when (display-graphic-p)
-         ,(unless (stringp docstring) docstring)
-         ,@body))))
-
-(ivy-posframe--defun-advice ivy-posframe--minibuffer-setup (fn &rest args)
+(defun ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
-  (let ((ivy-fixed-height-minibuffer nil))
-    (apply fn args))
-  (when (and ivy-posframe-hide-minibuffer
-             (posframe-workable-p)
-             ;; if display-function is not a ivy-posframe style display-function.
-             ;; do not hide minibuffer.
-             ;; The hypothesis is that all ivy-posframe style display functions
-             ;; have ivy-posframe as name prefix, need improve!
-             (string-match-p "^ivy-posframe" (symbol-name ivy--display-function)))
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'ivy-posframe t)
-      (overlay-put ov 'face
-                   (let ((bg-color (face-background 'default nil)))
-                     `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
+  (if (not (display-graphic-p))
+      (apply fn args)
+    (let ((ivy-fixed-height-minibuffer nil))
+      (apply fn args))
+    (when (and ivy-posframe-hide-minibuffer
+               (posframe-workable-p)
+               ;; if display-function is not a ivy-posframe style display-function.
+               ;; do not hide minibuffer.
+               ;; The hypothesis is that all ivy-posframe style display functions
+               ;; have ivy-posframe as name prefix, need improve!
+               (string-match-p "^ivy-posframe" (symbol-name ivy--display-function)))
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'ivy-posframe t)
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil)))))
 
-(ivy-posframe--defun-advice ivy-posframe--add-prompt (fn &rest args)
+(defun ivy-posframe--add-prompt (fn &rest args)
   "Add the ivy prompt to the posframe.  Advice FN with ARGS."
   (apply fn args)
-  (unless ivy-posframe--ignore-prompt
+  (when (and (display-graphic-p)
+             (not ivy-posframe--ignore-prompt))
     (with-current-buffer (window-buffer (active-minibuffer-window))
       (let ((point (point))
             (prompt (buffer-string)))
@@ -532,27 +511,33 @@ The return value is undefined.
           (insert prompt "  \n")
           (add-text-properties point (1+ point) '(face ivy-posframe-cursor)))))))
 
-(ivy-posframe--defun-advice ivy-posframe--display-function-prop (fn &rest args)
+(defun ivy-posframe--display-function-prop (fn &rest args)
   "Around advice of FN with ARGS."
-  (let ((ivy-display-functions-props
-         (append ivy-display-functions-props
-                 (mapcar
-                  (lambda (elm)
-                    `(,elm :cleanup ivy-posframe-cleanup))
-                  (mapcar #'cdr ivy-posframe-display-functions-alist)))))
-    (apply fn args)))
+  (if (not (display-graphic-p))
+      (apply fn args)
+    (let ((ivy-display-functions-props
+           (append ivy-display-functions-props
+                   (mapcar
+                    (lambda (elm)
+                      `(,elm :cleanup ivy-posframe-cleanup))
+                    (mapcar #'cdr ivy-posframe-display-functions-alist)))))
+      (apply fn args))))
 
-(ivy-posframe--defun-advice ivy-posframe--height (fn &rest args)
+(defun ivy-posframe--height (fn &rest args)
   "Around advide of FN with ARGS."
-  (let ((ivy-height-alist
-         (append ivy-posframe-height-alist ivy-height-alist)))
-    (apply fn args)))
+  (if (not (display-graphic-p))
+      (apply fn args)
+    (let ((ivy-height-alist
+           (append ivy-posframe-height-alist ivy-height-alist)))
+      (apply fn args))))
 
-(ivy-posframe--defun-advice ivy-posframe--read (fn &rest args)
+(defun ivy-posframe--read (fn &rest args)
   "Around advice of FN with AGS."
-  (let ((ivy-display-functions-alist
-         (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
-    (apply fn args)))
+  (if (not (display-graphic-p))
+      (apply fn args)
+    (let ((ivy-display-functions-alist
+           (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
+      (apply fn args))))
 
 ;;;###autoload
 (define-minor-mode ivy-posframe-mode
