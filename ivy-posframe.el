@@ -270,7 +270,8 @@ This variable is useful for `ivy-posframe-read-action' .")
              :internal-border-width ivy-posframe-border-width
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
-             (funcall ivy-posframe-size-function)))))
+             (funcall ivy-posframe-size-function))
+     (ivy-posframe--add-prompt 'ignore))))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
@@ -467,7 +468,6 @@ selection, non-nil otherwise."
 
 (defvar ivy-posframe-advice-alist
   '((ivy--minibuffer-setup      . ivy-posframe--minibuffer-setup)
-    (ivy--queue-exhibit         . ivy-posframe--add-prompt)
     (ivy--display-function-prop . ivy-posframe--display-function-prop)
     (ivy--height                . ivy-posframe--height)
     (ivy-read                   . ivy-posframe--read)))
