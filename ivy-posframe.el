@@ -376,6 +376,7 @@ selection, non-nil otherwise."
 (defvar avy-all-windows)
 (defvar avy-keys)
 (defvar avy-style)
+(defvar avy-pre-action)
 
 (defun ivy-posframe-avy ()
   "Jump to one of the current ivy candidates."
