@@ -591,12 +591,6 @@ This variable is useful for `ivy-posframe-read-action' .")
             (advice-remove (car elm) (cdr elm)))
           ivy-posframe-advice-alist)))
 
-;;;###autoload
-(defun ivy-posframe-enable ()
-  (interactive)
-  (ivy-posframe-mode 1)
-  (message "ivy-posframe: suggest use `ivy-posframe-mode' instead."))
-
 (provide 'ivy-posframe)
 
 ;; Local Variables:
