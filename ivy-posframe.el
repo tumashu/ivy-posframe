@@ -487,8 +487,6 @@ This variable is useful for `ivy-posframe-read-action' .")
       (swiper-avy)
     (unless (require 'avy nil 'noerror)
       (error "Package avy isn't installed"))
-    (unless (require 'avy nil 'noerror)
-      (error "Package avy isn't installed"))
     (cl-case (length ivy-text)
       (0
        (user-error "Need at least one char of input"))
