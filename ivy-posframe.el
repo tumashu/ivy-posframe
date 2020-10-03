@@ -380,13 +380,6 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar avy-style)
 (defvar avy-pre-action)
 
-(defun ivy-posframe-avy ()
-  "Ivy-posframe's `ivy-avy'."
-  (interactive)
-  (let ((avy-pre-action #'ignore))
-    (with-selected-window (ivy-posframe--window)
-      (ivy-avy))))
-
 (declare-function avy--make-backgrounds "avy")
 (declare-function avy-window-list "avy")
 (declare-function avy-read-de-bruijn "avy")
@@ -396,6 +389,15 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function avy--remove-leading-chars "avy")
 (declare-function avy-push-mark "avy")
 (declare-function avy--done "avy")
+(declare-function avy-action-goto "avy")
+(declare-function avy-candidate-beg "avy")
+
+(defun ivy-posframe-avy ()
+  "Ivy-posframe's `ivy-avy'."
+  (interactive)
+  (let ((avy-pre-action #'ignore))
+    (with-selected-window (ivy-posframe--window)
+      (ivy-avy))))
 
 (defun ivy-posframe--swiper-avy-candidates ()
   "Ivy-posframe's `swiper-avy-candidates'."
@@ -445,9 +447,6 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Ivy-posframe's `swiper--avy-candidate'."
   (cl-letf (((symbol-function 'swiper--avy-candidates) #'ivy-posframe--swiper-avy-candidates))
     (swiper--avy-candidate)))
-
-(declare-function avy-action-goto "avy")
-(declare-function avy-candidate-beg "avy")
 
 (defun ivy-posframe--swiper--avy-goto (candidate)
   "Ivy-posframe's `swiper--avy-goto'."
