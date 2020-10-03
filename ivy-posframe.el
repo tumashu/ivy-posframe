@@ -152,7 +152,7 @@
   :group 'ivy
   :prefix "ivy-posframe")
 
-(defcustom ivy-posframe-style 'window-bottom-left
+(defcustom ivy-posframe-style 'frame-center
   "The style of ivy-posframe."
   :group 'ivy-posframe
   :type 'string)
@@ -209,7 +209,7 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'sexp)
 
-(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
+(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
   "The `ivy-display-functions-alist' while working ivy-posframe."
   :group 'ivy-posframe
   :type 'sexp)
