@@ -350,6 +350,7 @@ This variable is useful for `ivy-posframe-read-action' .")
                                     (string-prefix-p key (car x)))
                                   (cdr actions)))
                 (not (string= key (car (nth action-idx (cdr actions))))))
+      ;; NOTE: (setq key xxx) is only different from `ivy-read-action-by-key'
       (setq key (concat key (string
                              (read-key
                               (if (functionp display-function)
