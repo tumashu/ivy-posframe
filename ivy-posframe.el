@@ -448,7 +448,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   (cl-letf (((symbol-function 'swiper--avy-candidates) #'ivy-posframe--swiper-avy-candidates))
     (swiper--avy-candidate)))
 
-(defun ivy-posframe--swiper--avy-goto (candidate)
+(defun ivy-posframe--swiper-avy-goto (candidate)
   "Ivy-posframe's `swiper--avy-goto'."
   (cond ((eq (cdr-safe candidate)
              (ivy-posframe--window))
@@ -496,7 +496,7 @@ This variable is useful for `ivy-posframe-read-action' .")
        (let ((swiper-min-highlight 1))
          (swiper--update-input-ivy))))
     (unless (string= ivy-text "")
-      (ivy-posframe--swiper--avy-goto
+      (ivy-posframe--swiper-avy-goto
        (ivy-posframe--swiper-avy-candidate)))))
 
 ;;; Variables
