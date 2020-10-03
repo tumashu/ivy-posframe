@@ -424,6 +424,8 @@ This variable is useful for `ivy-posframe-read-action' .")
                (cons (overlay-start ov)
                      (overlay-get ov 'window)))
              overlays-for-avy)
+     ;; NOTE: This line should be the *only* different from
+     ;; `swiper-avy-candidates'.
      (with-current-buffer ivy-posframe-buffer
        (save-excursion
          (save-restriction
