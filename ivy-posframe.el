@@ -209,7 +209,7 @@ When 0, no border is showed."
   :group 'ivy-posframe
   :type 'sexp)
 
-(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
+(defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
   "The `ivy-display-functions-alist' while working ivy-posframe."
   :group 'ivy-posframe
   :type 'sexp)
