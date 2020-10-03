@@ -1,6 +1,5 @@
 ;;; ivy-posframe.el --- Using posframe to show Ivy  -*- lexical-binding: t -*-
 
-
 ;; Copyright (C) 2017-2020 Free Software Foundation, Inc.
 
 ;; Author: Feng Shu
@@ -9,7 +8,7 @@
 ;; URL: https://github.com/tumashu/ivy-posframe
 ;; Version: 0.3.0
 ;; Keywords: abbrev, convenience, matching, ivy
-;; Package-Requires: ((emacs "26.0")(posframe "0.1.0")(ivy "0.11.0"))
+;; Package-Requires: ((emacs "26.0") (posframe "0.8.0") (ivy "0.13.0"))
 
 ;; This file is part of GNU Emacs.
 
