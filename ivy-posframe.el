@@ -324,7 +324,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-dispatching-done ()
   "Ivy-posframe's `ivy-dispatching-done'."
   (interactive)
-  (when (ivy-posframe-read-action)
+  (cl-letf (((symbol-function 'ivy-read-action) #'ivy-posframe-read-action))
     (ivy-done)))
 
 (defun ivy-posframe-read-action ()
