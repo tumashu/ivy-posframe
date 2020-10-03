@@ -353,17 +353,17 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-read-action ()
   "Ivy-posframe version `ivy-read-action'"
   (interactive)
-  (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key)
-         (caller (ivy-state-caller ivy-last))
-         (display-function
-          (or ivy--display-function
-              (cdr (or (assq caller ivy-display-functions-alist)
-                       (assq t ivy-display-functions-alist))))))
+  (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
     (call-interactively #'ivy-read-action)))
 
 (defun ivy-posframe-read-action-by-key (actions)
   "Ivy-posframe's `ivy-read-action-by-key'."
   (let* ((set-message-function nil)
+         (caller (ivy-state-caller ivy-last))
+         (display-function
+          (or ivy--display-function
+              (cdr (or (assq caller ivy-display-functions-alist)
+                       (assq t ivy-display-functions-alist)))))
          (hint (funcall ivy-read-action-format-function (cdr actions)))
          (resize-mini-windows t)
          (key "")
@@ -373,7 +373,6 @@ This variable is useful for `ivy-posframe-read-action' .")
                                     (string-prefix-p key (car x)))
                                   (cdr actions)))
                 (not (string= key (car (nth action-idx (cdr actions))))))
-      ;; NOTE: (setq key xxx) is only different from `ivy-read-action-by-key'
       (setq key (concat key (string
                              (read-key
                               (if (functionp display-function)
