@@ -322,13 +322,13 @@ This variable is useful for `ivy-posframe-read-action' .")
     (posframe-hide ivy-posframe-buffer)))
 
 (defun ivy-posframe-dispatching-done ()
-  "Select one of the available actions and call `ivy-done'."
+  "Ivy-posframe's `ivy-dispatching-done'."
   (interactive)
   (when (ivy-posframe-read-action)
     (ivy-done)))
 
 (defun ivy-posframe-read-action ()
-  "ivy-posframe version `ivy-read-action'"
+  "Ivy-posframe version `ivy-read-action'"
   (interactive)
   (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key)
          (caller (ivy-state-caller ivy-last))
@@ -339,6 +339,7 @@ This variable is useful for `ivy-posframe-read-action' .")
     (call-interactively #'ivy-read-action)))
 
 (defun ivy-posframe-read-action-by-key (actions)
+  "Ivy-posframe's `ivy-read-action-by-key'."
   (let* ((set-message-function nil)
          (hint (funcall ivy-read-action-format-function (cdr actions)))
          (resize-mini-windows t)
@@ -379,7 +380,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar avy-pre-action)
 
 (defun ivy-posframe-avy ()
-  "Jump to one of the current ivy candidates."
+  "Ivy-posframe's `ivy-avy'."
   (interactive)
   (let ((avy-pre-action #'ignore))
     (with-selected-window (ivy-posframe--window)
@@ -396,6 +397,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function avy--done "avy")
 
 (defun ivy-posframe--swiper-avy-candidates ()
+  "Ivy-posframe's `swiper-avy-candidates'."
   (let* (
          ;; We'll have overlapping overlays, so we sort all the
          ;; overlays in the visible region by their start, and then
@@ -437,6 +439,7 @@ This variable is useful for `ivy-posframe-read-action' .")
              cands)))))))
 
 (defun ivy-posframe--swiper-avy-candidate ()
+  "Ivy-posframe's `swiper--avy-candidate'."
   (cl-letf (((symbol-function 'swiper--avy-candidates) #'ivy-posframe--swiper-avy-candidates))
     (swiper--avy-candidate)))
 
@@ -444,6 +447,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function avy-candidate-beg "avy")
 
 (defun ivy-posframe--swiper--avy-goto (candidate)
+  "Ivy-posframe's `swiper--avy-goto'."
   (cond ((eq (cdr-safe candidate)
              (ivy-posframe--window))
          (let ((cand-text (with-current-buffer ivy-posframe-buffer
@@ -469,7 +473,7 @@ This variable is useful for `ivy-posframe-read-action' .")
            (avy-action-goto (avy-candidate-beg candidate))))))
 
 (defun ivy-posframe-swiper-avy ()
-  "ivy-posframe's `swiper-avy'."
+  "Ivy-posframe's `swiper-avy'."
   (interactive)
   (if (not (string-match-p "^ivy-posframe-display"
                            (symbol-name ivy--display-function)))
