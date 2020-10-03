@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017-2020 Free Software Foundation, Inc.
 
-;; Author: Feng Shu
+;; Author: Feng Shu <tumashu@163.com>
+;;         Naoya Yamashita <conao3@gmail.com>
 ;; Maintainer: Feng Shu <tumashu@163.com>
-;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; URL: https://github.com/tumashu/ivy-posframe
 ;; Version: 0.4.0
 ;; Keywords: abbrev, convenience, matching, ivy
@@ -154,69 +154,56 @@
 
 (defcustom ivy-posframe-style 'frame-center
   "The style of ivy-posframe."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
 When nil, Using current frame's font as fallback."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-width nil
   "The width of ivy-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-height nil
   "The height of ivy-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-min-width nil
   "The width of ivy-min-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-min-height nil
   "The height of ivy-min-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-size-function #'ivy-posframe-get-size
   "The function which is used to deal with posframe's size."
-  :group 'ivy-posframe
   :type 'function)
 
 (defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
 When 0, no border is showed."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-hide-minibuffer t
   "Hide input of minibuffer when using ivy-posframe."
-  :group 'ivy-posframe
   :type 'boolean)
 
 (defcustom ivy-posframe-parameters nil
   "The frame parameters used by ivy-posframe."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-height-alist nil
   "The `ivy-height-alist' while working ivy-posframe."
-  :group 'ivy-posframe
   :type 'sexp)
 
 (defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
   "The `ivy-display-functions-alist' while working ivy-posframe."
-  :group 'ivy-posframe
   :type 'sexp)
 
 (defcustom ivy-posframe-lighter " ivy-posframe"
   "The lighter string used by `ivy-posframe-mode'."
-  :group 'ivy-posframe
   :type 'string)
 
 (defface ivy-posframe
@@ -242,8 +229,7 @@ When 0, no border is showed."
 (defcustom ivy-posframe-buffer " *ivy-posframe-buffer*"
   "The posframe-buffer used by ivy-posframe."
   :set #'ivy-posframe-buffer-setter
-  :type 'string
-  :group 'ivy-posframe)
+  :type 'string)
 
 (defvar ivy-posframe--ignore-prompt nil
   "When non-nil, ivy-posframe will ignore prompt.
@@ -431,7 +417,7 @@ This variable is useful for `ivy-posframe-read-action' .")
                (cons (overlay-start ov)
                      (overlay-get ov 'window)))
              overlays-for-avy)
-     ;; NOTE: This line should be the *only* different from
+     ;; NOTE: This line should be the *only* difference from
      ;; `swiper-avy-candidates'.
      (with-current-buffer ivy-posframe-buffer
        (save-excursion
@@ -482,7 +468,9 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Ivy-posframe's `swiper-avy'."
   (interactive)
   (if (not (string-match-p "^ivy-posframe-display"
-                           (symbol-name ivy--display-function)))
+                           (or (ignore-errors
+                                 (symbol-name ivy--display-function))
+                               "")))
       ;; if swiper is not use ivy-posframe's display function.
       ;; call `swiper-avy'.
 
@@ -582,7 +570,6 @@ This variable is useful for `ivy-posframe-read-action' .")
   :global t
   :require 'ivy-posframe
   :lighter ivy-posframe-lighter
-  :group 'ivy-posframe
   :keymap '(([remap ivy-avy]              . ivy-posframe-avy)
             ([remap swiper-avy]           . ivy-posframe-swiper-avy)
             ([remap ivy-read-action]      . ivy-posframe-read-action)
