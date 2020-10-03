@@ -442,8 +442,34 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (declare-function avy-action-goto "avy")
 (declare-function avy-candidate-beg "avy")
+
+(defun ivy-posframe--swiper--avy-goto (candidate)
+  (cond ((eq (cdr-safe candidate)
+             (ivy-posframe--window))
+         (let ((cand-text (with-current-buffer ivy-posframe-buffer
+                            (save-excursion
+                              (goto-char (car candidate))
+                              (buffer-substring
+                               (line-beginning-position)
+                               (line-end-position))))))
+           (ivy-set-index
+            ;; cand-text may include "> ", using a hack way
+            ;; to deal with it.
+            (or (cl-some (lambda (n)
+                           (cl-position (substring cand-text n)
+                                        ivy--old-cands :test #'string=))
+                         '(0 1 2 3 4))
+                0))
+           (ivy--exhibit)
+           (ivy-done)
+           (ivy-call)))
+        ((or (consp candidate)
+             (number-or-marker-p candidate))
+         (ivy-quit-and-run
+           (avy-action-goto (avy-candidate-beg candidate))))))
+
 (defun ivy-posframe-swiper-avy ()
-  "Jump to one of the current swiper candidates."
+  "ivy-posframe's `swiper-avy'."
   (interactive)
   (if (not (string-match-p "^ivy-posframe-display"
                            (symbol-name ivy--display-function)))
@@ -464,28 +490,8 @@ This variable is useful for `ivy-posframe-read-action' .")
        (let ((swiper-min-highlight 1))
          (swiper--update-input-ivy))))
     (unless (string= ivy-text "")
-      (let ((candidate (ivy-posframe--swiper-avy-candidate)))
-        (cond ((eq (cdr candidate) (ivy-posframe--window))
-               (let ((cand-text (with-current-buffer ivy-posframe-buffer
-                                  (save-excursion
-                                    (goto-char (car candidate))
-                                    (buffer-substring
-                                     (line-beginning-position)
-                                     (line-end-position))))))
-                 (ivy-set-index
-                  ;; cand-text may include "> ", using a hack way
-                  ;; to deal with it.
-                  (or (cl-some (lambda (n)
-                                 (cl-position (substring cand-text n) ivy--old-cands :test #'string=))
-                               '(0 1 2 3 4))
-                      0))
-                 (ivy--exhibit)
-                 (ivy-done)
-                 (ivy-call)))
-              ((or (consp candidate)
-                   (number-or-marker-p candidate))
-               (ivy-quit-and-run
-                 (avy-action-goto (avy-candidate-beg candidate)))))))))
+      (ivy-posframe--swiper--avy-goto
+       (ivy-posframe--swiper-avy-candidate)))))
 
 ;;; Variables
 
