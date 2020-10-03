@@ -328,44 +328,44 @@ This variable is useful for `ivy-posframe-read-action' .")
     (ivy-done)))
 
 (defun ivy-posframe-read-action ()
-  "Change the action to one of the available ones.
-
-Return nil for `minibuffer-keyboard-quit' or wrong key during the
-selection, non-nil otherwise."
+  "ivy-posframe version `ivy-read-action'"
   (interactive)
-  (let* ((actions (ivy-state-action ivy-last))
+  (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key)
          (caller (ivy-state-caller ivy-last))
          (display-function
           (or ivy--display-function
               (cdr (or (assq caller ivy-display-functions-alist)
                        (assq t ivy-display-functions-alist))))))
-    (if (not (ivy--actionp actions))
-        t
-      (let* ((hint (funcall ivy-read-action-format-function (cdr actions)))
-             (resize-mini-windows t)
-             (key "")
-             action-idx)
-        (while (and (setq action-idx (cl-position-if
-                                      (lambda (x)
-                                        (string-prefix-p key (car x)))
-                                      (cdr actions)))
-                    (not (string= key (car (nth action-idx (cdr actions))))))
-          (setq key (concat key (string
-                                 (read-key
-                                  (if (functionp display-function)
-                                      (let ((ivy-posframe--ignore-prompt t))
-                                        (funcall display-function hint)
-                                        "Please type a key: ")
-                                    hint))))))
-        (cond ((member key '("" ""))
-               nil)
-              ((null action-idx)
-               (message "%s is not bound" key)
-               nil)
-              (t
-               (message "")
-               (setcar actions (1+ action-idx))
-               (ivy-set-action actions)))))))
+    (call-interactively #'ivy-read-action)))
+
+(defun ivy-posframe-read-action-by-key (actions)
+  (let* ((set-message-function nil)
+         (hint (funcall ivy-read-action-format-function (cdr actions)))
+         (resize-mini-windows t)
+         (key "")
+         action-idx)
+    (while (and (setq action-idx (cl-position-if
+                                  (lambda (x)
+                                    (string-prefix-p key (car x)))
+                                  (cdr actions)))
+                (not (string= key (car (nth action-idx (cdr actions))))))
+      (setq key (concat key (string
+                             (read-key
+                              (if (functionp display-function)
+                                  (let ((ivy-posframe--ignore-prompt t))
+                                    (funcall display-function hint)
+                                    "Please type a key: ")
+                                hint))))))
+    (ivy-shrink-after-dispatching)
+    (cond ((member key '("ESC" "C-g"))
+           nil)
+          ((null action-idx)
+           (message "%s is not bound" key)
+           nil)
+          (t
+           (message "")
+           (setcar actions (1+ action-idx))
+           (ivy-set-action actions)))))
 
 (defun ivy-posframe--window ()
   "Return the posframe window displaying `ivy-posframe-buffer'."
