@@ -394,8 +394,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function avy--remove-leading-chars "avy")
 (declare-function avy-push-mark "avy")
 (declare-function avy--done "avy")
-(defun ivy-posframe--swiper-avy-candidate ()
-  (let* ((avy-all-windows nil)
+
+(defun ivy-posframe--swiper-avy-candidates ()
+  (let* (
          ;; We'll have overlapping overlays, so we sort all the
          ;; overlays in the visible region by their start, and then
          ;; throw out non-Swiper overlays or overlapping Swiper
@@ -405,46 +406,39 @@ This variable is useful for `ivy-posframe-read-action' .")
                                                    (window-end)))
                                     #'< :key #'overlay-start))
          (min-overlay-start 0)
-         (overlays-for-avy (cl-remove-if-not
-                            (lambda (ov)
-                              (when (and (>= (overlay-start ov)
-                                             min-overlay-start)
-                                         (memq (overlay-get ov 'face)
-                                               swiper-faces))
-                                (setq min-overlay-start (overlay-start ov))))
-                            visible-overlays))
+         (overlays-for-avy
+          (cl-remove-if-not
+           (lambda (ov)
+             (when (and (>= (overlay-start ov)
+                            min-overlay-start)
+                        (memq (overlay-get ov 'face)
+                              (append swiper-faces swiper-background-faces)))
+               (setq min-overlay-start (overlay-start ov))))
+           visible-overlays))
          (offset (if (eq (ivy-state-caller ivy-last) 'swiper) 1 0))
-         (window (ivy-posframe--window))
-         (candidates (nconc
-                      (mapcar (lambda (ov)
-                                (cons (overlay-start ov)
-                                      (overlay-get ov 'window)))
-                              overlays-for-avy)
-                      (with-current-buffer ivy-posframe-buffer
-                        (save-excursion
-                          (save-restriction
-                            (narrow-to-region (window-start window)
-                                              (window-end window))
-                            (goto-char (point-min))
-                            (forward-line)
-                            (let (cands)
-                              (while (not (eobp))
-                                (push (cons (+ (point) offset) window)
-                                      cands)
-                                (forward-line))
-                              cands)))))))
-    (unwind-protect
-        (prog2
-            (avy--make-backgrounds
-             (append (avy-window-list)
-                     (list (ivy-state-window ivy-last))))
-            (if (eq avy-style 'de-bruijn)
-                (avy-read-de-bruijn candidates avy-keys)
-              (avy-read (avy-tree candidates avy-keys)
-                        #'avy--overlay-post
-                        #'avy--remove-leading-chars))
-          (avy-push-mark))
-      (avy--done))))
+         (window (ivy-posframe--window)))
+    (nconc
+     (mapcar (lambda (ov)
+               (cons (overlay-start ov)
+                     (overlay-get ov 'window)))
+             overlays-for-avy)
+     (with-current-buffer ivy-posframe-buffer
+       (save-excursion
+         (save-restriction
+           (narrow-to-region (window-start) (window-end))
+           (goto-char (point-min))
+           (forward-line)
+           (let ((win (selected-window))
+                 cands)
+             (while (not (eobp))
+               (push (cons (+ (point) offset) win)
+                     cands)
+               (forward-line))
+             cands)))))))
+
+(defun ivy-posframe--swiper-avy-candidate ()
+  (cl-letf (((symbol-function 'swiper--avy-candidates) #'ivy-posframe--swiper-avy-candidates))
+    (swiper--avy-candidate)))
 
 (declare-function avy-action-goto "avy")
 (declare-function avy-candidate-beg "avy")
