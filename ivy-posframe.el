@@ -435,8 +435,20 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--swiper-avy-candidate ()
   "Ivy-posframe's `swiper--avy-candidate'."
-  (cl-letf (((symbol-function 'swiper--avy-candidates) #'ivy-posframe--swiper-avy-candidates))
-    (swiper--avy-candidate)))
+  (let ((candidates (ivy-posframe--swiper-avy-candidates))
+        (avy-all-windows nil))
+    (unwind-protect
+        (prog2
+            (avy--make-backgrounds
+             (append (avy-window-list)
+                     (list (ivy-state-window ivy-last))))
+            (if (eq avy-style 'de-bruijn)
+                (avy-read-de-bruijn candidates avy-keys)
+              (avy-read (avy-tree candidates avy-keys)
+                        #'avy--overlay-post
+                        #'avy--remove-leading-chars))
+          (avy-push-mark))
+      (avy--done))))
 
 (defun ivy-posframe--swiper-avy-goto (candidate)
   "Ivy-posframe's `swiper--avy-goto'."
