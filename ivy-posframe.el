@@ -333,13 +333,13 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-dispatching-done ()
   "Ivy-posframe's `ivy-dispatching-done'."
   (interactive)
-  (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
+  (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
     (ivy-dispatching-done)))
 
 (defun ivy-posframe-read-action ()
   "Ivy-posframe version `ivy-read-action'"
   (interactive)
-  (let* ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
+  (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
     (call-interactively #'ivy-read-action)))
 
 (defun ivy-posframe-read-action-by-key (actions)
