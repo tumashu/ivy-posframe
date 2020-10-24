@@ -1,15 +1,14 @@
 ;;; ivy-posframe.el --- Using posframe to show Ivy  -*- lexical-binding: t -*-
 
+;; Copyright (C) 2017-2020 Free Software Foundation, Inc.
 
-;; Copyright (C) 2017-2018 Free Software Foundation, Inc.
-
-;; Author: Feng Shu
+;; Author: Feng Shu <tumashu@163.com>
+;;         Naoya Yamashita <conao3@gmail.com>
 ;; Maintainer: Feng Shu <tumashu@163.com>
-;; Maintainer: Naoya Yamashita <conao3@gmail.com>
 ;; URL: https://github.com/tumashu/ivy-posframe
-;; Version: 0.1.0
+;; Version: 0.5.1
 ;; Keywords: abbrev, convenience, matching, ivy
-;; Package-Requires: ((emacs "26.0")(posframe "0.1.0")(ivy "0.11.0"))
+;; Package-Requires: ((emacs "26.0") (posframe "0.8.0") (ivy "0.13.0"))
 
 ;; This file is part of GNU Emacs.
 
@@ -153,71 +152,58 @@
   :group 'ivy
   :prefix "ivy-posframe")
 
-(defcustom ivy-posframe-style 'window-bottom-left
+(defcustom ivy-posframe-style 'frame-center
   "The style of ivy-posframe."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-font nil
   "The font used by ivy-posframe.
 When nil, Using current frame's font as fallback."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-width nil
   "The width of ivy-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-height nil
   "The height of ivy-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-min-width nil
   "The width of ivy-min-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-min-height nil
   "The height of ivy-min-posframe."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-size-function #'ivy-posframe-get-size
   "The function which is used to deal with posframe's size."
-  :group 'ivy-posframe
   :type 'function)
 
 (defcustom ivy-posframe-border-width 1
   "The border width used by ivy-posframe.
 When 0, no border is showed."
-  :group 'ivy-posframe
   :type 'number)
 
 (defcustom ivy-posframe-hide-minibuffer t
   "Hide input of minibuffer when using ivy-posframe."
-  :group 'ivy-posframe
   :type 'boolean)
 
 (defcustom ivy-posframe-parameters nil
   "The frame parameters used by ivy-posframe."
-  :group 'ivy-posframe
   :type 'string)
 
 (defcustom ivy-posframe-height-alist nil
   "The `ivy-height-alist' while working ivy-posframe."
-  :group 'ivy-posframe
   :type 'sexp)
 
 (defcustom ivy-posframe-display-functions-alist '((t . ivy-posframe-display))
   "The `ivy-display-functions-alist' while working ivy-posframe."
-  :group 'ivy-posframe
   :type 'sexp)
 
 (defcustom ivy-posframe-lighter " ivy-posframe"
   "The lighter string used by `ivy-posframe-mode'."
-  :group 'ivy-posframe
   :type 'string)
 
 (defface ivy-posframe
@@ -243,8 +229,7 @@ When 0, no border is showed."
 (defcustom ivy-posframe-buffer " *ivy-posframe-buffer*"
   "The posframe-buffer used by ivy-posframe."
   :set #'ivy-posframe-buffer-setter
-  :type 'string
-  :group 'ivy-posframe)
+  :type 'string)
 
 (defvar ivy-posframe--ignore-prompt nil
   "When non-nil, ivy-posframe will ignore prompt.
@@ -256,66 +241,22 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe with POSHANDLER."
-  (let ((.width (or (alist-get 'width ivy-posframe-parameters) 0.80))
-        (.height (or (alist-get 'height ivy-posframe-parameters) 0.15)))
-    (if (not (posframe-workable-p))
-        (ivy-display-function-fallback str)
-      (with-ivy-window
-        (apply #'posframe-show
-               ivy-posframe-buffer
-               :font ivy-posframe-font
-               :string str
-               :position (point)
-               :poshandler poshandler
-               ;; NOTE: width and height have been added, this is done in the
-               ;;       helm-posframe code (which doesn't jump around.)
-               :width
-               (max (cl-typecase .width
-                      (integer .width)
-                      (float (truncate (* (frame-width) .width)))
-                      (function (funcall .width))
-                      (t 0))
-                    .width)
-               :height
-               (max (cl-typecase .height
-                      (integer .height)
-                      (float (truncate (* (frame-height) .height)))
-                      (t 0))
-                    .height)
-               :background-color (face-attribute 'ivy-posframe :background nil t)
-               :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-               :internal-border-width ivy-posframe-border-width
-               :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-               :override-parameters ivy-posframe-parameters
-               (funcall ivy-posframe-size-function))
-        (ivy-posframe--add-prompt 'ignore))
-      (with-current-buffer ivy-posframe-buffer
-        (setq-local truncate-lines ivy-truncate-lines)))))
-
-(defun ivy-posframe--minibuffer-setup (fn &rest args)
-  "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
-  (if (not (display-graphic-p))
-      (apply fn args)
-    (let ((ivy-fixed-height-minibuffer nil))
-      (apply fn args))
-    (when (and ivy-posframe-hide-minibuffer
-               (posframe-workable-p)
-               ;; if display-function is not a ivy-posframe style display-function.
-               ;; do not hide minibuffer.
-               ;; The hypothesis is that all ivy-posframe style display functions
-               ;; have ivy-posframe as name prefix, need improve!
-
-               ;; NOTE: This has been disabled
-               ;; (string-match-p "^ivy-posframe" (symbol-name ivy--display-function))
-               )
-      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-        (overlay-put ov 'window (selected-window))
-        (overlay-put ov 'ivy-posframe t)
-        (overlay-put ov 'face
-                     (let ((bg-color (face-background 'default nil)))
-                       `(:background ,bg-color :foreground ,bg-color)))
-        (setq-local cursor-type nil)))))
-
+  (if (not (posframe-workable-p))
+      (ivy-display-function-fallback str)
+    (with-ivy-window
+      (apply #'posframe-show
+             ivy-posframe-buffer
+             :font ivy-posframe-font
+             :string str
+             :position (point)
+             :poshandler poshandler
+             :background-color (face-attribute 'ivy-posframe :background nil t)
+             :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+             :internal-border-width ivy-posframe-border-width
+             :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
+             :override-parameters ivy-posframe-parameters
+             (funcall ivy-posframe-size-function))
+      (ivy-posframe--add-prompt 'ignore))))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
@@ -365,69 +306,13 @@ This variable is useful for `ivy-posframe-read-action' .")
   (when (posframe-workable-p)
     (posframe-hide ivy-posframe-buffer)))
 
-(defun ivy-posframe-dispatching-done ()
-  "Select one of the available actions and call `ivy-done'."
-  (interactive)
-  (when (ivy-posframe-read-action)
-    (ivy-done)))
-
-(defun ivy-posframe-read-action ()
-  "Change the action to one of the available ones.
-
-Return nil for `minibuffer-keyboard-quit' or wrong key during the
-selection, non-nil otherwise."
-  (interactive)
-  (let* ((actions (ivy-state-action ivy-last))
-         (caller (ivy-state-caller ivy-last))
-         (display-function
-          (or ivy--display-function
-              (cdr (or (assq caller ivy-display-functions-alist)
-                       (assq t ivy-display-functions-alist))))))
-    (if (not (ivy--actionp actions))
-        t
-      (let* ((hint (funcall ivy-read-action-format-function (cdr actions)))
-             (resize-mini-windows t)
-             (key "")
-             action-idx)
-        (while (and (setq action-idx (cl-position-if
-                                      (lambda (x)
-                                        (string-prefix-p key (car x)))
-                                      (cdr actions)))
-                    (not (string= key (car (nth action-idx (cdr actions))))))
-          (setq key (concat key (string
-                                 (read-key
-                                  (if (functionp display-function)
-                                      (let ((ivy-posframe--ignore-prompt t))
-                                        (funcall display-function hint)
-                                        "Please type a key: ")
-                                    hint))))))
-        (cond ((member key '("" ""))
-               nil)
-              ((null action-idx)
-               (message "%s is not bound" key)
-               nil)
-              (t
-               (message "")
-               (setcar actions (1+ action-idx))
-               (ivy-set-action actions)))))))
-
-(defun ivy-posframe--window ()
-  "Return the posframe window displaying `ivy-posframe-buffer'."
-  (frame-selected-window
-   (buffer-local-value 'posframe--frame
-                       (get-buffer ivy-posframe-buffer))))
-
 (defvar avy-all-windows)
 (defvar avy-keys)
 (defvar avy-style)
 (defvar avy-pre-action)
-
-(defun ivy-posframe-avy ()
-  "Jump to one of the current ivy candidates."
-  (interactive)
-  (let ((avy-pre-action #'ignore))
-    (with-selected-window (ivy-posframe--window)
-      (ivy-avy))))
+(defvar swiper-faces)
+(defvar swiper-background-faces)
+(defvar swiper-min-highlight)
 
 (declare-function avy--make-backgrounds "avy")
 (declare-function avy-window-list "avy")
@@ -438,8 +323,76 @@ selection, non-nil otherwise."
 (declare-function avy--remove-leading-chars "avy")
 (declare-function avy-push-mark "avy")
 (declare-function avy--done "avy")
-(defun ivy-posframe--swiper-avy-candidate ()
-  (let* ((avy-all-windows nil)
+(declare-function avy-action-goto "avy")
+(declare-function avy-candidate-beg "avy")
+(declare-function ivy-avy "avy")
+(declare-function swiper--avy-candidate "swiper")
+(declare-function swiper-avy "swiper")
+(declare-function swiper--update-input-ivy "swiper")
+
+(defun ivy-posframe-dispatching-done ()
+  "Ivy-posframe's `ivy-dispatching-done'."
+  (interactive)
+  (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
+    (ivy-dispatching-done)))
+
+(defun ivy-posframe-read-action ()
+  "Ivy-posframe version `ivy-read-action'"
+  (interactive)
+  (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
+    (call-interactively #'ivy-read-action)))
+
+(defun ivy-posframe-read-action-by-key (actions)
+  "Ivy-posframe's `ivy-read-action-by-key'."
+  (let* ((set-message-function nil)
+         (caller (ivy-state-caller ivy-last))
+         (display-function
+          (or ivy--display-function
+              (cdr (or (assq caller ivy-display-functions-alist)
+                       (assq t ivy-display-functions-alist)))))
+         (hint (funcall ivy-read-action-format-function (cdr actions)))
+         (resize-mini-windows t)
+         (key "")
+         action-idx)
+    (while (and (setq action-idx (cl-position-if
+                                  (lambda (x)
+                                    (string-prefix-p key (car x)))
+                                  (cdr actions)))
+                (not (string= key (car (nth action-idx (cdr actions))))))
+      (setq key (concat key (string
+                             (read-key
+                              (if (functionp display-function)
+                                  (let ((ivy-posframe--ignore-prompt t))
+                                    (funcall display-function hint)
+                                    "Please type a key: ")
+                                hint))))))
+    (ivy-shrink-after-dispatching)
+    (cond ((member key '("ESC" "C-g"))
+           nil)
+          ((null action-idx)
+           (message "%s is not bound" key)
+           nil)
+          (t
+           (message "")
+           (setcar actions (1+ action-idx))
+           (ivy-set-action actions)))))
+
+(defun ivy-posframe--window ()
+  "Return the posframe window displaying `ivy-posframe-buffer'."
+  (frame-selected-window
+   (buffer-local-value 'posframe--frame
+                       (get-buffer ivy-posframe-buffer))))
+
+(defun ivy-posframe-avy ()
+  "Ivy-posframe's `ivy-avy'."
+  (interactive)
+  (let ((avy-pre-action #'ignore))
+    (with-selected-window (ivy-posframe--window)
+      (ivy-avy))))
+
+(defun ivy-posframe--swiper-avy-candidates ()
+  "Ivy-posframe's `swiper-avy-candidates'."
+  (let* (
          ;; We'll have overlapping overlays, so we sort all the
          ;; overlays in the visible region by their start, and then
          ;; throw out non-Swiper overlays or overlapping Swiper
@@ -449,34 +402,41 @@ selection, non-nil otherwise."
                                                    (window-end)))
                                     #'< :key #'overlay-start))
          (min-overlay-start 0)
-         (overlays-for-avy (cl-remove-if-not
-                            (lambda (ov)
-                              (when (and (>= (overlay-start ov)
-                                             min-overlay-start)
-                                         (memq (overlay-get ov 'face)
-                                               swiper-faces))
-                                (setq min-overlay-start (overlay-start ov))))
-                            visible-overlays))
-         (offset (if (eq (ivy-state-caller ivy-last) 'swiper) 1 0))
-         (window (ivy-posframe--window))
-         (candidates (nconc
-                      (mapcar (lambda (ov)
-                                (cons (overlay-start ov)
-                                      (overlay-get ov 'window)))
-                              overlays-for-avy)
-                      (with-current-buffer ivy-posframe-buffer
-                        (save-excursion
-                          (save-restriction
-                            (narrow-to-region (window-start window)
-                                              (window-end window))
-                            (goto-char (point-min))
-                            (forward-line)
-                            (let (cands)
-                              (while (not (eobp))
-                                (push (cons (+ (point) offset) window)
-                                      cands)
-                                (forward-line))
-                              cands)))))))
+         (overlays-for-avy
+          (cl-remove-if-not
+           (lambda (ov)
+             (when (and (>= (overlay-start ov)
+                            min-overlay-start)
+                        (memq (overlay-get ov 'face)
+                              (append swiper-faces swiper-background-faces)))
+               (setq min-overlay-start (overlay-start ov))))
+           visible-overlays))
+         (offset (if (eq (ivy-state-caller ivy-last) 'swiper) 1 0)))
+    (nconc
+     (mapcar (lambda (ov)
+               (cons (overlay-start ov)
+                     (overlay-get ov 'window)))
+             overlays-for-avy)
+     ;; NOTE: This line should be the *only* difference from
+     ;; `swiper-avy-candidates'.
+     (with-current-buffer ivy-posframe-buffer
+       (save-excursion
+         (save-restriction
+           (narrow-to-region (window-start) (window-end))
+           (goto-char (point-min))
+           (forward-line)
+           (let ((win (selected-window))
+                 cands)
+             (while (not (eobp))
+               (push (cons (+ (point) offset) win)
+                     cands)
+               (forward-line))
+             cands)))))))
+
+(defun ivy-posframe--swiper-avy-candidate ()
+  "Ivy-posframe's `swiper--avy-candidate'."
+  (let ((candidates (ivy-posframe--swiper-avy-candidates))
+        (avy-all-windows nil))
     (unwind-protect
         (prog2
             (avy--make-backgrounds
@@ -490,21 +450,45 @@ selection, non-nil otherwise."
           (avy-push-mark))
       (avy--done))))
 
-(declare-function avy-action-goto "avy")
-(declare-function avy-candidate-beg "avy")
+(defun ivy-posframe--swiper-avy-goto (candidate)
+  "Ivy-posframe's `swiper--avy-goto'."
+  (cond ((eq (cdr-safe candidate)
+             (ivy-posframe--window))
+         (let ((cand-text (with-current-buffer ivy-posframe-buffer
+                            (save-excursion
+                              (goto-char (car candidate))
+                              (buffer-substring
+                               (line-beginning-position)
+                               (line-end-position))))))
+           (ivy-set-index
+            ;; cand-text may include "> ", using a hack way
+            ;; to deal with it.
+            (or (cl-some (lambda (n)
+                           (cl-position (substring cand-text n)
+                                        ivy--old-cands :test #'string=))
+                         '(0 1 2 3 4))
+                0))
+           (ivy--exhibit)
+           (ivy-done)
+           (ivy-call)))
+        ((or (consp candidate)
+             (number-or-marker-p candidate))
+         (ivy-quit-and-run
+           (avy-action-goto (avy-candidate-beg candidate))))))
+
 (defun ivy-posframe-swiper-avy ()
-  "Jump to one of the current swiper candidates."
+  "Ivy-posframe's `swiper-avy'."
   (interactive)
   (if (not (string-match-p "^ivy-posframe-display"
-                           (symbol-name ivy--display-function)))
+                           (or (ignore-errors
+                                 (symbol-name ivy--display-function))
+                               "")))
       ;; if swiper is not use ivy-posframe's display function.
       ;; call `swiper-avy'.
 
       ;; FIXME: This assume all ivy-posframe display functions are
       ;; prefixed with ivy-posframe-display.
       (swiper-avy)
-    (unless (require 'avy nil 'noerror)
-      (error "Package avy isn't installed"))
     (unless (require 'avy nil 'noerror)
       (error "Package avy isn't installed"))
     (cl-case (length ivy-text)
@@ -514,28 +498,8 @@ selection, non-nil otherwise."
        (let ((swiper-min-highlight 1))
          (swiper--update-input-ivy))))
     (unless (string= ivy-text "")
-      (let ((candidate (ivy-posframe--swiper-avy-candidate)))
-        (cond ((eq (cdr candidate) (ivy-posframe--window))
-               (let ((cand-text (with-current-buffer ivy-posframe-buffer
-                                  (save-excursion
-                                    (goto-char (car candidate))
-                                    (buffer-substring
-                                     (line-beginning-position)
-                                     (line-end-position))))))
-                 (ivy-set-index
-                  ;; cand-text may include "> ", using a hack way
-                  ;; to deal with it.
-                  (or (cl-some (lambda (n)
-                                 (cl-position (substring cand-text n) ivy--old-cands :test #'string=))
-                               '(0 1 2 3 4))
-                      0))
-                 (ivy--exhibit)
-                 (ivy-done)
-                 (ivy-call)))
-              ((or (consp candidate)
-                   (number-or-marker-p candidate))
-               (ivy-quit-and-run
-                 (avy-action-goto (avy-candidate-beg candidate)))))))))
+      (ivy-posframe--swiper-avy-goto
+       (ivy-posframe--swiper-avy-candidate)))))
 
 ;;; Variables
 
@@ -597,7 +561,6 @@ selection, non-nil otherwise."
   :global t
   :require 'ivy-posframe
   :lighter ivy-posframe-lighter
-  :group 'ivy-posframe
   :keymap '(([remap ivy-avy]              . ivy-posframe-avy)
             ([remap swiper-avy]           . ivy-posframe-swiper-avy)
             ([remap ivy-read-action]      . ivy-posframe-read-action)
@@ -609,12 +572,6 @@ selection, non-nil otherwise."
     (mapc (lambda (elm)
             (advice-remove (car elm) (cdr elm)))
           ivy-posframe-advice-alist)))
-
-;;;###autoload
-(defun ivy-posframe-enable ()
-  (interactive)
-  (ivy-posframe-mode 1)
-  (message "ivy-posframe: suggest use `ivy-posframe-mode' instead."))
 
 (provide 'ivy-posframe)
 
