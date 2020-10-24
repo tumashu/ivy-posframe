@@ -535,6 +535,27 @@ Otherwise, error."
 
 ;;; Advice
 
+(defun ivy-posframe--minibuffer-setup (fn &rest args)
+  "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
+  (if (not (display-graphic-p))
+      (apply fn args)
+    (let ((ivy-fixed-height-minibuffer nil))
+      (apply fn args))
+    (when (and ivy-posframe-hide-minibuffer
+               (posframe-workable-p)
+               ;; if display-function is not a ivy-posframe style display-function.
+               ;; do not hide minibuffer.
+               ;; The hypothesis is that all ivy-posframe style display functions
+               ;; have ivy-posframe as name prefix, need improve!
+               (string-match-p "ivy-posframe" (symbol-name ivy--display-function)))
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'ivy-posframe t)
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil)))))
+
 (defun ivy-posframe--add-prompt (fn &rest args)
   "Add the ivy prompt to the posframe.  Advice FN with ARGS."
   (apply fn args)
