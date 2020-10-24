@@ -239,24 +239,48 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar emacs-basic-display)
 (defvar ivy--display-function)
 
+(defun ivy-posframe--convert-size-px (size full)
+  "Convert a SIZE to pixels where FULL is the maximum width/height.
+
+The returned pixel size `out' will always fit 0 <= `out' <= `full'.
+
+The SIZE can be one of `integer', `float', or `function'
+If SIZE is a `float', then it represents a fraction of FULL.
+If SIZE is an `integer', then it /is/ the size.
+If SIZE is a `function', then the result of calling it with no parameters
+is the size.
+Otherwise, error."
+  (max 0 (min (cl-typecase size
+                (integer size)
+                (float (truncate (* full size)))
+                (function (funcall size))
+                (t (error "Invalid SIZE type")))
+              full)))
+
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe with POSHANDLER."
-  (if (not (posframe-workable-p))
-      (ivy-display-function-fallback str)
-    (with-ivy-window
-      (apply #'posframe-show
-             ivy-posframe-buffer
-             :font ivy-posframe-font
-             :string str
-             :position (point)
-             :poshandler poshandler
-             :background-color (face-attribute 'ivy-posframe :background nil t)
-             :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-             :internal-border-width ivy-posframe-border-width
-             :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-             :override-parameters ivy-posframe-parameters
-             (funcall ivy-posframe-size-function))
-      (ivy-posframe--add-prompt 'ignore))))
+  (let ((width (or (alist-get 'width ivy-posframe-parameters) 0.80))
+        (height (or (alist-get 'height ivy-posframe-parameters) 0.15)))
+    (if (posframe-workable-p)
+        (with-ivy-window
+          (apply #'posframe-show
+                 ivy-posframe-buffer
+                 :font ivy-posframe-font
+                 :string str
+                 :position (point)
+                 :poshandler poshandler
+                 :background-color (face-attribute 'ivy-posframe :background nil t)
+                 :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+                 :internal-border-width ivy-posframe-border-width
+                 :width (ivy-posframe--convert-size-px width (frame-width))
+                 :height (ivy-posframe--convert-size-px height (frame-height))
+                 :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
+                 :override-parameters ivy-posframe-parameters
+                 (funcall ivy-posframe-size-function))
+          (ivy-posframe--add-prompt 'ignore))
+      (ivy-display-function-fallback str))
+    (with-current-buffer ivy-posframe-buffer
+      (setq-local truncate-lines ivy-truncate-lines))))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
