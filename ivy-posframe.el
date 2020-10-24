@@ -543,11 +543,9 @@ Otherwise, error."
       (apply fn args))
     (when (and ivy-posframe-hide-minibuffer
                (posframe-workable-p)
-               ;; if display-function is not a ivy-posframe style display-function.
-               ;; do not hide minibuffer.
-               ;; The hypothesis is that all ivy-posframe style display functions
-               ;; have ivy-posframe as name prefix, need improve!
-               (string-match-p "ivy-posframe" (symbol-name ivy--display-function)))
+               ;; Assume that we only need the framebuffer if using ivy-display-function-fallback
+               (not (eq 'ivy-display-function-fallback
+                        ivy--display-function)))
       (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
         (overlay-put ov 'window (selected-window))
         (overlay-put ov 'ivy-posframe t)
