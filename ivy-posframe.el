@@ -531,7 +531,9 @@ This variable is useful for `ivy-posframe-read-action' .")
         (overlay-put ov 'ivy-posframe t)
         (overlay-put ov 'face
                      (let ((bg-color (face-background 'default nil)))
-                       `(:background ,bg-color :foreground ,bg-color)))
+                       `( :background ,bg-color :foreground ,bg-color
+                          :box nil :underline nil
+                          :overline nil :strike-through nil)))
         (setq-local cursor-type nil)))))
 
 (defun ivy-posframe--add-prompt (fn &rest args)
