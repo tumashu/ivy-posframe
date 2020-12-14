@@ -332,10 +332,10 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function swiper-avy "swiper")
 (declare-function swiper--update-input-ivy "swiper")
 
-(defun ivy--posframe-dispatching-done ()
+(defun ivy-posframe--dispatching-done ()
   "Select one of the available actions and call `ivy-done'."
   (interactive)
-  (let ((ivy-exit 'ivy--posframe-dispatching-done))
+  (let ((ivy-exit 'ivy-posframe--dispatching-done))
     (when (ivy-read-action)
       (ivy-done)))
   (ivy-posframe-shrink-after-dispatching))
@@ -344,7 +344,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   "Ivy-posframe's `ivy-dispatching-done'."
   (interactive)
   (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
-    (ivy--posframe-dispatching-done)))
+    (ivy-posframe--dispatching-done)))
 
 (defun ivy-posframe-read-action ()
   "Ivy-posframe version `ivy-read-action'"
