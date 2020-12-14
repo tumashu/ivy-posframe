@@ -332,11 +332,19 @@ This variable is useful for `ivy-posframe-read-action' .")
 (declare-function swiper-avy "swiper")
 (declare-function swiper--update-input-ivy "swiper")
 
+(defun ivy-posframe--dispatching-done ()
+  "Select one of the available actions and call `ivy-done'."
+  (interactive)
+  (let ((ivy-exit 'ivy-posframe--dispatching-done))
+    (when (ivy-read-action)
+      (ivy-done)))
+  (ivy-posframe-shrink-after-dispatching))
+
 (defun ivy-posframe-dispatching-done ()
   "Ivy-posframe's `ivy-dispatching-done'."
   (interactive)
   (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
-    (ivy-dispatching-done)))
+    (ivy-posframe--dispatching-done)))
 
 (defun ivy-posframe-read-action ()
   "Ivy-posframe version `ivy-read-action'"
@@ -369,7 +377,7 @@ This variable is useful for `ivy-posframe-read-action' .")
                                      (funcall display-function hint)
                                      "Please type a key: ")
                                  hint)))))))
-    (ivy-shrink-after-dispatching)
+    (ivy-posframe-shrink-after-dispatching)
     (cond ((member key '("ESC" "C-g" "M-o"))
            nil)
           ((null action-idx)
@@ -379,6 +387,11 @@ This variable is useful for `ivy-posframe-read-action' .")
            (message "")
            (setcar actions (1+ action-idx))
            (ivy-set-action actions)))))
+
+(defun ivy-posframe-shrink-after-dispatching ()
+  "Shrink the minibuffer to the minimum size after dispatching."
+  (when (window-minibuffer-p)
+    (window-resize nil (- (window-size)))))
 
 (defun ivy-posframe--window ()
   "Return the posframe window displaying `ivy-posframe-buffer'."
