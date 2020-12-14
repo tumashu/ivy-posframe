@@ -361,15 +361,16 @@ This variable is useful for `ivy-posframe-read-action' .")
                                     (string-prefix-p key (car x)))
                                   (cdr actions)))
                 (not (string= key (car (nth action-idx (cdr actions))))))
-      (setq key (concat key (string
-                             (read-key
-                              (if (functionp display-function)
-                                  (let ((ivy-posframe--ignore-prompt t))
-                                    (funcall display-function hint)
-                                    "Please type a key: ")
-                                hint))))))
+      (setq key (concat key (key-description
+                             (vector
+                              (read-key
+                               (if (functionp display-function)
+                                   (let ((ivy-posframe--ignore-prompt t))
+                                     (funcall display-function hint)
+                                     "Please type a key: ")
+                                 hint)))))))
     (ivy-shrink-after-dispatching)
-    (cond ((member key '("ESC" "C-g"))
+    (cond ((member key '("ESC" "C-g" "M-o"))
            nil)
           ((null action-idx)
            (message "%s is not bound" key)
