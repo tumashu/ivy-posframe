@@ -3,23 +3,23 @@ Note: this file is auto converted from ivy-posframe.el by [el2org](https://githu
 
 # &#30446;&#24405;
 
-1.  [ivy-posframe README](#org5d8bfea)
-    1.  [What is ivy-posframe](#orgfdd7bf8)
-    2.  [Display functions](#orgb92156c)
-    3.  [How to enable ivy-posframe](#org8551bde)
-        1.  [Global mode](#org6e76c8a)
-        2.  [Per-command mode.](#org92bda7d)
-    4.  [Tips](#org0c88487)
-        1.  [How to show fringe to ivy-posframe](#org1a9c7a2)
-        2.  [How to custom your ivy-posframe style](#org22dcffc)
+1.  [ivy-posframe README](#org463a12b)
+    1.  [What is ivy-posframe](#org5abf01f)
+    2.  [Display functions](#orge72c857)
+    3.  [How to enable ivy-posframe](#org539a4ee)
+        1.  [Global mode](#orgb57af76)
+        2.  [Per-command mode.](#orgcb1ef62)
+    4.  [Tips](#orgceeab9c)
+        1.  [How to show fringe to ivy-posframe](#orga05a647)
+        2.  [How to custom your ivy-posframe style](#org70f0efd)
 
 
-<a id="org5d8bfea"></a>
+<a id="org463a12b"></a>
 
 # ivy-posframe README
 
 
-<a id="orgfdd7bf8"></a>
+<a id="org5abf01f"></a>
 
 ## What is ivy-posframe
 
@@ -30,7 +30,7 @@ NOTE: ivy-posframe requires Emacs 26 and do not support mouse
 click.
 
 
-<a id="orgb92156c"></a>
+<a id="orge72c857"></a>
 
 ## Display functions
 
@@ -46,12 +46,12 @@ click.
     ![img](./snapshots/ivy-posframe-display-at-point.png)
 
 
-<a id="org8551bde"></a>
+<a id="org539a4ee"></a>
 
 ## How to enable ivy-posframe
 
 
-<a id="org6e76c8a"></a>
+<a id="orgb57af76"></a>
 
 ### Global mode
 
@@ -66,7 +66,7 @@ click.
     (ivy-posframe-mode 1)
 
 
-<a id="org92bda7d"></a>
+<a id="orgcb1ef62"></a>
 
 ### Per-command mode.
 
@@ -122,12 +122,12 @@ by ivy to find display function in \`ivy-display-functions-alist',
 "C-h v this-command" is a good idea.
 
 
-<a id="org0c88487"></a>
+<a id="orgceeab9c"></a>
 
 ## Tips
 
 
-<a id="org1a9c7a2"></a>
+<a id="orga05a647"></a>
 
 ### How to show fringe to ivy-posframe
 
@@ -139,7 +139,7 @@ By the way, User can set **any** parameters of ivy-posframe with
 the help of \`ivy-posframe-parameters'.
 
 
-<a id="org22dcffc"></a>
+<a id="org70f0efd"></a>
 
 ### How to custom your ivy-posframe style
 
