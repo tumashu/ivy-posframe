@@ -180,11 +180,14 @@ When nil, Using current frame's font as fallback."
 (defcustom ivy-posframe-parent-frame-poshandler nil
   "The parent frame poshandler use by ivy-posframe.
 
-User can set it to a function like:
+User can set it to a function like below in EXWM environment, if
+EXWM's emacs position is (0 0).
 
    (lambda () (cons 0 0))
 
-in EXWM environment."
+if not, user should provide own function, a reference is:
+
+`posframe-parent-frame-poshandler-xwininfo'"
   :type 'function)
 
 (defcustom ivy-posframe-size-function #'ivy-posframe-get-size
