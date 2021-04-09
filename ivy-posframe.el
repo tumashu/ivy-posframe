@@ -178,17 +178,10 @@ When nil, Using current frame's font as fallback."
   :type 'number)
 
 (define-obsolete-variable-alias 'ivy-posframe-parent-frame-poshandler 'ivy-posframe-refposhandler "0.6")
-(defcustom ivy-posframe-refposhandler nil
-  "The parent frame poshandler use by ivy-posframe.
+(defcustom ivy-posframe-refposhandler #'ivy-posframe-refposhandler-default
+  "The refposhandler use by ivy-posframe.
 
-User can set it to a function like below in EXWM environment, if
-EXWM's emacs position is (0 0).
-
-   (lambda (_frame) (cons 0 0))
-
-if not, user should provide own function, a reference is:
-
-`posframe-refposhandler-xwininfo'"
+NOTE: This variable is very useful to EXWM users."
   :type 'function)
 
 (defcustom ivy-posframe-size-function #'ivy-posframe-get-size
@@ -252,6 +245,20 @@ This variable is useful for `ivy-posframe-read-action' .")
 ;; Fix warn
 (defvar emacs-basic-display)
 (defvar ivy--display-function)
+(defvar exwm--connection)
+
+(defun ivy-posframe-refposhandler-default (&optional frame)
+  "The default posframe refposhandler used by ivy-posframe."
+  (cond
+   ;; EXWM environment
+   (exwm--connection
+    (or (ignore-errors
+          ;; Need user install xwininfo.
+          (posframe-refposhandler-xwininfo frame))
+        ;; FIXME: maybe exwm provide some function,
+        ;; Which can get top-left of emacs.
+        (cons 0 0)))
+   (t nil)))
 
 (defun ivy-posframe--display (str &optional poshandler)
   "Show STR in ivy's posframe with POSHANDLER."
