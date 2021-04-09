@@ -246,9 +246,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defvar emacs-basic-display)
 (defvar ivy--display-function)
 
-(defvar exwm--connection)
+(defvar exwm--connection nil)
 (defvar exwm-workspace--workareas)
-(defvar  exwm-workspace-current-index)
+(defvar exwm-workspace-current-index)
 
 (defun ivy-posframe-refposhandler-default (&optional frame)
   "The default posframe refposhandler used by ivy-posframe."
