@@ -254,7 +254,7 @@ This variable is useful for `ivy-posframe-read-action' .")
   "The default posframe refposhandler used by ivy-posframe."
   (cond
    ;; EXWM environment
-   (exwm--connection
+   ((bound-and-true-p exwm--connection)
     (or (ignore-errors
           (let ((info (elt exwm-workspace--workareas
                            exwm-workspace-current-index)))
