@@ -245,7 +245,10 @@ This variable is useful for `ivy-posframe-read-action' .")
 ;; Fix warn
 (defvar emacs-basic-display)
 (defvar ivy--display-function)
+
 (defvar exwm--connection)
+(defvar exwm-workspace--workareas)
+(defvar  exwm-workspace-current-index)
 
 (defun ivy-posframe-refposhandler-default (&optional frame)
   "The default posframe refposhandler used by ivy-posframe."
@@ -253,10 +256,15 @@ This variable is useful for `ivy-posframe-read-action' .")
    ;; EXWM environment
    (exwm--connection
     (or (ignore-errors
-          ;; Need user install xwininfo.
+          (let ((info (elt exwm-workspace--workareas
+                           exwm-workspace-current-index)))
+            (cons (elt info 0)
+                  (elt info 1))))
+        ;; Need user install xwininfo.
+        (ignore-errors
           (posframe-refposhandler-xwininfo frame))
-        ;; FIXME: maybe exwm provide some function,
-        ;; Which can get top-left of emacs.
+        ;; Fallback, this value will incorrect sometime, for example: user
+        ;; have panel.
         (cons 0 0)))
    (t nil)))
 
