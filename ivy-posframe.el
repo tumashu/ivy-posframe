@@ -177,7 +177,6 @@ When nil, Using current frame's font as fallback."
   "The height of ivy-min-posframe."
   :type 'number)
 
-(define-obsolete-variable-alias 'ivy-posframe-parent-frame-poshandler 'ivy-posframe-refposhandler "0.6")
 (defcustom ivy-posframe-refposhandler #'ivy-posframe-refposhandler-default
   "The refposhandler use by ivy-posframe.
 
