@@ -177,17 +177,18 @@ When nil, Using current frame's font as fallback."
   "The height of ivy-min-posframe."
   :type 'number)
 
-(defcustom ivy-posframe-parent-frame-poshandler nil
+(define-obsolete-variable-alias 'ivy-posframe-parent-frame-poshandler 'ivy-posframe-refposhandler "0.6")
+(defcustom ivy-posframe-refposhandler nil
   "The parent frame poshandler use by ivy-posframe.
 
 User can set it to a function like below in EXWM environment, if
 EXWM's emacs position is (0 0).
 
-   (lambda () (cons 0 0))
+   (lambda (_frame) (cons 0 0))
 
 if not, user should provide own function, a reference is:
 
-`posframe-parent-frame-poshandler-xwininfo'"
+`posframe-refposhandler-xwininfo'"
   :type 'function)
 
 (defcustom ivy-posframe-size-function #'ivy-posframe-get-size
@@ -268,7 +269,7 @@ This variable is useful for `ivy-posframe-read-action' .")
              :internal-border-width ivy-posframe-border-width
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
-             :parent-frame-poshandler ivy-posframe-parent-frame-poshandler
+             :refposhandler ivy-posframe-refposhandler
              (funcall ivy-posframe-size-function))
       (ivy-posframe--add-prompt 'ignore)))
   (with-current-buffer ivy-posframe-buffer
