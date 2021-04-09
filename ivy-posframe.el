@@ -248,7 +248,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defvar exwm--connection)
 (defvar exwm-workspace--workareas)
-(defvar  exwm-workspace-current-index)
+(defvar exwm-workspace-current-index)
 
 (defun ivy-posframe-refposhandler-default (&optional frame)
   "The default posframe refposhandler used by ivy-posframe."
