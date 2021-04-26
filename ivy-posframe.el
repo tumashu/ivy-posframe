@@ -375,6 +375,25 @@ This variable is useful for `ivy-posframe-read-action' .")
   (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
     (ivy-posframe--dispatching-done)))
 
+(defun ivy-posframe--dispatching-call ()
+  "Select one of the available actions and call `ivy-call'."
+  (interactive)
+  (setq ivy-current-prefix-arg current-prefix-arg)
+  (let ((actions (copy-sequence (ivy-state-action ivy-last)))
+        (old-ivy-text ivy-text))
+    (unwind-protect
+        (when (ivy-read-action)
+          (ivy-set-text old-ivy-text)
+          (ivy-call))
+      (ivy-set-action actions)))
+  (ivy-posframe-shrink-after-dispatching))
+
+(defun ivy-posframe-dispatching-call ()
+  "Ivy-posframe's `ivy-dispatching-call'."
+  (interactive)
+  (let ((ivy-read-action-function #'ivy-posframe-read-action-by-key))
+    (ivy-posframe--dispatching-call)))
+
 (defun ivy-posframe-read-action ()
   "Ivy-posframe version `ivy-read-action'"
   (interactive)
@@ -632,7 +651,8 @@ This variable is useful for `ivy-posframe-read-action' .")
   :keymap '(([remap ivy-avy]              . ivy-posframe-avy)
             ([remap swiper-avy]           . ivy-posframe-swiper-avy)
             ([remap ivy-read-action]      . ivy-posframe-read-action)
-            ([remap ivy-dispatching-done] . ivy-posframe-dispatching-done))
+            ([remap ivy-dispatching-done] . ivy-posframe-dispatching-done)
+            ([remap ivy-dispatching-call] . ivy-posframe-dispatching-call))
   (if ivy-posframe-mode
       (mapc (lambda (elm)
               (advice-add (car elm) :around (cdr elm)))
