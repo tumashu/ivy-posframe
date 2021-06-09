@@ -284,10 +284,15 @@ This variable is useful for `ivy-posframe-read-action' .")
              :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
              :override-parameters ivy-posframe-parameters
              :refposhandler ivy-posframe-refposhandler
+             :hidehandler #'ivy-posframe-hidehandler
              (funcall ivy-posframe-size-function))
       (ivy-posframe--add-prompt 'ignore)))
   (with-current-buffer ivy-posframe-buffer
     (setq-local truncate-lines ivy-truncate-lines)))
+
+(defun ivy-posframe-hidehandler (_)
+  "Hidehandler used by ivy-posframe."
+  (not (minibufferp)))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
