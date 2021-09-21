@@ -292,7 +292,11 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe-hidehandler (_)
   "Hidehandler used by ivy-posframe."
-  (not (minibufferp)))
+  (and (not (minibufferp))
+       ;; Note: when run ivy-avy, buffer will be temp changed, make
+       ;; sure do not autohide posframe at this situation.
+       ;; More detail: https://github.com/tumashu/ivy-posframe/issues/114
+       (not (equal (current-buffer) (window-buffer (ivy-posframe--window))))))
 
 (defun ivy-posframe-get-size ()
   "The default functon used by `ivy-posframe-size-function'."
