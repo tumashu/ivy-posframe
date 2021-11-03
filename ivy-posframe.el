@@ -272,21 +272,21 @@ This variable is useful for `ivy-posframe-read-action' .")
   (if (not (posframe-workable-p))
       (ivy-display-function-fallback str)
     (with-ivy-window
-      (apply #'posframe-show
-             ivy-posframe-buffer
-             :font ivy-posframe-font
-             :string str
-             :position (point)
-             :poshandler poshandler
-             :background-color (face-attribute 'ivy-posframe :background nil t)
-             :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-             :internal-border-width ivy-posframe-border-width
-             :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-             :override-parameters ivy-posframe-parameters
-             :refposhandler ivy-posframe-refposhandler
-             :hidehandler #'ivy-posframe-hidehandler
-             (funcall ivy-posframe-size-function))
-      (ivy-posframe--add-prompt 'ignore)))
+     (apply #'posframe-show
+            ivy-posframe-buffer
+            :font ivy-posframe-font
+            :string str
+            :position (point)
+            :poshandler poshandler
+            :background-color (face-attribute 'ivy-posframe :background nil t)
+            :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+            :border-width ivy-posframe-border-width
+            :border-color (face-attribute 'ivy-posframe-border :background nil t)
+            :override-parameters ivy-posframe-parameters
+            :refposhandler ivy-posframe-refposhandler
+            :hidehandler #'ivy-posframe-hidehandler
+            (funcall ivy-posframe-size-function))
+     (ivy-posframe--add-prompt 'ignore)))
   (with-current-buffer ivy-posframe-buffer
     (setq-local truncate-lines ivy-truncate-lines)))
 
