@@ -329,6 +329,9 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe-display-at-frame-bottom-left (str)
   (ivy-posframe--display str #'posframe-poshandler-frame-bottom-left-corner))
 
+(defun ivy-posframe-display-at-frame-bottom-center (str)
+  (ivy-posframe--display str #'posframe-poshandler-frame-bottom-center))
+
 (defun ivy-posframe-display-at-frame-bottom-window-center (str)
   (ivy-posframe--display
    str (lambda (info)
