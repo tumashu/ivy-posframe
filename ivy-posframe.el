@@ -285,6 +285,7 @@ This variable is useful for `ivy-posframe-read-action' .")
             :override-parameters ivy-posframe-parameters
             :refposhandler ivy-posframe-refposhandler
             :hidehandler #'ivy-posframe-hidehandler
+            :tty-non-selected-cursor t
             (funcall ivy-posframe-size-function))
      (ivy-posframe--add-prompt 'ignore)))
   (with-current-buffer ivy-posframe-buffer
