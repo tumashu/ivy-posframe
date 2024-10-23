@@ -589,7 +589,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--minibuffer-setup (fn &rest args)
   "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
-  (if (not (display-graphic-p))
+  (if (not (posframe-workable-p))
       (apply fn args)
     (let ((ivy-fixed-height-minibuffer nil))
       (apply fn args))
@@ -613,7 +613,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 (defun ivy-posframe--add-prompt (fn &rest args)
   "Add the ivy prompt to the posframe.  Advice FN with ARGS."
   (apply fn args)
-  (when (and (display-graphic-p)
+  (when (and (posframe-workable-p)
              (not ivy-posframe--ignore-prompt))
     (with-current-buffer (window-buffer (active-minibuffer-window))
       (let ((point (point))
@@ -627,7 +627,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--display-function-prop (fn &rest args)
   "Around advice of FN with ARGS."
-  (if (not (display-graphic-p))
+  (if (not (posframe-workable-p))
       (apply fn args)
     (let ((ivy-display-functions-props
            (append ivy-display-functions-props
@@ -639,7 +639,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--height (fn &rest args)
   "Around advide of FN with ARGS."
-  (if (not (display-graphic-p))
+  (if (not (posframe-workable-p))
       (apply fn args)
     (let ((ivy-height-alist
            (append ivy-posframe-height-alist ivy-height-alist)))
@@ -647,7 +647,7 @@ This variable is useful for `ivy-posframe-read-action' .")
 
 (defun ivy-posframe--read (fn &rest args)
   "Around advice of FN with AGS."
-  (if (not (display-graphic-p))
+  (if (not (posframe-workable-p))
       (apply fn args)
     (let ((ivy-display-functions-alist
            (append ivy-posframe-display-functions-alist ivy-display-functions-alist)))
